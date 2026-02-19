@@ -1,0 +1,67 @@
+---
+import HomeLayout from "../layouts/HomeLayout.astro";
+---
+
+<HomeLayout title="Ævyndal" description="GM-first, runnable setting tools.">
+  <section id="homeHero" class="hero">
+    <h1>Ævyndal</h1>
+    <p>Run it tonight. Learn it fast. Let the world push back.</p>
+    <div class="ctaRow">
+      <a class="btn" href="/starting-locations/">Start Tonight</a>
+      <a class="btn btn--ghost" href="/about/">Get Oriented</a>
+    </div>
+  </section>
+
+  <div id="heroSentinel" aria-hidden="true"></div>
+
+  <div class="belowFold">
+    <section class="strip">
+      <p>Every page answers one question. No lore dumps. No required reading.</p>
+    </section>
+
+    <section class="cards">
+      <a class="card" href="/starting-locations/">
+        <h2>Start Tonight</h2><p>Pick a location. Present a problem.</p>
+      </a>
+      <a class="card" href="/gm-tools/">
+        <h2>GM Tools</h2><p>Escalation, consequences, downloads.</p>
+      </a>
+      <a class="card" href="/community/">
+        <h2>Join In</h2><p>Actual play + community.</p>
+      </a>
+    </section>
+
+    <section class="bentoHome">
+      <a class="tile tile--wide" href="/starting-locations/">
+        <h2>Start Tonight</h2><p>Pick a location. Present a problem. Begin.</p>
+      </a>
+      <a class="tile" href="/gm-tools/#escalation">
+        <h2>Escalate</h2><p>Pressure and consequences.</p>
+      </a>
+      <a class="tile" href="/gm-tools/#downloads">
+        <h2>Downloads</h2><p>Handouts and one-pagers.</p>
+      </a>
+      <a class="tile" href="/about/">
+        <h2>How This Runs</h2><p>Assumptions, cadence, re-entry.</p>
+      </a>
+      <a class="tile" href="/community/">
+        <h2>Actual Play</h2><p>See it in motion.</p>
+      </a>
+    </section>
+
+    <section class="proof">
+      <h2>What you get</h2>
+      <div class="proofGrid">
+        <div class="proofItem"><h3>Fast starts</h3><p>Locations + problems you can run immediately.</p></div>
+        <div class="proofItem"><h3>World response</h3><p>Escalation and consequences that move off-screen too.</p></div>
+        <div class="proofItem"><h3>Irregular play</h3><p>Built for gaps, recaps, and re-entry without homework.</p></div>
+        <div class="proofItem"><h3>Stealable assets</h3><p>One-pagers, handouts, tables, and downloads.</p></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <a href="/community/">Actual play</a><span>•</span>
+      <a href="/gm-tools/#downloads">Downloads</a>
+    </footer>
+  </div>
+</HomeLayout>

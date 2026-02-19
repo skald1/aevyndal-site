@@ -1,0 +1,28 @@
+---
+import { primaryNav } from "./navData";
+---
+
+<aside id="leftSpine" class="leftSpine" data-hidden="false" aria-label="Home navigation">
+  <nav class="leftSpine__nav">
+    {primaryNav.map((i) => (
+      <a class="leftSpine__link" href={i.href}>{i.label}</a>
+    ))}
+  </nav>
+</aside>
+
+<script is:inline>
+  window.addEventListener("DOMContentLoaded", () => {
+    const spine = document.getElementById("leftSpine");
+    const hero = document.getElementById("homeHero");
+    if (!spine || !hero) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        spine.dataset.hidden = entry.isIntersecting ? "false" : "true";
+      },
+      { threshold: 0.15 }
+    );
+
+    io.observe(hero);
+  });
+</script>

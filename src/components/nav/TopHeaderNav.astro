@@ -1,0 +1,16 @@
+<script is:inline>
+  window.addEventListener("DOMContentLoaded", () => {
+    const header = document.getElementById("topHeader");
+    const hero = document.getElementById("homeHero");
+    if (!header || !hero) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        header.dataset.hidden = entry.isIntersecting ? "true" : "false";
+      },
+      { threshold: 0.15 }
+    );
+
+    io.observe(hero);
+  });
+</script>

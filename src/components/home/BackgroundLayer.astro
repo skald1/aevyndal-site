@@ -1,0 +1,23 @@
+---
+const img = "/images/home-bg.webp";
+---
+
+<div id="bgLayer" class="bgLayer" aria-hidden="true" style={`--bg-url:url(${img})`}>
+  <div class="bgLayer__overlay"></div>
+</div>
+
+<script is:inline>
+  (() => {
+    const bg = document.getElementById("bgLayer");
+    if (!bg) return;
+    const speed = 0.25;
+
+    const onScroll = () => {
+      const y = window.scrollY || 0;
+      bg.style.transform = `translate3d(0, ${-y * speed}px, 0)`;
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  })();
+</script>
