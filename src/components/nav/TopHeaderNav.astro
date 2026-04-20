@@ -1,3 +1,16 @@
+---
+import { primaryNav } from "./navData";
+---
+<header id="topHeader" class="topHeader" data-hidden="true">
+  <nav class="topHeader__nav">
+    <a class="topHeader__brand" href="/">Ævyndal</a>
+    <div class="topHeader__links">
+      {primaryNav.map((i) => (
+        <a href={i.href}>{i.label}</a>
+      ))}
+    </div>
+  </nav>
+</header>
 <script is:inline>
   window.addEventListener("DOMContentLoaded", () => {
     const header = document.getElementById("topHeader");
