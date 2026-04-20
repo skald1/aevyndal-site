@@ -2,66 +2,449 @@
 import HomeLayout from "../layouts/HomeLayout.astro";
 ---
 
-<HomeLayout title="Ævyndal" description="GM-first, runnable setting tools.">
+<HomeLayout title="Ævyndal — One World. Every Game." description="A single continuous fantasy world spanning eight ages of history. One world. Every game you'll ever run.">
+
+  <!-- HERO -->
   <section id="homeHero" class="hero">
-    <h1>Ævyndal</h1>
-    <p>Run it tonight. Learn it fast. Let the world push back.</p>
+    <p class="hero-eyebrow">Thirty years in the making</p>
+    <h1>You never have to<br/>start over again.</h1>
+    <p class="hero-sub">
+      Ævyndal is a single continuous world spanning eight ages of history —
+      from sword-and-sandal myth to cosmic reckoning. Every campaign lives here.
+    </p>
     <div class="ctaRow">
-      <a class="btn" href="/starting-locations/">Start Tonight</a>
-      <a class="btn btn--ghost" href="/about/">Get Oriented</a>
+      <a class="btn" href="#subscribe">Stay informed</a>
+      <a class="btn btn--ghost" href="#the-world">Learn more</a>
     </div>
   </section>
 
   <div id="heroSentinel" aria-hidden="true"></div>
 
   <div class="belowFold">
-    <section class="strip">
-      <p>Every page answers one question. No lore dumps. No required reading.</p>
-    </section>
 
-    <section class="cards">
-      <a class="card" href="/starting-locations/">
-        <h2>Start Tonight</h2><p>Pick a location. Present a problem.</p>
-      </a>
-      <a class="card" href="/gm-tools/">
-        <h2>GM Tools</h2><p>Escalation, consequences, downloads.</p>
-      </a>
-      <a class="card" href="/community/">
-        <h2>Join In</h2><p>Actual play + community.</p>
-      </a>
-    </section>
-
-    <section class="bentoHome">
-      <a class="tile tile--wide" href="/starting-locations/">
-        <h2>Start Tonight</h2><p>Pick a location. Present a problem. Begin.</p>
-      </a>
-      <a class="tile" href="/gm-tools/#escalation">
-        <h2>Escalate</h2><p>Pressure and consequences.</p>
-      </a>
-      <a class="tile" href="/gm-tools/#downloads">
-        <h2>Downloads</h2><p>Handouts and one-pagers.</p>
-      </a>
-      <a class="tile" href="/about/">
-        <h2>How This Runs</h2><p>Assumptions, cadence, re-entry.</p>
-      </a>
-      <a class="tile" href="/community/">
-        <h2>Actual Play</h2><p>See it in motion.</p>
-      </a>
-    </section>
-
-    <section class="proof">
-      <h2>What you get</h2>
-      <div class="proofGrid">
-        <div class="proofItem"><h3>Fast starts</h3><p>Locations + problems you can run immediately.</p></div>
-        <div class="proofItem"><h3>World response</h3><p>Escalation and consequences that move off-screen too.</p></div>
-        <div class="proofItem"><h3>Irregular play</h3><p>Built for gaps, recaps, and re-entry without homework.</p></div>
-        <div class="proofItem"><h3>Stealable assets</h3><p>One-pagers, handouts, tables, and downloads.</p></div>
+    <!-- THE PROMISE -->
+    <section class="promise" id="the-world">
+      <div class="promise-inner">
+        <h2>One world.<br/>Every game you'll ever run.</h2>
+        <p>
+          Most settings are a place frozen in a single genre.
+          Ævyndal is a living history — eight distinct ages, each with its own
+          tone, technology, and conflict, all connected by the same bloodlines,
+          the same entropy, the same broken divine architecture underneath.
+        </p>
+        <p>
+          The dungeon your players cleared in the Fourth Age is a museum exhibit
+          in the Sixth. The empire they toppled echoes into the Seventh.
+          Nothing ends. Everything accumulates.
+        </p>
+        <p>
+          When a campaign concludes, the world remains. Your players' history
+          becomes its history. You don't start over. You move to a different age.
+        </p>
       </div>
     </section>
 
+    <!-- THE EIGHT AGES -->
+    <section class="ages">
+      <p class="section-label">Eight Ages. One World.</p>
+      <div class="ages-grid">
+        <div class="age">
+          <span class="age-num">I</span>
+          <h3>Age of Creation</h3>
+          <p>Myth is recent. The world is still becoming. Divinity walks openly.</p>
+        </div>
+        <div class="age">
+          <span class="age-num">II</span>
+          <h3>Chaos & God-Kings</h3>
+          <p>Sword and sandal. Cults and barbarism. Near-divine tyrants claim dominion.</p>
+        </div>
+        <div class="age">
+          <span class="age-num">III</span>
+          <h3>Expansion of Empires</h3>
+          <p>High fantasy. Kingdoms, borders, conquest. The politics of rising power.</p>
+        </div>
+        <div class="age age--featured">
+          <span class="age-num">IV</span>
+          <h3>Age of Exploration</h3>
+          <p>Dark fantasy. New territories. Ancient dangers. The cost of empire made visible.</p>
+          <span class="age-tag">Most developed</span>
+        </div>
+        <div class="age">
+          <span class="age-num">V</span>
+          <h3>Fall of the Gods</h3>
+          <p>The divine infrastructure collapses. Faith without institution. What remains?</p>
+        </div>
+        <div class="age">
+          <span class="age-num">VI</span>
+          <h3>Rise of Science</h3>
+          <p>Industrial to near-future. Elemental physics meets empiricism.</p>
+        </div>
+        <div class="age">
+          <span class="age-num">VII</span>
+          <h3>Rise of the Syndicate</h3>
+          <p>Corporate power. Magic driven underground. Survival economics.</p>
+        </div>
+        <div class="age">
+          <span class="age-num">VIII</span>
+          <h3>Dawn of Hope</h3>
+          <p>Ecology, faith, and technology rewoven. A world trying to heal itself.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPLORE EXISTING CONTENT -->
+    <section class="explore">
+      <p class="section-label">Start exploring now</p>
+      <div class="cards">
+        <a class="card" href="https://evindale.com/atlas">
+          <h2>Atlas</h2>
+          <p>43 countries across Erinnal. Named rulers, active conflicts, deep history.</p>
+        </a>
+        <a class="card" href="https://evindale.com/gods">
+          <h2>Deities & Faith</h2>
+          <p>Three pantheons across the ages. Cults, plot hooks, theological conflict.</p>
+        </a>
+        <a class="card" href="https://evindale.com/lineages">
+          <h2>Lineages</h2>
+          <p>The peoples of Ævyndal — named in their own tongue, built from their own history.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- MAILING LIST -->
+    <section class="subscribe" id="subscribe">
+      <div class="subscribe-inner">
+        <h2>Be here when the doors open.</h2>
+        <p>
+          New country entries, actual play announcements, and world development —
+          sent when there's something worth saying.
+        </p>
+        <form
+          action="https://buttondown.com/api/emails/embed-subscribe/sjvox"
+          method="post"
+          class="subscribe-form"
+        >
+          <div class="form-row">
+            <label for="bd-email" class="sr-only">Your email address</label>
+            <input
+              type="email"
+              name="email"
+              id="bd-email"
+              placeholder="your@email.com"
+              required
+            />
+            <button type="submit">Keep me posted</button>
+          </div>
+          <p class="form-note">No spam. Unsubscribe anytime.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
     <footer class="footer">
-      <a href="/community/">Actual play</a><span>•</span>
-      <a href="/gm-tools/#downloads">Downloads</a>
+      <nav class="footer-nav">
+        <a href="https://evindale.com/atlas">Atlas</a><span>•</span>
+        <a href="https://evindale.com/gods">Deities</a><span>•</span>
+        <a href="https://evindale.com/lineages">Lineages</a><span>•</span>
+        <a href="https://discord.gg/kZetsKk">Discord</a>
+      </nav>
+      <p class="footer-copy">© SJ Kraus. All rights reserved.</p>
     </footer>
+
   </div>
+
 </HomeLayout>
+
+<style>
+  :root {
+    --charcoal:      #1a1a18;
+    --stone:         #2c2c28;
+    --parchment:     #e8e0cc;
+    --parchment-dim: #b0a888;
+    --gold:          #c8a84b;
+    --gold-dim:      #7a6530;
+    --font-display:  'Crimson Text', Georgia, serif;
+    --font-body:     'Lora', Georgia, serif;
+  }
+
+  /* HERO */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100svh;
+    padding: 6rem 3rem 4rem;
+    max-width: 760px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+    opacity: 0.85;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--parchment);
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    color: var(--parchment-dim);
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* PROMISE */
+  .promise {
+    padding: 6rem 3rem;
+    background: var(--stone);
+    border-top: 1px solid rgba(200,168,75,0.15);
+    border-bottom: 1px solid rgba(200,168,75,0.15);
+  }
+
+  .promise-inner { max-width: 660px; }
+
+  .promise h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 600;
+    color: var(--parchment);
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+
+  .promise p {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--parchment-dim);
+    line-height: 1.75;
+    margin-bottom: 1.2rem;
+  }
+
+  .promise p:last-child { margin-bottom: 0; }
+
+  /* AGES */
+  .ages {
+    padding: 6rem 3rem;
+    border-bottom: 1px solid rgba(200,168,75,0.15);
+  }
+
+  .section-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+    margin-bottom: 2.5rem;
+  }
+
+  .ages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px;
+    background: rgba(200,168,75,0.1);
+    border: 1px solid rgba(200,168,75,0.1);
+  }
+
+  .age {
+    padding: 1.75rem 1.5rem;
+    background: var(--charcoal);
+    transition: background 0.2s;
+    position: relative;
+  }
+
+  .age:hover { background: var(--stone); }
+
+  .age--featured {
+    background: var(--stone);
+    border-left: 2px solid var(--gold);
+  }
+
+  .age-num {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .age h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--parchment);
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+  }
+
+  .age p {
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--parchment-dim);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .age-tag {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 0.15rem 0.5rem;
+  }
+
+  /* EXPLORE */
+  .explore {
+    padding: 6rem 3rem;
+    background: var(--stone);
+    border-bottom: 1px solid rgba(200,168,75,0.15);
+  }
+
+  /* SUBSCRIBE */
+  .subscribe {
+    padding: 6rem 3rem;
+    border-bottom: 1px solid rgba(200,168,75,0.15);
+  }
+
+  .subscribe-inner { max-width: 520px; }
+
+  .subscribe h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 600;
+    color: var(--parchment);
+    line-height: 1.15;
+    margin-bottom: 0.85rem;
+  }
+
+  .subscribe-inner > p {
+    font-family: var(--font-body);
+    color: var(--parchment-dim);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .form-row {
+    display: flex;
+  }
+
+  .form-row input[type="email"] {
+    flex: 1;
+    padding: 0.8rem 1.1rem;
+    background: var(--stone);
+    border: 1px solid var(--gold-dim);
+    border-right: none;
+    color: var(--parchment);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-row input[type="email"]::placeholder {
+    color: var(--parchment-dim);
+    opacity: 0.45;
+  }
+
+  .form-row input[type="email"]:focus { border-color: var(--gold); }
+
+  .form-row button {
+    padding: 0.8rem 1.5rem;
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    color: var(--charcoal);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .form-row button:hover {
+    background: transparent;
+    color: var(--gold);
+  }
+
+  .form-note {
+    margin-top: 0.75rem;
+    font-size: 0.74rem;
+    color: var(--parchment-dim);
+    opacity: 0.45;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 3rem;
+  }
+
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .footer-nav a {
+    color: var(--gold-dim);
+    text-decoration: none;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-nav a:hover { color: var(--gold); }
+  .footer-nav span { color: var(--gold-dim); opacity: 0.3; }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--parchment-dim);
+    opacity: 0.3;
+  }
+
+  /* UTILITIES */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero { padding: 5rem 1.5rem 3rem; }
+    .promise, .ages, .explore, .subscribe { padding: 4rem 1.5rem; }
+    .footer { padding: 2rem 1.5rem; }
+    .form-row { flex-direction: column; }
+    .form-row input[type="email"] {
+      border-right: 1px solid var(--gold-dim);
+      border-bottom: none;
+    }
+    .form-row button { width: 100%; }
+    .ages-grid { grid-template-columns: 1fr; }
+  }
+</style>
