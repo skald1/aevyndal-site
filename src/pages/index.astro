@@ -2,430 +2,738 @@
 import HomeLayout from "../layouts/HomeLayout.astro";
 ---
 
-<HomeLayout title="Ævyndal — One World. Every Game." description="A single continuous fantasy world spanning eight ages of history. One world. Every game you'll ever run.">
+<HomeLayout title="Ævyndal" description="Forty years ago someone wanted to know what was outside the dungeon. The world that question built is yours now.">
+
+  <!-- NAV handled by HomeLayout -->
 
   <!-- HERO -->
-  <section id="homeHero" class="hero">
-    <p class="hero-eyebrow">Thirty years in the making</p>
-    <h1>You never have to<br/>start over again.</h1>
-    <p class="hero-sub">
-      Ævyndal is a single continuous world spanning eight ages of history —
-      from sword-and-sandal myth to cosmic reckoning. Every campaign lives here.
-    </p>
-    <div class="ctaRow">
-      <a class="btn" href="#subscribe">Stay informed</a>
-      <a class="btn btn--ghost" href="#the-world">Learn more</a>
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Grimwell Studio · An Original Universe</p>
+      <h1 class="hero-title">
+        Forty years ago<br/>I wanted to know<br/>what was <em>outside<br/>the dungeon.</em>
+      </h1>
+      <p class="hero-hook">I'm still finding out. <strong>Now so can you.</strong></p>
+      <div class="hero-cta">
+        <a href="#enter" class="btn-primary">Begin Your Story</a>
+        <a href="#ages" class="btn-ghost">Explore the World</a>
+      </div>
     </div>
   </section>
 
-  <div id="heroSentinel" aria-hidden="true"></div>
+  <div class="divider"></div>
 
-  <div class="belowFold">
-
-    <!-- THE PROMISE -->
-    <section class="promise" id="the-world">
-      <div class="promise-inner">
-        <h2>One world.<br/>Every game you'll ever run.</h2>
-        <p>
-          Most settings are a place frozen in a single genre.
-          Ævyndal is a living history — eight distinct ages, each with its own
-          tone, technology, and conflict, all connected by the same bloodlines,
-          the same entropy, the same broken divine architecture underneath.
-        </p>
-        <p>
-          The dungeon your players cleared in the Fourth Age is a museum exhibit
-          in the Sixth. The empire they toppled echoes into the Seventh.
-          Nothing ends. Everything accumulates.
-        </p>
-        <p>
-          When a campaign concludes, the world remains. Your players' history
-          becomes its history. You don't start over. You move to a different age.
-        </p>
+  <!-- ORIGIN -->
+  <section class="origin">
+    <div class="origin-inner">
+      <p class="origin-label">On the origin of Ævyndal</p>
+      <div class="origin-text">
+        <p>It started with hills. Then the mountains beyond those hills. Then a city on the other side of those mountains. Trade routes from that city to other settlements. Water near it — and then the source of that water, and more mountains beyond.</p>
+        <p>The world grew because I needed to know why. Why an NPC existed and had the attitude it did. Why a creature lived in that cave and not somewhere else. Why the land was the way it was.</p>
+        <p>Eventually I created not so much a universe as the founding principles beneath one — a system of physics on which everything else could be built. Today you can ask me anything about this place and I can give you an authoritative answer. Because I understand how it works. I've lived in it for forty years.</p>
       </div>
-    </section>
+      <p class="origin-attr">— SJ Kraus, Creator</p>
+    </div>
+  </section>
 
-    <!-- THE EIGHT AGES -->
-    <section class="ages">
-      <p class="section-label">Eight Ages. One World.</p>
+  <div class="divider"></div>
+
+  <!-- AGES -->
+  <section class="section" id="ages">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="section-title">The Eight Ages</h2>
+        <div class="section-rule"></div>
+      </div>
+      <p class="section-sub">One world. Eight epochs. Each carries its own genre, its own relationship to magic, its own version of what survival costs. The Fourth Age is open now.</p>
       <div class="ages-grid">
-        <div class="age">
-          <span class="age-num">I</span>
-          <h3>Age of Creation</h3>
-          <p>Myth is recent. The world is still becoming. Divinity walks openly.</p>
+        <div class="age-card locked">
+          <div class="age-num">First Age</div>
+          <div class="age-name">Age of Creation</div>
+          <div class="age-genre">Mythic fantasy. The world is new. The divine is recent. Nothing is yet inevitable.</div>
         </div>
-        <div class="age">
-          <span class="age-num">II</span>
-          <h3>Chaos & God-Kings</h3>
-          <p>Sword and sandal. Cults and barbarism. Near-divine tyrants claim dominion.</p>
+        <div class="age-card locked">
+          <div class="age-num">Second Age</div>
+          <div class="age-name">Chaos &amp; God-Kings</div>
+          <div class="age-genre">Sword &amp; sandal. Grit, cults, barbarism, tribes, and ancient beliefs under powers no one fully understands.</div>
         </div>
-        <div class="age">
-          <span class="age-num">III</span>
-          <h3>Expansion of Empires</h3>
-          <p>High fantasy. Kingdoms, borders, conquest. The politics of rising power.</p>
+        <div class="age-card locked">
+          <div class="age-num">Third Age</div>
+          <div class="age-name">Expansion of Empires</div>
+          <div class="age-genre">High fantasy. Kingdoms, borders, conquest, and the politics of power at its most dangerous.</div>
         </div>
-        <div class="age age--featured">
-          <span class="age-num">IV</span>
-          <h3>Age of Exploration</h3>
-          <p>Dark fantasy. New territories. Ancient dangers. The cost of empire made visible.</p>
-          <span class="age-tag">Most developed</span>
+        <div class="age-card open">
+          <div class="age-open-mark">Open Now</div>
+          <div class="age-num">Fourth Age</div>
+          <div class="age-name">Age of Exploration</div>
+          <div class="age-genre">Dark fantasy. Civilizations expand to dominate the landscape. Politics, epic quests, and cults rising in the shadows of an ancient world that left more behind than anyone fully understands.</div>
         </div>
-        <div class="age">
-          <span class="age-num">V</span>
-          <h3>Fall of the Gods</h3>
-          <p>The divine infrastructure collapses. Faith without institution. What remains?</p>
+        <div class="age-card locked">
+          <div class="age-num">Fifth Age</div>
+          <div class="age-name">Fall of the Gods</div>
+          <div class="age-genre">The divine infrastructure collapses. Faith without institution. What remains when the gods stop answering?</div>
         </div>
-        <div class="age">
-          <span class="age-num">VI</span>
-          <h3>Rise of Science</h3>
-          <p>Industrial to near-future. Elemental physics meets empiricism.</p>
+        <div class="age-card locked">
+          <div class="age-num">Sixth Age</div>
+          <div class="age-name">Rise of Science</div>
+          <div class="age-genre">Industrial to near-future. The tension between elemental physics and a world that no longer needs to believe.</div>
         </div>
-        <div class="age">
-          <span class="age-num">VII</span>
-          <h3>Rise of the Syndicate</h3>
-          <p>Corporate power. Magic driven underground. Survival economics.</p>
+        <div class="age-card locked">
+          <div class="age-num">Seventh Age</div>
+          <div class="age-name">Rise of the Syndicate</div>
+          <div class="age-genre">Cyberpunk. Corporate power structures. Magic underground. The cost of survival in a world owned by someone else.</div>
         </div>
-        <div class="age">
-          <span class="age-num">VIII</span>
-          <h3>Dawn of Hope</h3>
-          <p>Ecology, faith, and technology rewoven. A world trying to heal itself.</p>
+        <div class="age-card locked">
+          <div class="age-num">Eighth Age</div>
+          <div class="age-name">Dawn of Hope</div>
+          <div class="age-genre">Brightpunk. Ecology, faith, and technology rewoven. A world that has been broken before — and is trying again.</div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- EXPLORE EXISTING CONTENT -->
-    <section class="explore">
-      <p class="section-label">Start exploring now</p>
-      <div class="cards">
-        <a class="card" href="https://evindale.com/atlas">
-          <h2>Atlas</h2>
-          <p>43 countries across Erinnal. Named rulers, active conflicts, deep history.</p>
-        </a>
-        <a class="card" href="https://evindale.com/gods">
-          <h2>Deities & Faith</h2>
-          <p>Three pantheons across the ages. Cults, plot hooks, theological conflict.</p>
-        </a>
-        <a class="card" href="https://evindale.com/lineages">
-          <h2>Lineages</h2>
-          <p>The peoples of Ævyndal — named in their own tongue, built from their own history.</p>
-        </a>
+  <div class="divider"></div>
+
+  <!-- WORLDS -->
+  <section class="section" id="worlds">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="section-title">The Worlds</h2>
+        <div class="section-rule"></div>
       </div>
-    </section>
-
-    <!-- MAILING LIST -->
-    <section class="subscribe" id="subscribe">
-      <div class="subscribe-inner">
-        <h2>Be here when the doors open.</h2>
-        <p>
-          New country entries, actual play announcements, and world development —
-          sent when there's something worth saying.
-        </p>
-        <form
-          action="https://buttondown.com/api/emails/embed-subscribe/sjvox"
-          method="post"
-          class="subscribe-form"
-        >
-          <div class="form-row">
-            <label for="bd-email" class="sr-only">Your email address</label>
-            <input
-              type="email"
-              name="email"
-              id="bd-email"
-              placeholder="your@email.com"
-              required
-            />
-            <button type="submit">Keep me posted</button>
-          </div>
-          <p class="form-note">No spam. Unsubscribe anytime.</p>
-        </form>
+      <p class="section-sub">Sythlia's creation spans more than one world. The ages run through all of it.</p>
+      <div class="worlds-grid">
+        <div class="world-card">
+          <div class="world-card-eye">Primary World · Active</div>
+          <div class="world-card-name">Elydris</div>
+          <div class="world-card-desc">The planet. Three continents shaped and reshaped by tectonic drift across the ages. Local star: Aryos. All current content originates here.</div>
+        </div>
+        <div class="world-card locked">
+          <div class="world-card-eye">Secondary World · Locked</div>
+          <div class="world-card-name">Felwiddel</div>
+          <div class="world-card-desc">Planet of fey. Fey exist throughout Sythlia's creation, but nowhere are they more concentrated than here. Not yet available.</div>
+        </div>
       </div>
-    </section>
+      <div class="sub-head">
+        <span class="sub-head-title">Continents of Elydris</span>
+      </div>
+      <div class="continents-grid">
+        <div class="continent-card">
+          <div class="continent-card-label">Primary Continent · Active</div>
+          <div class="continent-card-name">Erinnal</div>
+          <div class="continent-card-meta">43 countries · The home of adventure and the birthplace of the setting</div>
+        </div>
+        <div class="continent-card locked">
+          <div class="continent-card-label">Second Continent · Locked</div>
+          <div class="continent-card-name">Majri'dal</div>
+          <div class="continent-card-meta">23 countries · Named, real, not yet available</div>
+        </div>
+        <div class="continent-card reserved">
+          <div class="continent-card-label">Third Continent · Reserved</div>
+          <div class="continent-card-name">Aris</div>
+          <div class="continent-card-meta">The long destination · Available when the world is ready for it</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-      <nav class="footer-nav">
-        <a href="https://evindale.com/atlas">Atlas</a><span>•</span>
-        <a href="https://evindale.com/gods">Deities</a><span>•</span>
-        <a href="https://evindale.com/lineages">Lineages</a><span>•</span>
-        <a href="https://discord.gg/kZetsKk">Discord</a>
-      </nav>
-      <p class="footer-copy">© SJ Kraus. All rights reserved.</p>
-    </footer>
+  <div class="divider"></div>
 
-  </div>
+  <!-- LINEAGES -->
+  <section class="section" id="lineages">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="section-title">Thirty-Three Peoples</h2>
+        <div class="section-rule"></div>
+      </div>
+      <p class="section-sub">No elves. No dwarves. No borrowed mythology. Thirty-three original peoples in seven families, each with their own origins, their own history, their own relationship to the eight elements.</p>
+      <div class="lineage-grid">
+        <div class="family-card">
+          <div class="family-name">Th'il</div>
+          <div class="family-peoples">Adri'il · Fayd'il · Lithar'il · Myrad'il · Ryal'il · Slindar'il · Theran'il · Vaud'il</div>
+          <span class="family-tag">8 Peoples</span>
+        </div>
+        <div class="family-card">
+          <div class="family-name">Dranorvauri</div>
+          <div class="family-peoples">Gnome · Gol · Guelt · Igyrlin · Karuun · Tirfolk</div>
+          <span class="family-tag">6 Peoples</span>
+        </div>
+        <div class="family-card">
+          <div class="family-name">Children of the Italti</div>
+          <div class="family-peoples">Geraki · Korva'dan · Maraki · Odoko · Quirrin · Sadrath</div>
+          <span class="family-tag">6 Peoples · Korva'dan available</span>
+        </div>
+        <div class="family-card">
+          <div class="family-name">Klane</div>
+          <div class="family-peoples">Human · Umbran · Vivashan</div>
+          <span class="family-tag">3 Peoples</span>
+        </div>
+        <div class="family-card">
+          <div class="family-name">Evolved</div>
+          <div class="family-peoples">Gulvani · Thiraf · Värul</div>
+          <span class="family-tag">3 Peoples</span>
+        </div>
+        <div class="family-card">
+          <div class="family-name">Children of the Dreg'n</div>
+          <div class="family-peoples">Goblin · Kobold · Kotera · T'nao</div>
+          <span class="family-tag">4 Peoples</span>
+        </div>
+        <div class="family-card">
+          <div class="family-name">Wrought</div>
+          <div class="family-peoples">Rech · Sheydra · Fifth Age Automaton</div>
+          <span class="family-tag">3 Peoples</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- VOTE -->
+  <section class="vote">
+    <div class="vote-inner">
+      <p class="vote-eye">Community · What Opens Next</p>
+      <h2 class="vote-title">The world grows in response to its inhabitants.</h2>
+      <p class="vote-desc">Seven ages are locked. Two continents are waiting. You decide what opens next. Every sprint is driven by the people who live here.</p>
+      <div class="vote-opts">
+        <label class="vote-opt">
+          <input type="radio" name="vote" value="age2" />
+          <span class="vote-opt-name">Second Age</span>
+          <span class="vote-opt-genre">Chaos &amp; God-Kings</span>
+        </label>
+        <label class="vote-opt">
+          <input type="radio" name="vote" value="age3" />
+          <span class="vote-opt-name">Third Age</span>
+          <span class="vote-opt-genre">Expansion of Empires</span>
+        </label>
+        <label class="vote-opt">
+          <input type="radio" name="vote" value="majridal" />
+          <span class="vote-opt-name">Majri'dal</span>
+          <span class="vote-opt-genre">Second Continent</span>
+        </label>
+      </div>
+      <a href="#enter" class="btn-primary">Vote &amp; Join the List</a>
+    </div>
+  </section>
+
+  <!-- MAILING LIST -->
+  <section class="ml" id="enter">
+    <div class="ml-inner">
+      <div class="ml-mark">✦</div>
+      <h2 class="ml-title">You never have to start over again.</h2>
+      <p class="ml-desc">Ævyndal solves the experienced GM's grief over worlds that die with campaigns. Your characters, your communities, your stories — they persist here. Be here when the next door opens.</p>
+      <form
+        action="https://buttondown.com/api/emails/embed-subscribe/sjvox"
+        method="post"
+        class="ml-form"
+      >
+        <label for="bd-email" class="sr-only">Your email address</label>
+        <input class="ml-input" type="email" name="email" id="bd-email" placeholder="your@email.com" required />
+        <button class="ml-btn" type="submit">Enter</button>
+      </form>
+      <p class="ml-note">No noise. Only when something opens.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span class="footer-mark">Ævyndal</span>
+    <nav class="footer-nav">
+      <a href="https://evindale.com/atlas">Atlas</a>
+      <span>·</span>
+      <a href="https://evindale.com/gods">Deities</a>
+      <span>·</span>
+      <a href="https://evindale.com/lineages">Lineages</a>
+      <span>·</span>
+      <a href="https://discord.gg/kZetsKk">Discord</a>
+    </nav>
+    <span class="footer-copy">© SJ Kraus</span>
+  </footer>
 
 </HomeLayout>
 
 <style>
   :root {
-    --charcoal:      #1a1a18;
-    --stone:         #2c2c28;
-    --parchment:     #e8e0cc;
-    --parchment-dim: #b0a888;
-    --gold:          #c8a84b;
-    --gold-dim:      #7a6530;
+    --void:          #09080A;
+    --ink:           #1A1614;
+    --haze:          #2E2926;
+    --fog:           #3A3530;
+    --ash:           #5C5650;
+    --bone-dim:      #8A837A;
+    --bone:          #D0C9BC;
+    --threat:        #8B3218;
+    --glow:          #C4501E;
     --font-display:  'Crimson Text', Georgia, serif;
     --font-body:     'Lora', Georgia, serif;
   }
 
-  /* HERO */
+  /* ═══ HERO ═══ */
   .hero {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
     min-height: 100svh;
-    padding: 6rem 3rem 4rem 7rem;
-    max-width: 760px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 3rem 7rem;
+    position: relative;
+    overflow: hidden;
   }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -10%; right: 5%;
+    width: 55vw; height: 100vh;
+    background: radial-gradient(ellipse 50% 70% at 60% 30%,
+      rgba(196,80,30,0.18) 0%,
+      rgba(139,50,24,0.08) 40%,
+      transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 30vh;
+    background: linear-gradient(to top, var(--void) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .hero-inner { position: relative; z-index: 2; max-width: 740px; }
 
   .hero-eyebrow {
-    font-family: var(--font-body);
-    font-size: 0.78rem;
-    letter-spacing: 0.2em;
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.25rem;
-    opacity: 0.85;
+    color: var(--glow);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: rise 0.9s ease forwards 0.3s;
   }
-
-  .hero h1 {
+  .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(2.8rem, 6vw, 5rem);
-    font-weight: 600;
-    line-height: 1.05;
-    color: var(--parchment);
-    margin: 0 0 1.5rem;
-    letter-spacing: -0.01em;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 400;
+    line-height: 1.0;
+    color: var(--bone);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: rise 1s ease forwards 0.5s;
+  }
+  .hero-title em { font-style: italic; color: var(--bone-dim); }
+  .hero-hook {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-style: italic;
+    color: var(--ash);
+    max-width: 480px;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+    opacity: 0;
+    animation: rise 1s ease forwards 0.7s;
+  }
+  .hero-hook strong { color: var(--bone); font-style: normal; }
+  .hero-cta {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: rise 1s ease forwards 0.9s;
   }
 
-  .hero-sub {
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ═══ BUTTONS ═══ */
+  .btn-primary {
+    display: inline-block;
+    padding: 0.75rem 1.8rem;
+    background: var(--threat);
+    color: var(--bone);
     font-family: var(--font-body);
-    font-size: clamp(1rem, 1.8vw, 1.2rem);
-    color: var(--parchment-dim);
-    line-height: 1.7;
-    max-width: 540px;
-    margin-bottom: 2.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--glow);
+    transition: background 0.25s;
+  }
+  .btn-primary:hover { background: var(--glow); }
+  .btn-ghost {
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ash);
+    text-decoration: none;
+    border-bottom: 1px solid var(--fog);
+    padding-bottom: 0.1rem;
+    transition: color 0.25s, border-color 0.25s;
+  }
+  .btn-ghost:hover { color: var(--bone); border-color: var(--ash); }
+
+  /* ═══ DIVIDER ═══ */
+  .divider {
+    height: 1px;
+    margin: 0 3rem;
+    background: linear-gradient(to right, transparent, var(--threat), transparent);
+    opacity: 0.4;
   }
 
-  /* PROMISE */
-  .promise {
-    padding: 6rem 3rem;
-    background: var(--stone);
-    border-top: 1px solid rgba(200,168,75,0.15);
-    border-bottom: 1px solid rgba(200,168,75,0.15);
-  }
-
-  .promise-inner { max-width: 660px; }
-
-  .promise h2 {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
-    font-weight: 600;
-    color: var(--parchment);
-    line-height: 1.1;
+  /* ═══ ORIGIN ═══ */
+  .origin { padding: 7rem 3rem; }
+  .origin-inner { max-width: 640px; margin: 0 auto; }
+  .origin-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--glow);
     margin-bottom: 2rem;
   }
-
-  .promise p {
-    font-family: var(--font-body);
-    font-size: 1.05rem;
-    color: var(--parchment-dim);
-    line-height: 1.75;
-    margin-bottom: 1.2rem;
+  .origin-text {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+    line-height: 1.6;
+    color: var(--bone);
+  }
+  .origin-text p { margin-bottom: 1.3em; }
+  .origin-text p:last-child { margin-bottom: 0; }
+  .origin-attr {
+    margin-top: 2.5rem;
+    font-size: 0.7rem;
+    color: var(--ash);
+    font-style: italic;
+    letter-spacing: 0.06em;
   }
 
-  .promise p:last-child { margin-bottom: 0; }
-
-  /* AGES */
-  .ages {
-    padding: 6rem 3rem;
-    border-bottom: 1px solid rgba(200,168,75,0.15);
+  /* ═══ SECTIONS ═══ */
+  .section { padding: 6rem 3rem; }
+  .section-inner { max-width: 1060px; margin: 0 auto; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 0.8rem;
   }
-
-  .section-label {
-    display: block;
-    font-family: var(--font-body);
-    font-size: 0.78rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    opacity: 0.8;
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--bone);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .section-rule { flex: 1; height: 1px; background: var(--fog); }
+  .section-sub {
+    font-size: 0.82rem;
+    color: var(--ash);
+    font-style: italic;
+    max-width: 520px;
     margin-bottom: 2.5rem;
+    line-height: 1.6;
   }
 
+  /* ═══ AGES ═══ */
   .ages-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1px;
-    background: rgba(200,168,75,0.1);
-    border: 1px solid rgba(200,168,75,0.1);
+    background: var(--fog);
+    border: 1px solid var(--fog);
   }
-
-  .age {
-    padding: 1.75rem 1.5rem;
-    background: var(--charcoal);
-    transition: background 0.2s;
+  .age-card {
+    background: var(--void);
+    padding: 1.5rem 1.3rem;
     position: relative;
+    transition: background 0.25s;
   }
-
-  .age:hover { background: var(--stone); }
-
-  .age--featured {
-    background: var(--stone);
-    border-left: 2px solid var(--gold);
-  }
-
+  .age-card:hover { background: var(--ink); }
+  .age-card.open { background: var(--ink); border-top: 2px solid var(--glow); }
+  .age-card.locked { opacity: 0.55; }
+  .age-card.locked:hover { opacity: 0.75; }
   .age-num {
-    display: block;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-bottom: 0.5rem;
+  }
+  .age-card.open .age-num { color: var(--glow); }
+  .age-name {
     font-family: var(--font-display);
-    font-size: 0.8rem;
-    color: var(--gold-dim);
-    letter-spacing: 0.1em;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--bone);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .age-genre {
+    font-size: 0.72rem;
+    color: var(--ash);
+    font-style: italic;
+    line-height: 1.45;
+  }
+  .age-card.open .age-genre { color: var(--bone-dim); }
+  .age-open-mark {
+    position: absolute;
+    top: 0.8rem; right: 0.8rem;
+    font-size: 0.52rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--glow);
+    border: 1px solid var(--threat);
+    padding: 0.18rem 0.45rem;
+  }
+
+  /* ═══ WORLDS ═══ */
+  .worlds-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--fog);
+    border: 1px solid var(--fog);
+    margin-bottom: 1px;
+  }
+  .continents-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--fog);
+    border: 1px solid var(--fog);
+    border-top: none;
+  }
+  .world-card {
+    background: var(--void);
+    padding: 1.5rem 1.6rem;
+    transition: background 0.25s;
+  }
+  .world-card:hover { background: var(--ink); }
+  .world-card.locked { opacity: 0.5; }
+  .world-card-eye {
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ash);
     margin-bottom: 0.4rem;
   }
-
-  .age h3 {
+  .world-card-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--glow);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+  .world-card.locked .world-card-name { color: var(--ash); }
+  .world-card-desc { font-size: 0.8rem; color: var(--ash); line-height: 1.6; }
+  .continent-card {
+    background: var(--void);
+    padding: 1.3rem 1.5rem;
+    transition: background 0.25s;
+  }
+  .continent-card:hover { background: var(--ink); }
+  .continent-card.locked { opacity: 0.5; }
+  .continent-card.reserved { opacity: 0.35; }
+  .continent-card-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-bottom: 0.3rem;
+  }
+  .continent-card-name {
     font-family: var(--font-display);
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--parchment);
-    margin: 0 0 0.5rem;
-    line-height: 1.2;
+    color: var(--glow);
+    margin-bottom: 0.3rem;
   }
-
-  .age p {
-    font-family: var(--font-body);
-    font-size: 0.88rem;
-    color: var(--parchment-dim);
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  .age-tag {
-    display: inline-block;
-    margin-top: 0.75rem;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--gold);
-    border: 1px solid var(--gold-dim);
-    padding: 0.15rem 0.5rem;
-  }
-
-  /* EXPLORE */
-  .explore {
-    padding: 6rem 3rem;
-    background: var(--stone);
-    border-bottom: 1px solid rgba(200,168,75,0.15);
-  }
-
-  /* SUBSCRIBE */
-  .subscribe {
-    padding: 6rem 3rem;
-    border-bottom: 1px solid rgba(200,168,75,0.15);
-  }
-
-  .subscribe-inner { max-width: 520px; }
-
-  .subscribe h2 {
-    font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    font-weight: 600;
-    color: var(--parchment);
-    line-height: 1.15;
-    margin-bottom: 0.85rem;
-  }
-
-  .subscribe-inner > p {
-    font-family: var(--font-body);
-    color: var(--parchment-dim);
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: 2rem;
-  }
-
-  .form-row {
+  .continent-card.locked .continent-card-name { color: var(--ash); }
+  .continent-card.reserved .continent-card-name { color: var(--fog); }
+  .continent-card-meta { font-size: 0.7rem; color: var(--ash); font-style: italic; }
+  .sub-head {
     display: flex;
-  }
-
-  .form-row input[type="email"] {
-    flex: 1;
-    padding: 0.8rem 1.1rem;
-    background: var(--stone);
-    border: 1px solid var(--gold-dim);
-    border-right: none;
-    color: var(--parchment);
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .form-row input[type="email"]::placeholder {
-    color: var(--parchment-dim);
-    opacity: 0.45;
-  }
-
-  .form-row input[type="email"]:focus { border-color: var(--gold); }
-
-  .form-row button {
-    padding: 0.8rem 1.5rem;
-    background: var(--gold);
-    border: 1px solid var(--gold);
-    color: var(--charcoal);
-    font-family: var(--font-body);
-    font-size: 0.82rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .form-row button:hover {
-    background: transparent;
-    color: var(--gold);
-  }
-
-  .form-note {
-    margin-top: 0.75rem;
-    font-size: 0.74rem;
-    color: var(--parchment-dim);
-    opacity: 0.45;
-  }
-
-  /* FOOTER */
-  .footer {
-    padding: 3rem;
-  }
-
-  .footer-nav {
-    display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 1rem;
-    flex-wrap: wrap;
+    margin: 3rem 0 0;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--fog);
+  }
+  .sub-head-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--bone-dim);
+  }
+
+  /* ═══ LINEAGES ═══ */
+  .lineage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--fog);
+    border: 1px solid var(--fog);
+  }
+  .family-card {
+    background: var(--void);
+    padding: 1.3rem 1.4rem;
+    transition: background 0.25s;
+  }
+  .family-card:hover { background: var(--ink); }
+  .family-name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bone);
+    margin-bottom: 0.4rem;
+  }
+  .family-peoples { font-size: 0.72rem; color: var(--ash); line-height: 1.75; }
+  .family-tag {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--glow);
+    border: 1px solid var(--threat);
+    padding: 0.15rem 0.45rem;
+  }
+
+  /* ═══ VOTE ═══ */
+  .vote {
+    padding: 6rem 3rem;
+    background: var(--ink);
+    position: relative;
+    text-align: center;
+  }
+  .vote::before, .vote::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, var(--threat), transparent);
+    opacity: 0.5;
+  }
+  .vote::before { top: 0; }
+  .vote::after  { bottom: 0; }
+  .vote-inner { max-width: 560px; margin: 0 auto; }
+  .vote-eye {
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--glow);
     margin-bottom: 1rem;
   }
+  .vote-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    font-weight: 600;
+    color: var(--bone);
+    line-height: 1.2;
+    margin-bottom: 0.8rem;
+  }
+  .vote-desc { font-size: 0.84rem; color: var(--ash); line-height: 1.7; margin-bottom: 2rem; }
+  .vote-opts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--fog);
+    border: 1px solid var(--fog);
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+  .vote-opt {
+    background: var(--void);
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .vote-opt:hover { background: var(--haze); }
+  .vote-opt input { display: none; }
+  .vote-opt-name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bone);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+  .vote-opt-genre { font-size: 0.68rem; color: var(--ash); font-style: italic; }
 
+  /* ═══ MAILING LIST ═══ */
+  .ml { padding: 7rem 3rem; text-align: center; }
+  .ml-inner { max-width: 500px; margin: 0 auto; }
+  .ml-mark {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--threat);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+  .ml-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 600;
+    color: var(--bone);
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+  }
+  .ml-desc { font-size: 0.84rem; color: var(--ash); line-height: 1.7; margin-bottom: 2rem; }
+  .ml-form { display: flex; max-width: 400px; margin: 0 auto; }
+  .ml-input {
+    flex: 1;
+    padding: 0.8rem 1.1rem;
+    background: var(--ink);
+    border: 1px solid var(--fog);
+    border-right: none;
+    color: var(--bone);
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    outline: none;
+  }
+  .ml-input::placeholder { color: var(--ash); }
+  .ml-input:focus { border-color: var(--threat); }
+  .ml-btn {
+    padding: 0.8rem 1.3rem;
+    background: var(--threat);
+    border: 1px solid var(--glow);
+    color: var(--bone);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .ml-btn:hover { background: var(--glow); }
+  .ml-note { margin-top: 1rem; font-size: 0.65rem; color: var(--ash); font-style: italic; }
+
+  /* ═══ FOOTER ═══ */
+  .footer {
+    border-top: 1px solid var(--fog);
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    color: var(--ash);
+    letter-spacing: 0.08em;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-mark { font-family: var(--font-display); font-size: 1rem; color: var(--glow); }
+  .footer-nav { display: flex; gap: 0.8rem; align-items: center; }
   .footer-nav a {
-    color: var(--gold-dim);
+    color: var(--ash);
     text-decoration: none;
-    font-size: 0.82rem;
-    letter-spacing: 0.1em;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     transition: color 0.2s;
   }
+  .footer-nav a:hover { color: var(--bone); }
+  .footer-nav span { color: var(--fog); }
+  .footer-copy { font-size: 0.62rem; color: var(--ash); opacity: 0.5; }
 
-  .footer-nav a:hover { color: var(--gold); }
-  .footer-nav span { color: var(--gold-dim); opacity: 0.3; }
-
-  .footer-copy {
-    font-size: 0.72rem;
-    color: var(--parchment-dim);
-    opacity: 0.3;
-  }
-
-  /* UTILITIES */
+  /* ═══ UTILITY ═══ */
   .sr-only {
     position: absolute;
     width: 1px; height: 1px;
@@ -434,17 +742,27 @@ import HomeLayout from "../layouts/HomeLayout.astro";
     white-space: nowrap;
   }
 
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    .hero { padding: 5rem 1.5rem 3rem; }
-    .promise, .ages, .explore, .subscribe { padding: 4rem 1.5rem; }
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 900px) {
+    .ages-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 660px) {
+    .worlds-grid { grid-template-columns: 1fr; }
+    .continents-grid { grid-template-columns: 1fr; }
+    .lineage-grid { grid-template-columns: 1fr; }
+    .vote-opts { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .hero { padding: 0 1.5rem 5rem; }
+    .section { padding: 4rem 1.5rem; }
+    .origin { padding: 5rem 1.5rem; }
+    .vote { padding: 4rem 1.5rem; }
+    .ml { padding: 5rem 1.5rem; }
     .footer { padding: 2rem 1.5rem; }
-    .form-row { flex-direction: column; }
-    .form-row input[type="email"] {
-      border-right: 1px solid var(--gold-dim);
-      border-bottom: none;
-    }
-    .form-row button { width: 100%; }
+    .divider { margin: 0 1.5rem; }
     .ages-grid { grid-template-columns: 1fr; }
+    .ml-form { flex-direction: column; }
+    .ml-input { border-right: 1px solid var(--fog); border-bottom: none; }
+    .ml-btn { width: 100%; }
   }
 </style>
