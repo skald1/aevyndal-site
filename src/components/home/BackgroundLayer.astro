@@ -1,23 +1,16 @@
----
-const img = "/images/home-bg.webp";
----
+<div id="bgLayer" class="bgLayer" aria-hidden="true"></div>
 
-<div id="bgLayer" class="bgLayer" aria-hidden="true" style={`--bg-url:url(${img})`}>
-  <div class="bgLayer__overlay"></div>
-</div>
-
-<script is:inline>
-  (() => {
-    const bg = document.getElementById("bgLayer");
-    if (!bg) return;
-    const speed = 0.25;
-
-    const onScroll = () => {
-      const y = window.scrollY || 0;
-      bg.style.transform = `translate3d(0, ${-y * speed}px, 0)`;
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-  })();
-</script>
+<style>
+  .bgLayer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 55% 70% at 65% 25%,
+        rgba(196,80,30,0.14) 0%,
+        rgba(139,50,24,0.06) 45%,
+        transparent 70%),
+      #09080A;
+    pointer-events: none;
+  }
+</style>
