@@ -1,13 +1,11 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
-import LeftSpineNav from "../components/nav/LeftSpineNav.astro";
 import TopHeaderNav from "../components/nav/TopHeaderNav.astro";
 import BackgroundLayer from "../components/home/BackgroundLayer.astro";
 const { title="Ævyndal", description="" } = Astro.props;
 ---
 <BaseLayout title={title} description={description} showStickyNav={true}>
   <BackgroundLayer />
-  <LeftSpineNav />
   <TopHeaderNav />
   <main class="home">
     <slot />
