@@ -156,16 +156,31 @@ const ages = [
       </div>
       <p class="section-sub">One world. Eight epochs. Each carries its own genre, its own relationship to magic, its own version of what survival costs. The Fourth Age is open now.</p>
       <div class="ages-grid">
-        {ages.map((age) => (
-          <details class:list={["age-detail", age.open && "open-now"]} open={age.open}>
-            <summary class="age-card" aria-label={`Explore ${age.ordinal}: ${age.name}`}>
+        {ages.map((age, index) => (
+          <button
+            class:list={["age-card", age.open && "open-now"]}
+            type="button"
+            aria-expanded="false"
+            aria-controls={`age-panel-${index}`}
+            data-age-control={`age-panel-${index}`}
+          >
               {age.open && <span class="age-open-mark">Open Now</span>}
               <span class="age-num">{age.ordinal}</span>
               <span class="age-name">{age.name}</span>
               <span class="age-genre">{age.genre}</span>
               <span class="age-action">Explore this Age</span>
-            </summary>
-            <div class="age-panel">
+          </button>
+        ))}
+      </div>
+
+      <div class="age-panels" aria-live="polite">
+        {ages.map((age, index) => (
+            <div
+              class="age-panel"
+              id={`age-panel-${index}`}
+              tabindex="-1"
+              hidden
+            >
               <div class="age-panel-head">
                 <div>
                   <div class="age-panel-label">Age Name</div>
@@ -225,11 +240,37 @@ const ages = [
                 <p>{age.lineages}</p>
               </details>
             </div>
-          </details>
         ))}
       </div>
     </div>
   </section>
+
+  <script is:inline>
+    window.addEventListener("DOMContentLoaded", () => {
+      const controls = Array.from(document.querySelectorAll("[data-age-control]"));
+
+      controls.forEach((control) => {
+        control.addEventListener("click", () => {
+          const panel = document.getElementById(control.dataset.ageControl);
+          const isOpen = control.getAttribute("aria-expanded") === "true";
+
+          controls.forEach((otherControl) => {
+            const otherPanel = document.getElementById(otherControl.dataset.ageControl);
+            otherControl.setAttribute("aria-expanded", "false");
+            otherControl.classList.remove("is-active");
+            if (otherPanel) otherPanel.hidden = true;
+          });
+
+          if (!isOpen && panel) {
+            control.setAttribute("aria-expanded", "true");
+            control.classList.add("is-active");
+            panel.hidden = false;
+            panel.focus({ preventScroll: true });
+          }
+        });
+      });
+    });
+  </script>
 
   <div class="divider"></div>
 
@@ -553,17 +594,9 @@ const ages = [
     background: var(--fog);
     border: 1px solid var(--fog);
   }
-  .age-detail {
-    background: var(--void);
-    min-width: 0;
-  }
-  .age-detail[open] {
-    grid-column: 1 / -1;
-    background: var(--ink);
-  }
-  .age-detail summary::-webkit-details-marker { display: none; }
-  .age-detail summary::marker { content: ''; }
   .age-card {
+    border: 0;
+    width: 100%;
     background: var(--void);
     padding: 1.5rem 1.3rem;
     position: relative;
@@ -573,16 +606,17 @@ const ages = [
     cursor: pointer;
     transition: background 0.25s;
     list-style: none;
+    text-align: left;
   }
   .age-card:hover,
-  .age-card:focus-visible { background: var(--ink); }
+  .age-card:focus-visible,
+  .age-card[aria-expanded="true"] { background: var(--ink); }
   .age-card:focus-visible {
     outline: 2px solid var(--glow);
     outline-offset: -2px;
   }
-  .age-detail[open] .age-card {
+  .age-card[aria-expanded="true"] {
     min-height: 0;
-    background: var(--ink);
     border-top: 2px solid var(--glow);
   }
   .age-num {
@@ -592,7 +626,7 @@ const ages = [
     color: var(--ash);
     margin-bottom: 0.5rem;
   }
-  .age-detail.open-now .age-num { color: var(--glow); }
+  .age-card.open-now .age-num { color: var(--glow); }
   .age-name {
     font-family: var(--font-display);
     font-size: 1.05rem;
@@ -608,7 +642,7 @@ const ages = [
     font-style: italic;
     line-height: 1.45;
   }
-  .age-detail[open] .age-genre { color: var(--bone-dim); }
+  .age-card[aria-expanded="true"] .age-genre { color: var(--bone-dim); }
   .age-open-mark {
     position: absolute;
     top: 0.8rem; right: 0.8rem;
@@ -636,9 +670,16 @@ const ages = [
     font-size: 0.9rem;
     line-height: 1;
   }
-  .age-detail[open] .age-action::after { content: '-'; }
+  .age-card[aria-expanded="true"] .age-action::after { content: '-'; }
+  .age-panels {
+    margin-top: 1px;
+  }
+  .age-panel[hidden] {
+    display: none;
+  }
   .age-panel {
     padding: 1.6rem;
+    outline: none;
     border-top: 1px solid var(--fog);
     background:
       radial-gradient(ellipse 60% 70% at 90% 0%, rgba(196,80,30,0.08), transparent 65%),
@@ -1016,7 +1057,6 @@ const ages = [
   @media (max-width: 660px) {
     .ages-grid { grid-template-columns: 1fr; }
     .age-card { min-height: 180px; }
-    .age-detail[open] { grid-column: auto; }
     .age-panel-head { flex-direction: column; }
     .age-status { max-width: none; }
     .age-chips { grid-template-columns: 1fr; }
