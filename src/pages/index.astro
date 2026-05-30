@@ -156,80 +156,216 @@ const ages = [
       </div>
       <p class="section-sub">One world. Eight epochs. Each carries its own genre, its own relationship to magic, its own version of what survival costs. The Fourth Age is open now.</p>
       <div class="ages-grid">
-        {ages.map((age) => (
-          <details class="age-panel">
-            <summary class="age-card">
+        {ages.map((age, index) => (
+          <button
+            class:list={["age-card", age.open && "open-now"]}
+            type="button"
+            aria-expanded="false"
+            aria-controls="age-modal"
+            data-age-index={index}
+          >
               {age.open && <span class="age-open-mark">Open Now</span>}
               <span class="age-num">{age.ordinal}</span>
               <span class="age-name">{age.name}</span>
               <span class="age-genre">{age.genre}</span>
               <span class="age-action">Explore this Age</span>
-            </summary>
-            <div class="age-panel-body">
-              <div class="age-panel-head">
-                <div>
-                  <div class="age-panel-label">Age Name</div>
-                  <h3>{age.name}</h3>
-                </div>
-                <div class="age-status">{age.status}</div>
-              </div>
-
-              <dl class="age-chips" aria-label={`${age.name} quick comparison`}>
-                <div>
-                  <dt>Continents</dt>
-                  <dd>{age.continents}</dd>
-                </div>
-                <div>
-                  <dt>Scope</dt>
-                  <dd>{age.scope}</dd>
-                </div>
-                <div>
-                  <dt>Magic</dt>
-                  <dd>{age.magic}</dd>
-                </div>
-                <div>
-                  <dt>Technology</dt>
-                  <dd>{age.technology}</dd>
-                </div>
-              </dl>
-
-              <div class="age-fields">
-                <div class="age-field">
-                  <span>Genre / Play Mode</span>
-                  <p>{age.genre}</p>
-                </div>
-                <div class="age-field">
-                  <span>Countries / Political Scope</span>
-                  <p>{age.scope}</p>
-                </div>
-                <div class="age-field">
-                  <span>New or Notable Lineages Introduced</span>
-                  <p>{age.notableLineages}</p>
-                </div>
-                <div class="age-field">
-                  <span>Featured Regions</span>
-                  <p>{age.regions}</p>
-                </div>
-                <div class="age-field">
-                  <span>Current Play Support</span>
-                  <p>{age.support}</p>
-                </div>
-                <div class="age-field age-field--wide">
-                  <span>Play Hook</span>
-                  <p>{age.hook}</p>
-                </div>
-              </div>
-
-              <details class="age-subpanel">
-                <summary>Lineages Available</summary>
-                <p>{age.lineages}</p>
-              </details>
-            </div>
-          </details>
+          </button>
         ))}
       </div>
+
+      <div class="age-modal-shell" id="age-modal-shell" hidden>
+        <div class="age-modal-overlay" data-age-modal-close></div>
+        <section
+          class="age-modal"
+          id="age-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="age-modal-title"
+          tabindex="-1"
+        >
+          <button class="age-modal-close" type="button" aria-label="Close age details" data-age-modal-close>×</button>
+          <div class="age-panel-head">
+            <div>
+              <div class="age-panel-label">Age Name</div>
+              <h3 id="age-modal-title"></h3>
+            </div>
+            <div class="age-status" id="age-modal-status"></div>
+          </div>
+
+          <dl class="age-chips" aria-label="Age quick comparison">
+            <div>
+              <dt>Continents</dt>
+              <dd id="age-modal-continents"></dd>
+            </div>
+            <div>
+              <dt>Scope</dt>
+              <dd id="age-modal-scope"></dd>
+            </div>
+            <div>
+              <dt>Magic</dt>
+              <dd id="age-modal-magic"></dd>
+            </div>
+            <div>
+              <dt>Technology</dt>
+              <dd id="age-modal-technology"></dd>
+            </div>
+          </dl>
+
+          <div class="age-fields">
+            <div class="age-field">
+              <span>Genre / Play Mode</span>
+              <p id="age-modal-genre"></p>
+            </div>
+            <div class="age-field">
+              <span>Countries / Political Scope</span>
+              <p id="age-modal-political-scope"></p>
+            </div>
+            <div class="age-field">
+              <span>New or Notable Lineages Introduced</span>
+              <p id="age-modal-notable-lineages"></p>
+            </div>
+            <div class="age-field">
+              <span>Featured Regions</span>
+              <p id="age-modal-regions"></p>
+            </div>
+            <div class="age-field">
+              <span>Current Play Support</span>
+              <p id="age-modal-support"></p>
+            </div>
+            <div class="age-field age-field--wide">
+              <span>Play Hook</span>
+              <p id="age-modal-hook"></p>
+            </div>
+          </div>
+
+          <div class="age-lineages">
+            <span>Lineages Available</span>
+            <p id="age-modal-lineages"></p>
+          </div>
+        </section>
+      </div>
+
+      <script type="application/json" id="age-data" set:html={JSON.stringify(ages)}></script>
     </div>
   </section>
+
+  <script>
+    const ageDataNode = document.getElementById("age-data");
+    const ageControls = Array.from(document.querySelectorAll("[data-age-index]"));
+    const modalShell = document.getElementById("age-modal-shell");
+    const modal = document.getElementById("age-modal");
+    const closeControls = Array.from(document.querySelectorAll("[data-age-modal-close]"));
+    const ages = ageDataNode ? JSON.parse(ageDataNode.textContent || "[]") : [];
+    let activeTrigger = null;
+
+    const fields = {
+      title: document.getElementById("age-modal-title"),
+      status: document.getElementById("age-modal-status"),
+      continents: document.getElementById("age-modal-continents"),
+      scope: document.getElementById("age-modal-scope"),
+      magic: document.getElementById("age-modal-magic"),
+      technology: document.getElementById("age-modal-technology"),
+      genre: document.getElementById("age-modal-genre"),
+      politicalScope: document.getElementById("age-modal-political-scope"),
+      notableLineages: document.getElementById("age-modal-notable-lineages"),
+      regions: document.getElementById("age-modal-regions"),
+      support: document.getElementById("age-modal-support"),
+      hook: document.getElementById("age-modal-hook"),
+      lineages: document.getElementById("age-modal-lineages"),
+    };
+
+    function setField(key, value) {
+      if (fields[key]) fields[key].textContent = value || "";
+    }
+
+    function getFocusableModalElements() {
+      if (!modal) return [];
+      return Array.from(
+        modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+      ).filter((element) => !element.hasAttribute("disabled") && !element.getAttribute("aria-hidden"));
+    }
+
+    function closeAgeModal() {
+      if (!modalShell || modalShell.hidden) return;
+
+      modalShell.hidden = true;
+      document.body.classList.remove("age-modal-open");
+      ageControls.forEach((control) => control.setAttribute("aria-expanded", "false"));
+
+      if (activeTrigger instanceof HTMLElement) {
+        activeTrigger.focus();
+      }
+      activeTrigger = null;
+    }
+
+    function openAgeModal(index, trigger) {
+      const age = ages[index];
+      if (!age || !modalShell || !modal) return;
+
+      activeTrigger = trigger;
+      setField("title", age.name);
+      setField("status", age.status);
+      setField("continents", age.continents);
+      setField("scope", age.scope);
+      setField("magic", age.magic);
+      setField("technology", age.technology);
+      setField("genre", age.genre);
+      setField("politicalScope", age.scope);
+      setField("notableLineages", age.notableLineages);
+      setField("regions", age.regions);
+      setField("support", age.support);
+      setField("hook", age.hook);
+      setField("lineages", age.lineages);
+
+      ageControls.forEach((control) => control.setAttribute("aria-expanded", "false"));
+      trigger.setAttribute("aria-expanded", "true");
+      modalShell.hidden = false;
+      document.body.classList.add("age-modal-open");
+
+      const focusables = getFocusableModalElements();
+      (focusables[0] || modal).focus();
+    }
+
+    ageControls.forEach((control) => {
+      control.addEventListener("click", () => {
+        openAgeModal(Number(control.dataset.ageIndex), control);
+      });
+    });
+
+    closeControls.forEach((control) => {
+      control.addEventListener("click", closeAgeModal);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!modalShell || modalShell.hidden) return;
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeAgeModal();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusables = getFocusableModalElements();
+      if (focusables.length === 0) {
+        event.preventDefault();
+        modal?.focus();
+        return;
+      }
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+  </script>
 
   <div class="divider"></div>
 
@@ -553,17 +689,9 @@ const ages = [
     background: var(--fog);
     border: 1px solid var(--fog);
   }
-  .age-panel {
-    background: var(--void);
-    min-width: 0;
-  }
-  .age-panel[open] {
-    grid-column: 1 / -1;
-    background: var(--ink);
-  }
-  .age-panel > summary::-webkit-details-marker { display: none; }
-  .age-panel > summary::marker { content: ''; }
   .age-card {
+    width: 100%;
+    border: 0;
     background: var(--void);
     padding: 1.5rem 1.3rem;
     position: relative;
@@ -577,13 +705,12 @@ const ages = [
   }
   .age-card:hover,
   .age-card:focus-visible,
-  .age-panel[open] .age-card { background: var(--ink); }
+  .age-card[aria-expanded="true"] { background: var(--ink); }
   .age-card:focus-visible {
     outline: 2px solid var(--glow);
     outline-offset: -2px;
   }
-  .age-panel[open] .age-card {
-    min-height: 0;
+  .age-card[aria-expanded="true"] {
     border-top: 2px solid var(--glow);
   }
   .age-num {
@@ -593,7 +720,7 @@ const ages = [
     color: var(--ash);
     margin-bottom: 0.5rem;
   }
-  .age-open-mark ~ .age-num { color: var(--glow); }
+  .age-card.open-now .age-num { color: var(--glow); }
   .age-name {
     font-family: var(--font-display);
     font-size: 1.05rem;
@@ -609,7 +736,7 @@ const ages = [
     font-style: italic;
     line-height: 1.45;
   }
-  .age-panel[open] .age-genre { color: var(--bone-dim); }
+  .age-card[aria-expanded="true"] .age-genre { color: var(--bone-dim); }
   .age-open-mark {
     position: absolute;
     top: 0.8rem; right: 0.8rem;
@@ -637,14 +764,56 @@ const ages = [
     font-size: 0.9rem;
     line-height: 1;
   }
-  .age-panel[open] .age-action::after { content: '-'; }
-  .age-panel-body {
+  .age-card[aria-expanded="true"] .age-action::after { content: '-'; }
+  .age-modal-open { overflow: hidden; }
+  .age-modal-shell[hidden] { display: none; }
+  .age-modal-shell {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+  }
+  .age-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 20%, rgba(196,80,30,0.16), transparent 65%),
+      rgba(2, 2, 3, 0.82);
+  }
+  .age-modal {
+    position: relative;
+    z-index: 1;
+    width: min(920px, 100%);
+    max-height: min(84vh, 920px);
+    overflow: auto;
     padding: 1.6rem;
-    outline: none;
-    border-top: 1px solid var(--fog);
+    border: 1px solid var(--fog);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.62);
     background:
       radial-gradient(ellipse 60% 70% at 90% 0%, rgba(196,80,30,0.08), transparent 65%),
       var(--ink);
+    outline: none;
+  }
+  .age-modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--threat);
+    background: var(--void);
+    color: var(--bone);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .age-modal-close:hover,
+  .age-modal-close:focus-visible {
+    background: var(--threat);
+    outline: 2px solid var(--glow);
+    outline-offset: 2px;
   }
   .age-panel-head {
     display: flex;
@@ -660,7 +829,7 @@ const ages = [
     color: var(--ash);
     margin-bottom: 0.35rem;
   }
-  .age-panel-body h3 {
+  .age-modal h3 {
     font-family: var(--font-display);
     font-size: 1.55rem;
     color: var(--bone);
@@ -744,6 +913,28 @@ const ages = [
   .age-subpanel p {
     margin: 0;
     padding: 0 1rem 1rem;
+    color: var(--bone-dim);
+    font-size: 0.78rem;
+    line-height: 1.65;
+  }
+  .age-lineages {
+    margin-top: 1rem;
+    border: 1px solid var(--fog);
+    background: var(--void);
+    padding: 1rem;
+    max-height: 12rem;
+    overflow: auto;
+  }
+  .age-lineages span {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+  .age-lineages p {
+    margin: 0;
     color: var(--bone-dim);
     font-size: 0.78rem;
     line-height: 1.65;
