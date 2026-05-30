@@ -23,21 +23,6 @@ import HomeLayout from "../layouts/HomeLayout.astro";
 
   <div class="divider"></div>
 
-  <!-- ORIGIN -->
-  <section class="origin">
-    <div class="origin-inner">
-      <p class="origin-label">On the origin of Ævyndal</p>
-      <div class="origin-text">
-        <p>It started with hills. Then the mountains beyond those hills. Then a city on the other side of those mountains. Trade routes from that city to other settlements. Water near it — and then the source of that water, and more mountains beyond.</p>
-        <p>The world grew because I needed to know why. Why an NPC existed and had the attitude it did. Why a creature lived in that cave and not somewhere else. Why the land was the way it was.</p>
-        <p>Eventually I created not so much a universe as the founding principles beneath one — a system of physics on which everything else could be built. Today you can ask me anything about this place and I can give you an authoritative answer. Because I understand how it works. I've lived in it for forty years.</p>
-      </div>
-      <p class="origin-attr">— SJ Kraus, Creator</p>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
   <!-- AGES -->
   <section class="section" id="ages">
     <div class="section-inner">
@@ -377,32 +362,6 @@ import HomeLayout from "../layouts/HomeLayout.astro";
     margin: 0 3rem;
     background: linear-gradient(to right, transparent, var(--threat), transparent);
     opacity: 0.4;
-  }
-
-  /* ═══ ORIGIN ═══ */
-  .origin { padding: 7rem 3rem; }
-  .origin-inner { max-width: 640px; margin: 0 auto; }
-  .origin-label {
-    font-size: 0.62rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--glow);
-    margin-bottom: 2rem;
-  }
-  .origin-text {
-    font-family: var(--font-display);
-    font-size: clamp(1.15rem, 2.2vw, 1.55rem);
-    line-height: 1.6;
-    color: var(--bone);
-  }
-  .origin-text p { margin-bottom: 1.3em; }
-  .origin-text p:last-child { margin-bottom: 0; }
-  .origin-attr {
-    margin-top: 2.5rem;
-    font-size: 0.7rem;
-    color: var(--ash);
-    font-style: italic;
-    letter-spacing: 0.06em;
   }
 
   /* ═══ SECTIONS ═══ */
@@ -755,7 +714,6 @@ import HomeLayout from "../layouts/HomeLayout.astro";
   @media (max-width: 520px) {
     .hero { padding: 0 1.5rem 5rem; }
     .section { padding: 4rem 1.5rem; }
-    .origin { padding: 5rem 1.5rem; }
     .vote { padding: 4rem 1.5rem; }
     .ml { padding: 5rem 1.5rem; }
     .footer { padding: 2rem 1.5rem; }
