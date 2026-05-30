@@ -1,7 +1,8 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 const atlas = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/atlas' }),
   schema: z.object({
     name: z.string(),
     pronunciation: z.string().optional(),

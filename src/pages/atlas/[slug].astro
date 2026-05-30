@@ -1,11 +1,11 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import CountryPage from '../../components/CountryPage.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('atlas');
   return entries.map(entry => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id.replace(/\.md$/, '') },
     props: { entry },
   }));
 }
