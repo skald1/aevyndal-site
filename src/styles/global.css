@@ -78,15 +78,24 @@ a { color: inherit; text-decoration: none; }
 .topHeader{
   position: fixed; top: 0; left: 0; right: 0;
   padding: 14px 18px;
-  backdrop-filter: blur(10px);
-  background: rgba(0,0,0,.45);
+  background: #09080A;
+  border-bottom: 1px solid #2E2926;
   transform: translateY(0);
   transition: transform .18s ease;
   z-index: 50;
 }
 .topHeader[data-hidden="true"]{ transform: translateY(-110%); }
 .topHeader__nav{ display:flex; align-items:center; justify-content:space-between; gap:16px; }
-.topHeader__links{ display:flex; gap:14px; opacity:.95; }
+.topHeader__brand{ color: #C4501E; font-size: 1rem; }
+.topHeader__links{ display:flex; gap:20px; }
+.topHeader__links a{
+  color: #5C5650;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: color .18s ease;
+}
+.topHeader__links a:hover{ color: #D0C9BC; }
 
 /* Left spine nav (only visible while hero is in view) */
 .leftSpine{
@@ -98,8 +107,14 @@ a { color: inherit; text-decoration: none; }
 }
 .leftSpine[data-hidden="true"]{ opacity: 0; pointer-events: none; }
 .leftSpine__nav{ display:flex; flex-direction:column; gap:10px; }
-.leftSpine__link{ opacity:.85; font-size: 14px; }
-.leftSpine__link:hover{ opacity:1; }
+.leftSpine__link{
+  color: #5C5650;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color .18s ease;
+}
+.leftSpine__link:hover{ color: #D0C9BC; }
 
 .proof{ margin-top: 28px; max-width: 980px; padding-bottom: 48px; }
 .proof h2{ margin: 0 0 12px; font-size: 18px; opacity: .95; }
