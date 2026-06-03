@@ -140,7 +140,7 @@ body {
 
 .hero-scroll-hint {
   position: absolute;
-  bottom: 4rem;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
@@ -154,6 +154,18 @@ body {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   animation: fadeIn 2s ease 1.5s both;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.hero-scroll-hint:hover,
+.hero-scroll-hint:focus-visible {
+  color: var(--silver-light);
+}
+
+.hero-scroll-hint:focus-visible {
+  outline: 1px solid rgba(196,80,30,0.55);
+  outline-offset: 0.5rem;
 }
 
 .scroll-arrow {
@@ -172,13 +184,14 @@ body {
   border: 1px solid rgba(196,80,30,0.2);
   border-left: 3px solid var(--blood-orange);
   max-width: 900px;
-  margin: -2rem auto 0;
+  margin: 0 auto;
   position: relative;
   z-index: 2;
   padding: 2rem 2.5rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem 2rem;
+  scroll-margin-top: 0;
 }
 
 .stat-item {
@@ -828,7 +841,7 @@ strong { color: #fff; font-weight: 500; }
   }
 
   .hero-scroll-hint {
-    bottom: 2.75rem;
+    bottom: 1.25rem;
     gap: 0.25rem;
   }
 
@@ -878,16 +891,16 @@ strong { color: #fff; font-weight: 500; }
       <em>This is how you survive.</em>
     </div>
   </div>
-  <div class="hero-scroll-hint" aria-hidden="true">
+  <a class="hero-scroll-hint" href="#atlas-entry" aria-label="Scroll to atlas entry">
     <div class="scroll-arrow"></div>
     <span>Atlas Entry</span>
-  </div>
+  </a>
 </header>
 
 <!-- ============================================
      STAT BLOCK
      ============================================ -->
-<aside class="stat-block" aria-label="Country statistics">
+<aside class="stat-block" id="atlas-entry" aria-label="Country statistics">
   <div class="stat-item">
     <span class="stat-label">Pronunciation</span>
     <span class="stat-value">MOOT-vee-ah</span>
