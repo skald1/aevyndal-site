@@ -412,6 +412,113 @@ strong { color: #fff; font-weight: 500; }
 }
 
 /* ============================================
+   MAP / LIGHTBOX
+   ============================================ */
+
+.map-container {
+  margin: 2.5rem 0;
+  position: relative;
+}
+
+.map-trigger {
+  display: block;
+  width: 100%;
+  cursor: zoom-in;
+  position: relative;
+  border: 1px solid rgba(92,86,80,0.25);
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.map-trigger img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: filter 0.3s ease, transform 0.4s ease;
+  filter: brightness(0.92) saturate(0.85);
+}
+
+.map-trigger:hover img {
+  filter: brightness(1) saturate(1);
+  transform: scale(1.01);
+}
+
+.map-trigger::after {
+  content: 'View Full Map';
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--cold-bone);
+  background: rgba(9,8,10,0.75);
+  padding: 0.4rem 0.8rem;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.map-trigger:hover::after { opacity: 1; }
+
+.map-caption {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--cold-ash);
+  text-align: center;
+  padding: 0.75rem 0 0;
+}
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(9,8,10,0.95);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: zoom-out;
+}
+
+.lightbox.is-open { display: flex; }
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  box-shadow: 0 0 80px rgba(0,0,0,0.8);
+  cursor: default;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cold-ash);
+  background: none;
+  border: 1px solid rgba(92,86,80,0.3);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus-visible {
+  color: var(--cold-bone);
+  border-color: var(--blood-orange);
+}
+
+/* ============================================
    GEOGRAPHY LOCATIONS
    ============================================ */
 
@@ -871,6 +978,11 @@ strong { color: #fff; font-weight: 500; }
 </head>
 <body>
 
+<div class="lightbox" id="map-lightbox" role="dialog" aria-label="Mütvia map" aria-modal="true">
+  <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close map">Close</button>
+  <img src="https://evindale.com/wp-content/uploads/2026/06/Mutvia-2026-scaled.jpg" alt="Map of Mütvia" id="lightbox-img">
+</div>
+
 <!-- ============================================
      HERO
      ============================================ -->
@@ -1001,16 +1113,22 @@ strong { color: #fff; font-weight: 500; }
     <p>It is bounded to the east and south by the wide Gergi River; to the south and west by mountain ranges that serve as both barrier and breeding ground for the creatures that spill into the interior; and to the north by a cold sea thin on trade and inhospitable to casual passage. The interior is heavily forested — pine and larch dominate the north; oak and hickory through the central regions; maple appears toward the south.</p>
     <p>The soil varies dramatically by region. In some areas it is fertile and responsive; in others it is thin, blackened, or saturated with black bile — a substance associated with undead presence and the accumulated dead of old wars. No road in Mütvia is truly safe. Even well-traveled routes may change character overnight.</p>
 
+    <div class="map-container">
+      <button class="map-trigger" id="map-trigger" type="button" aria-label="Open full map of Mütvia">
+        <img src="https://evindale.com/wp-content/uploads/2026/06/Mutvia-2026-scaled.jpg"
+             alt="Map of Mütvia — The Land of 1,000 Princes"
+             loading="lazy">
+      </button>
+      <div class="map-caption">Mütvia — Northern Erinnal &nbsp;·&nbsp; Click to enlarge</div>
+    </div>
+
     <div class="ornament-divider" aria-hidden="true"><span>Notable Locations</span></div>
 
     <div class="location-entry">
       <div class="location-name">Mount Verich</div>
-      <p>The only remaining active volcano in Mütvia, this mountain is a sacred site of Nor'dagha. Its presence on the horizon is treated not as a geological fact, but as divine attention. The volcano watches. The faithful watch back.
-
-The Hodaraya maintain the rites of this site as one of the fixed points on their annual circuit. Access to the catacombs, however, is controlled by House Dracovich. More than twenty Nor'daghan archvyers are interred within, and the noble house has overseen their care since the founding of Dreg'nsoi—the Dracovich hold and capital city built upon the volcano's slopes.
-
-Though smoke still rises from the mountain, it has never rumbled beneath Dreg'nsoi nor cast ash upon the city. Many believe this is proof of Nor'dagha's favor. Others quietly wonder what debt House Dracovich is paying to keep the mountain asleep.
-/p>
+      <p>The only remaining active volcano in Mütvia, this mountain is a sacred site of Nor'dagha. Its presence on the horizon is treated not as a geological fact, but as divine attention. The volcano watches. The faithful watch back.</p>
+      <p>The Hodaraya maintain the rites of this site as one of the fixed points on their annual circuit. Access to the catacombs, however, is controlled by House Dracovich. More than twenty Nor'daghan archvyers are interred within, and the noble house has overseen their care since the founding of Dreg'nsoi — the Dracovich hold and capital city built upon the volcano's slopes.</p>
+      <p>Though smoke still rises from the mountain, it has never rumbled beneath Dreg'nsoi nor cast ash upon the city. Many believe this is proof of Nor'dagha's favor. Others quietly wonder what debt House Dracovich is paying to keep the mountain asleep.</p>
     </div>
     <div class="location-entry">
       <div class="location-name">The Gergi River</div>
@@ -1446,6 +1564,36 @@ Though smoke still rises from the mountain, it has never rumbled beneath Dreg'ns
   </article>
 
 </main>
+
+<script>
+  const trigger = document.getElementById('map-trigger');
+  const lightbox = document.getElementById('map-lightbox');
+  const closeBtn = document.getElementById('lightbox-close');
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+    trigger.focus();
+  }
+
+  trigger.addEventListener('click', () => {
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
+      closeLightbox();
+    }
+  });
+</script>
 
 </body>
 </html>
