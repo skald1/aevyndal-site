@@ -53,12 +53,12 @@ const ages = [
     genre: "Dark medieval fantasy, folklore horror, feudal pressure.",
     continents: "Erinnal, Maj'ridal, Aris.",
     scope: "Broad national and regional structure; feudal states, isolated settlements, contested territories.",
-    lineages: "Adri'il, Fayd'il, Lithar'il, Myrad'il, Ryal'il, Slindar'il, Theran'il, Vaud'il, Human, Umbran, Vivashan, Velasyrn, Karuun, Guelt, Gol, Gnome, Igyrlin, Tirfolk, Korvad'an, Odoko, Maraki, Geraki, Sadrath, Sheydra, Rech, Thiraf, Varul, Kobold, Goblin, T'nao, Gulvani.",
+    lineages: "Adri'il, Fayd'il, Lithar'il, Myrad'il, Ryal'il, Slindar'il, Theran'il, Vaud'il, Human, Umbran, Vivashan, Karuun, Guelt, Gol, Gnome, Igyrlin, Tirfolk, Korvad'an, Odoko, Maraki, Geraki, Sadrath, Sheydra, Rech, Thiraf, Värul, Kobold, Goblin, T'nao, Gulvani.",
     notableLineages: "Sheydra and several post-Italti mortal peoples are fully active in play.",
     magic: "Rare, costly, feared, and culturally distorted.",
     technology: "Medieval / dark fantasy.",
     status: "Highly developed.",
-    regions: "Mutvia, Krethavar, Wyth Tyr'il, Aris.",
+    regions: "Mütvia, Krethavar, Wyth Tyr'il, Aris.",
     support: "Pathfinder 2e Remaster material, adventures, maps, actual-play support, regional lore.",
     hook: "Villages survive between noble power, superstition, old magic, hunger, and things in the woods.",
     open: true,
@@ -74,7 +74,7 @@ const ages = [
     magic: "Rare, dangerous, half-remembered, and often misused.",
     technology: "Post-collapse / scavenged / early steampunk remnants.",
     status: "Active development.",
-    regions: "Mutvia aftermath regions, ruin settlements, rewilded territories.",
+    regions: "Mütvia aftermath regions, ruin settlements, rewilded territories.",
     support: "Campaign concepts, survival play, creature design, regional expansion.",
     hook: "The old world failed. The new one is feral, hungry, and full of things people were never meant to wake.",
   },
@@ -124,38 +124,126 @@ const ages = [
     hook: "The question is no longer whether civilization can survive. It is what kind of civilization deserves to.",
   },
 ];
+
+const mutviaBeats = [
+  {
+    label: "The Land",
+    heading: "The ground remembers everything.",
+    body: "Mütvia's soil has held more death than any earth was ever meant to contain. It doesn't forget. It doesn't release. The dead don't always stay where you put them — and whether that's your fault depends entirely on whether you knew the rite.",
+    tag: "Cosmology",
+  },
+  {
+    label: "The Government",
+    heading: "Anyone can be a prince. Few last.",
+    body: "No capital. No throne. No central authority. Authority belongs to whoever stands on land and keeps it — against rivals, against creatures, against the things that walk at night. The title is Ströikas. It's earned by endurance, not bloodline.",
+    tag: "Politics",
+  },
+  {
+    label: "The History",
+    heading: "The war that shattered everything.",
+    body: "In 659 IC, two noble houses fought a war neither should have started. When it ended, both were gone. The peasants kept the castles. The blood soaked into the ground. Some of it is still rising.",
+    tag: "History",
+  },
+  {
+    label: "The Drósti",
+    heading: "Five families. No fixed ground. No equal.",
+    body: "The drósti walk roads where law, memory, and spirit-work fail everyone else. Wolf-blooded pilgrims. Fallen intelligence networks. Demonic bloodlines who hold the forest. Sky-watchers with gifts they refuse to name.",
+    tag: "Factions",
+  },
+  {
+    label: "The Villain",
+    heading: "He built his name around killing what he became.",
+    body: "Ra'ath Wolvesbane founded the Argentati — the Silvered Ones — to hunt lycanthropes. They skin their kills and wear the hides. Their leader is a lycanthrope. He hasn't told them. He hunts harder instead.",
+    tag: "Threat",
+  },
+  {
+    label: "The Rules",
+    heading: "Superstition is survival. Learn the difference.",
+    body: "A single knock at the door, followed by your name: do not answer. The Vodniki will challenge you to a game — know the rules before they invite you. Some houses drain the living. The first symptom is a pleasant, deep tiredness.",
+    tag: "Lore",
+  },
+];
 ---
 
-<HomeLayout title="Ævyndal" description="Forty years ago someone wanted to know what was outside the dungeon. The world that question built is yours now.">
+<HomeLayout
+  title="Ævyndal — An Original Dark Fantasy Universe"
+  description="One world. Eight epochs. Dark medieval fantasy to cosmic science fiction, all connected. The Fourth Age is open now. Start in Mütvia."
+>
 
-  <!-- NAV handled by HomeLayout -->
-
-  <!-- HERO -->
-  <section class="hero">
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <!-- GRAPHIC PLACEHOLDER: Full-bleed hero image
+         Specs: 1920×1080px minimum, dark atmospheric fantasy landscape
+         Mood: void black with distant burning horizon, negative space left side
+         Format: WebP, served from evindale.com/wp-content/uploads/
+         Current bg handled by BackgroundLayer component (radial blood-orange glow on void) -->
     <div class="hero-inner">
-      <p class="hero-eyebrow">Grimwell Studio · An Original Universe</p>
-      <h1 class="hero-title">
-        Forty years ago<br/>I wanted to know<br/>what was <em>outside<br/>the dungeon.</em>
+      <div class="hero-logo-wrap">
+        <img
+          src="https://evindale.com/wp-content/uploads/2026/06/AevyndalNewLogo.png"
+          alt="Ævyndal"
+          class="hero-logo"
+          width="160"
+          height="160"
+        />
+      </div>
+      <h1 class="hero-title" id="hero-heading">
+        One world.<br/>
+        <em>Eight epochs.</em><br/>
+        Every story persists.
       </h1>
-      <p class="hero-hook">I'm still finding out. <strong>Now so can you.</strong></p>
+      <p class="hero-sub">
+        Dark medieval horror. Cosmic science fiction. Industrial conspiracy. Post-dystopian recovery.<br/>
+        All the same world. All the same history. The Fourth Age is open.
+      </p>
       <div class="hero-cta">
-        <a href="#enter" class="btn-primary">Begin Your Story</a>
-        <a href="#ages" class="btn-ghost">Explore the World</a>
+        <a href="/mutvia" class="btn-primary">Enter Mütvia</a>
+        <a href="#ages" class="btn-ghost">See all eight ages</a>
+      </div>
+    </div>
+    <div class="hero-scroll" aria-hidden="true">
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       PROPOSITION STRIP
+  ═══════════════════════════════════════ -->
+  <section class="prop-strip" aria-label="What Ævyndal offers">
+    <div class="prop-strip-inner">
+      <div class="prop">
+        <span class="prop-icon">◈</span>
+        <strong>No elves. No dwarves.</strong>
+        <span>30+ original peoples across seven lineage families.</span>
+      </div>
+      <div class="prop-divider" aria-hidden="true"></div>
+      <div class="prop">
+        <span class="prop-icon">◈</span>
+        <strong>No lore prerequisite.</strong>
+        <span>Run tonight. The world fills in as you play.</span>
+      </div>
+      <div class="prop-divider" aria-hidden="true"></div>
+      <div class="prop">
+        <span class="prop-icon">◈</span>
+        <strong>Nothing dies with a campaign.</strong>
+        <span>Your characters persist. The world remembers.</span>
       </div>
     </div>
   </section>
 
-  <div class="divider"></div>
-
-  <!-- AGES -->
-  <section class="section" id="ages">
+  <!-- ═══════════════════════════════════════
+       AGES
+  ═══════════════════════════════════════ -->
+  <section class="section" id="ages" aria-labelledby="ages-heading">
     <div class="section-inner">
-      <div class="section-head">
-        <h2 class="section-title">The Eight Ages</h2>
-        <div class="section-rule"></div>
-      </div>
+      <header class="section-head">
+        <h2 class="section-title" id="ages-heading">The Eight Ages</h2>
+        <div class="section-rule" aria-hidden="true"></div>
+      </header>
       <p class="section-sub">One world. Eight epochs. Each carries its own genre, its own relationship to magic, its own version of what survival costs. The Fourth Age is open now.</p>
-      <div class="ages-grid">
+      <div class="ages-grid" role="list">
         {ages.map((age, index) => (
           <button
             class:list={["age-card", age.open && "open-now"]}
@@ -163,16 +251,18 @@ const ages = [
             aria-expanded="false"
             aria-controls="age-modal"
             data-age-index={index}
+            role="listitem"
           >
-              {age.open && <span class="age-open-mark">Open Now</span>}
-              <span class="age-num">{age.ordinal}</span>
-              <span class="age-name">{age.name}</span>
-              <span class="age-genre">{age.genre}</span>
-              <span class="age-action">Explore this Age</span>
+            {age.open && <span class="age-open-mark">Open Now</span>}
+            <span class="age-num">{age.ordinal}</span>
+            <span class="age-name">{age.name}</span>
+            <span class="age-genre">{age.genre}</span>
+            <span class="age-action" aria-hidden="true">Details</span>
           </button>
         ))}
       </div>
 
+      <!-- AGE MODAL -->
       <div class="age-modal-shell" id="age-modal-shell" hidden>
         <div class="age-modal-overlay" data-age-modal-close></div>
         <section
@@ -183,7 +273,7 @@ const ages = [
           aria-labelledby="age-modal-title"
           tabindex="-1"
         >
-          <button class="age-modal-close" type="button" aria-label="Close age details" data-age-modal-close>×</button>
+          <button class="age-modal-close" type="button" aria-label="Close age details" data-age-modal-close>✕</button>
           <div class="age-panel-head">
             <div>
               <div class="age-panel-label">Age Name</div>
@@ -191,60 +281,25 @@ const ages = [
             </div>
             <div class="age-status" id="age-modal-status"></div>
           </div>
-
-          <dl class="age-chips" aria-label="Age quick comparison">
-            <div>
-              <dt>Continents</dt>
-              <dd id="age-modal-continents"></dd>
-            </div>
-            <div>
-              <dt>Scope</dt>
-              <dd id="age-modal-scope"></dd>
-            </div>
-            <div>
-              <dt>Magic</dt>
-              <dd id="age-modal-magic"></dd>
-            </div>
-            <div>
-              <dt>Technology</dt>
-              <dd id="age-modal-technology"></dd>
-            </div>
+          <dl class="age-chips" aria-label="Age quick facts">
+            <div><dt>Continents</dt><dd id="age-modal-continents"></dd></div>
+            <div><dt>Scope</dt><dd id="age-modal-scope"></dd></div>
+            <div><dt>Magic</dt><dd id="age-modal-magic"></dd></div>
+            <div><dt>Technology</dt><dd id="age-modal-technology"></dd></div>
           </dl>
-
           <div class="age-fields">
-            <div class="age-field">
-              <span>Genre / Play Mode</span>
-              <p id="age-modal-genre"></p>
-            </div>
-            <div class="age-field">
-              <span>Countries / Political Scope</span>
-              <p id="age-modal-political-scope"></p>
-            </div>
-            <div class="age-field">
-              <span>New or Notable Lineages Introduced</span>
-              <p id="age-modal-notable-lineages"></p>
-            </div>
-            <div class="age-field">
-              <span>Featured Regions</span>
-              <p id="age-modal-regions"></p>
-            </div>
-            <div class="age-field">
-              <span>Current Play Support</span>
-              <p id="age-modal-support"></p>
-            </div>
-            <div class="age-field age-field--wide">
-              <span>Play Hook</span>
-              <p id="age-modal-hook"></p>
-            </div>
+            <div class="age-field"><span>Genre / Play Mode</span><p id="age-modal-genre"></p></div>
+            <div class="age-field"><span>New or Notable Lineages</span><p id="age-modal-notable-lineages"></p></div>
+            <div class="age-field"><span>Featured Regions</span><p id="age-modal-regions"></p></div>
+            <div class="age-field"><span>Current Play Support</span><p id="age-modal-support"></p></div>
+            <div class="age-field age-field--wide"><span>Play Hook</span><p id="age-modal-hook"></p></div>
           </div>
-
           <div class="age-lineages">
             <span>Lineages Available</span>
             <p id="age-modal-lineages"></p>
           </div>
         </section>
       </div>
-
       <script type="application/json" id="age-data" set:html={JSON.stringify(ages)}></script>
     </div>
   </section>
@@ -266,7 +321,6 @@ const ages = [
       magic: document.getElementById("age-modal-magic"),
       technology: document.getElementById("age-modal-technology"),
       genre: document.getElementById("age-modal-genre"),
-      politicalScope: document.getElementById("age-modal-political-scope"),
       notableLineages: document.getElementById("age-modal-notable-lineages"),
       regions: document.getElementById("age-modal-regions"),
       support: document.getElementById("age-modal-support"),
@@ -278,30 +332,25 @@ const ages = [
       if (fields[key]) fields[key].textContent = value || "";
     }
 
-    function getFocusableModalElements() {
+    function getFocusable() {
       if (!modal) return [];
       return Array.from(
         modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
-      ).filter((element) => !element.hasAttribute("disabled") && !element.getAttribute("aria-hidden"));
+      ).filter(el => !el.hasAttribute("disabled") && !el.getAttribute("aria-hidden"));
     }
 
-    function closeAgeModal() {
+    function closeModal() {
       if (!modalShell || modalShell.hidden) return;
-
       modalShell.hidden = true;
       document.body.classList.remove("age-modal-open");
-      ageControls.forEach((control) => control.setAttribute("aria-expanded", "false"));
-
-      if (activeTrigger instanceof HTMLElement) {
-        activeTrigger.focus();
-      }
+      ageControls.forEach(c => c.setAttribute("aria-expanded", "false"));
+      if (activeTrigger instanceof HTMLElement) activeTrigger.focus();
       activeTrigger = null;
     }
 
-    function openAgeModal(index, trigger) {
+    function openModal(index, trigger) {
       const age = ages[index];
       if (!age || !modalShell || !modal) return;
-
       activeTrigger = trigger;
       setField("title", age.name);
       setField("status", age.status);
@@ -310,72 +359,108 @@ const ages = [
       setField("magic", age.magic);
       setField("technology", age.technology);
       setField("genre", age.genre);
-      setField("politicalScope", age.scope);
       setField("notableLineages", age.notableLineages);
       setField("regions", age.regions);
       setField("support", age.support);
       setField("hook", age.hook);
       setField("lineages", age.lineages);
-
-      ageControls.forEach((control) => control.setAttribute("aria-expanded", "false"));
+      ageControls.forEach(c => c.setAttribute("aria-expanded", "false"));
       trigger.setAttribute("aria-expanded", "true");
       modalShell.hidden = false;
       document.body.classList.add("age-modal-open");
-
-      const focusables = getFocusableModalElements();
+      const focusables = getFocusable();
       (focusables[0] || modal).focus();
     }
 
-    ageControls.forEach((control) => {
-      control.addEventListener("click", () => {
-        openAgeModal(Number(control.dataset.ageIndex), control);
-      });
+    ageControls.forEach(c => {
+      c.addEventListener("click", () => openModal(Number(c.dataset.ageIndex), c));
     });
-
-    closeControls.forEach((control) => {
-      control.addEventListener("click", closeAgeModal);
-    });
-
-    document.addEventListener("keydown", (event) => {
+    closeControls.forEach(c => c.addEventListener("click", closeModal));
+    document.addEventListener("keydown", e => {
       if (!modalShell || modalShell.hidden) return;
-
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closeAgeModal();
-        return;
-      }
-
-      if (event.key !== "Tab") return;
-
-      const focusables = getFocusableModalElements();
-      if (focusables.length === 0) {
-        event.preventDefault();
-        modal?.focus();
-        return;
-      }
-
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
+      if (e.key === "Escape") { e.preventDefault(); closeModal(); return; }
+      if (e.key !== "Tab") return;
+      const focusables = getFocusable();
+      if (!focusables.length) { e.preventDefault(); modal?.focus(); return; }
+      const first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
   </script>
 
-  <div class="divider"></div>
+  <!-- ═══════════════════════════════════════
+       MÜTVIA PREVIEW
+  ═══════════════════════════════════════ -->
+  <section class="mutvia-preview" id="mutvia" aria-labelledby="mutvia-heading">
+    <div class="mutvia-preview-inner">
 
-  <!-- WORLDS -->
-  <section class="section" id="worlds">
-    <div class="section-inner">
-      <div class="section-head">
-        <h2 class="section-title">The Worlds</h2>
-        <div class="section-rule"></div>
+      <div class="mutvia-intro">
+        <!-- GRAPHIC PLACEHOLDER: Mütvia logo
+             Use: https://evindale.com/wp-content/uploads/2024/05/Mutvia-Logo-2024.webp
+             Display at ~280px wide, centered above headline -->
+        <img
+          src="https://evindale.com/wp-content/uploads/2024/05/Mutvia-Logo-2024.webp"
+          alt="Mütvia"
+          class="mutvia-logo"
+          width="280"
+          height="auto"
+          loading="lazy"
+        />
+        <div class="mutvia-label">Fourth Age · Northern Erinnal · Open Now</div>
+        <h2 class="mutvia-heading" id="mutvia-heading">The Land of 1,000 Princes</h2>
+        <p class="mutvia-desc">
+          A country with no capital, no throne, and no central authority.
+          Whatever you hold, you hold by your own hand. Whatever you lose, you lost it.
+          The dead don't stay down here. The Land is watching. And the rites that keep it satisfied
+          are older than anyone alive still fully understands.
+        </p>
+        <blockquote class="mutvia-verse">
+          <em>The wind quiets before it kills.</em>
+          <em>The trees lean when no one's looking.</em>
+          <em>This is not superstition.</em>
+          <em>This is how you survive.</em>
+        </blockquote>
       </div>
+
+      <!-- GRAPHIC PLACEHOLDER: Mütvia map or atmospheric landscape
+           Specs: 1200×600px, dark-toned map or gothic landscape
+           Position: full-width strip between intro and beat cards
+           Format: WebP, loading="lazy"
+           Replace src below with actual image URL -->
+      <div class="mutvia-map-strip" aria-hidden="true">
+        <div class="mutvia-map-placeholder">
+          <!-- PLACEHOLDER: Replace with <img src="..." alt="Map of Mütvia" ...> -->
+          <span class="map-placeholder-label">Map of Mütvia · Graphic here · 1200×500px recommended</span>
+        </div>
+      </div>
+
+      <div class="mutvia-beats" role="list" aria-label="Mütvia preview">
+        {mutviaBeats.map((beat) => (
+          <article class="beat-card" role="listitem">
+            <div class="beat-tag">{beat.tag}</div>
+            <div class="beat-label">{beat.label}</div>
+            <h3 class="beat-heading">{beat.heading}</h3>
+            <p class="beat-body">{beat.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="mutvia-cta">
+        <a href="/mutvia" class="btn-primary btn-large">Read the Full Atlas Entry</a>
+        <p class="mutvia-cta-note">Complete lore, history, factions, threats, and tone of play.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       WORLDS
+  ═══════════════════════════════════════ -->
+  <section class="section section--worlds" id="worlds" aria-labelledby="worlds-heading">
+    <div class="section-inner">
+      <header class="section-head">
+        <h2 class="section-title" id="worlds-heading">The Worlds</h2>
+        <div class="section-rule" aria-hidden="true"></div>
+      </header>
       <p class="section-sub">Sythlia's creation spans more than one world. The ages run through all of it.</p>
       <div class="worlds-grid">
         <div class="world-card">
@@ -386,11 +471,12 @@ const ages = [
         <div class="world-card locked">
           <div class="world-card-eye">Secondary World · Locked</div>
           <div class="world-card-name">Felwiddel</div>
-          <div class="world-card-desc">Planet of fey. Fey exist throughout Sythlia's creation, but nowhere are they more concentrated than here. Not yet available.</div>
+          <div class="world-card-desc">Origin world of the Dranorvauri. Fey concentration is higher here than anywhere else in Sythlia's creation. Not yet available.</div>
         </div>
       </div>
       <div class="sub-head">
         <span class="sub-head-title">Continents of Elydris</span>
+        <div class="section-rule" aria-hidden="true"></div>
       </div>
       <div class="continents-grid">
         <div class="continent-card">
@@ -412,16 +498,16 @@ const ages = [
     </div>
   </section>
 
-  <div class="divider"></div>
-
-  <!-- LINEAGES -->
-  <section class="section" id="lineages">
+  <!-- ═══════════════════════════════════════
+       LINEAGES
+  ═══════════════════════════════════════ -->
+  <section class="section" id="lineages" aria-labelledby="lineages-heading">
     <div class="section-inner">
-      <div class="section-head">
-        <h2 class="section-title">Thirty-Three Peoples</h2>
-        <div class="section-rule"></div>
-      </div>
-      <p class="section-sub">No elves. No dwarves. No borrowed mythology. Thirty-three original peoples in seven families, each with their own origins, their own history, their own relationship to the eight elements.</p>
+      <header class="section-head">
+        <h2 class="section-title" id="lineages-heading">30+ Original Peoples</h2>
+        <div class="section-rule" aria-hidden="true"></div>
+      </header>
+      <p class="section-sub">No elves. No dwarves. No borrowed mythology. Original peoples across seven lineage families, each with their own origins, their own history, their own relationship to the eight elements. The roster grows with the world.</p>
       <div class="lineage-grid">
         <div class="family-card">
           <div class="family-name">Th'il</div>
@@ -462,15 +548,15 @@ const ages = [
     </div>
   </section>
 
-  <div class="divider"></div>
-
-  <!-- VOTE -->
-  <section class="vote">
+  <!-- ═══════════════════════════════════════
+       VOTE / OWP
+  ═══════════════════════════════════════ -->
+  <section class="vote" aria-labelledby="vote-heading">
     <div class="vote-inner">
       <p class="vote-eye">Community · What Opens Next</p>
-      <h2 class="vote-title">The world grows in response to its inhabitants.</h2>
+      <h2 class="vote-title" id="vote-heading">The world grows in response to its inhabitants.</h2>
       <p class="vote-desc">Seven ages are locked. Two continents are waiting. You decide what opens next. Every sprint is driven by the people who live here.</p>
-      <div class="vote-opts">
+      <div class="vote-opts" role="group" aria-label="Vote for what opens next">
         <label class="vote-opt">
           <input type="radio" name="vote" value="age2" />
           <span class="vote-opt-name">Second Age</span>
@@ -491,12 +577,24 @@ const ages = [
     </div>
   </section>
 
-  <!-- MAILING LIST -->
-  <section class="ml" id="enter">
+  <!-- ═══════════════════════════════════════
+       MAILING LIST
+  ═══════════════════════════════════════ -->
+  <section class="ml" id="enter" aria-labelledby="ml-heading">
     <div class="ml-inner">
-      <div class="ml-mark">✦</div>
-      <h2 class="ml-title">You never have to start over again.</h2>
-      <p class="ml-desc">Ævyndal solves the experienced GM's grief over worlds that die with campaigns. Your characters, your communities, your stories — they persist here. Be here when the next door opens.</p>
+      <!-- GRAPHIC PLACEHOLDER: Grimwell Studio mascot
+           Use: https://evindale.com/wp-content/uploads/2026/06/GrimwellHimselfDiscord.png
+           Display: 80×80px circle, centered above mark -->
+      <img
+        src="https://evindale.com/wp-content/uploads/2026/06/GrimwellHimselfDiscord.png"
+        alt="Grimwell Studio"
+        class="ml-grimwell"
+        width="80"
+        height="80"
+        loading="lazy"
+      />
+      <h2 class="ml-title" id="ml-heading">Your stories don't have to end.</h2>
+      <p class="ml-desc">Ævyndal is built for the experienced GM who has lost worlds to dead campaigns. Characters, communities, consequences — they persist here. Be here when the next door opens.</p>
       <form
         action="https://buttondown.com/api/emails/embed-subscribe/sjvox"
         method="post"
@@ -510,130 +608,181 @@ const ages = [
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
   <footer class="footer">
     <span class="footer-mark">Ævyndal</span>
-    <nav class="footer-nav">
-      <a href="https://evindale.com/atlas">Atlas</a>
-      <span>·</span>
-      <a href="https://evindale.com/gods">Deities</a>
-      <span>·</span>
-      <a href="https://evindale.com/lineages">Lineages</a>
-      <span>·</span>
+    <nav class="footer-nav" aria-label="Site links">
+      <a href="https://aevyndal.com/atlas">Atlas</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://aevyndal.com/lineages">Lineages</a>
+      <span aria-hidden="true">·</span>
+      <a href="/mutvia">Mütvia</a>
+      <span aria-hidden="true">·</span>
       <a href="https://discord.gg/kZetsKk">Discord</a>
     </nav>
-    <span class="footer-copy">© SJ Kraus</span>
+    <span class="footer-copy">© SJ Kraus · Grimwell Studio · All rights reserved</span>
   </footer>
 
 </HomeLayout>
 
 <style>
   :root {
-    --void:          #09080A;
-    --ink:           #1A1614;
-    --haze:          #2E2926;
-    --fog:           #3A3530;
-    --ash:           #5C5650;
-    --bone-dim:      #8A837A;
-    --bone:          #D0C9BC;
-    --threat:        #8B3218;
-    --glow:          #C4501E;
-    --font-display:  'Crimson Text', Georgia, serif;
-    --font-body:     'Lora', Georgia, serif;
+    --void:         #09080A;
+    --ink:          #1A1614;
+    --haze:         #2E2926;
+    --fog:          #3A3530;
+    --ash:          #5C5650;
+    --bone-dim:     #8A837A;
+    --bone:         #D0C9BC;
+    --threat:       #8B3218;
+    --glow:         #C4501E;
+    --font-display: 'Crimson Text', Georgia, serif;
+    --font-body:    'Lora', Georgia, serif;
   }
 
-  /* ═══ HERO ═══ */
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     HERO
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
   .hero {
     min-height: 100svh;
     display: flex;
-    align-items: flex-end;
-    padding: 0 3rem 7rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 0 clamp(1.5rem, 5vw, 6rem) clamp(5rem, 10vh, 9rem);
     position: relative;
     overflow: hidden;
   }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -10%; right: 5%;
-    width: 55vw; height: 100vh;
-    background: radial-gradient(ellipse 50% 70% at 60% 30%,
-      rgba(196,80,30,0.18) 0%,
-      rgba(139,50,24,0.08) 40%,
-      transparent 70%);
-    pointer-events: none;
-  }
+
   .hero::after {
     content: '';
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    height: 30vh;
+    height: 40vh;
     background: linear-gradient(to top, var(--void) 0%, transparent 100%);
     pointer-events: none;
     z-index: 1;
   }
-  .hero-inner { position: relative; z-index: 2; max-width: 740px; }
 
-  .hero-eyebrow {
-    font-size: 0.65rem;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--glow);
-    margin-bottom: 2rem;
-    opacity: 0;
-    animation: rise 0.9s ease forwards 0.3s;
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
   }
+
+  .hero-logo-wrap {
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: rise 0.9s ease forwards 0.2s;
+  }
+
+  .hero-logo {
+    width: clamp(100px, 12vw, 160px);
+    height: auto;
+    filter: drop-shadow(0 0 32px rgba(196,80,30,0.3));
+  }
+
   .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-size: clamp(3rem, 8vw, 6.5rem);
     font-weight: 400;
     line-height: 1.0;
     color: var(--bone);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     opacity: 0;
-    animation: rise 1s ease forwards 0.5s;
+    animation: rise 1s ease forwards 0.4s;
   }
-  .hero-title em { font-style: italic; color: var(--bone-dim); }
-  .hero-hook {
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--glow);
+  }
+
+  .hero-sub {
     font-family: var(--font-display);
-    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-size: clamp(0.95rem, 1.8vw, 1.2rem);
     font-style: italic;
     color: var(--ash);
-    max-width: 480px;
-    margin-bottom: 3rem;
-    line-height: 1.6;
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
     opacity: 0;
-    animation: rise 1s ease forwards 0.7s;
+    animation: rise 1s ease forwards 0.6s;
   }
-  .hero-hook strong { color: var(--bone); font-style: normal; }
+
   .hero-cta {
     display: flex;
     gap: 2rem;
     align-items: center;
     flex-wrap: wrap;
     opacity: 0;
-    animation: rise 1s ease forwards 0.9s;
+    animation: rise 1s ease forwards 0.8s;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    right: clamp(1.5rem, 5vw, 6rem);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards 1.5s;
+  }
+
+  .hero-scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--glow), transparent);
+    animation: scrollPulse 2s ease infinite;
   }
 
   @keyframes rise {
-    from { opacity: 0; transform: translateY(16px); }
+    from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ═══ BUTTONS ═══ */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.8); transform-origin: top; }
+    50%       { opacity: 1;   transform: scaleY(1);   transform-origin: top; }
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     BUTTONS
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
   .btn-primary {
     display: inline-block;
-    padding: 0.75rem 1.8rem;
+    padding: 0.8rem 2rem;
     background: var(--threat);
     color: var(--bone);
     font-family: var(--font-body);
     font-size: 0.72rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     text-decoration: none;
     border: 1px solid var(--glow);
-    transition: background 0.25s;
+    transition: background 0.25s, box-shadow 0.25s;
   }
-  .btn-primary:hover { background: var(--glow); }
+
+  .btn-primary:hover {
+    background: var(--glow);
+    box-shadow: 0 0 24px rgba(196,80,30,0.3);
+  }
+
+  .btn-large {
+    padding: 1rem 2.5rem;
+    font-size: 0.78rem;
+  }
+
   .btn-ghost {
     font-size: 0.7rem;
     letter-spacing: 0.16em;
@@ -644,44 +793,105 @@ const ages = [
     padding-bottom: 0.1rem;
     transition: color 0.25s, border-color 0.25s;
   }
+
   .btn-ghost:hover { color: var(--bone); border-color: var(--ash); }
 
-  /* ═══ DIVIDER ═══ */
-  .divider {
-    height: 1px;
-    margin: 0 3rem;
-    background: linear-gradient(to right, transparent, var(--threat), transparent);
-    opacity: 0.4;
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     PROPOSITION STRIP
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
+  .prop-strip {
+    background: var(--ink);
+    border-top: 1px solid var(--fog);
+    border-bottom: 1px solid var(--fog);
   }
 
-  /* ═══ SECTIONS ═══ */
-  .section { padding: 6rem 3rem; }
+  .prop-strip-inner {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 2rem clamp(1.5rem, 5vw, 3rem);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: 0;
+  }
+
+  .prop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .prop-icon {
+    font-size: 0.7rem;
+    color: var(--glow);
+    margin-bottom: 0.2rem;
+  }
+
+  .prop strong {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    color: var(--bone);
+    font-weight: 600;
+  }
+
+  .prop span {
+    font-size: 0.78rem;
+    color: var(--ash);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .prop-divider {
+    width: 1px;
+    height: 3rem;
+    background: var(--fog);
+    flex-shrink: 0;
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     SECTIONS
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
+  .section {
+    padding: 5rem clamp(1.5rem, 5vw, 3rem);
+  }
+
   .section-inner { max-width: 1060px; margin: 0 auto; }
+
   .section-head {
     display: flex;
     align-items: baseline;
     gap: 1.5rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.75rem;
   }
+
   .section-title {
     font-family: var(--font-display);
-    font-size: 1.9rem;
+    font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 600;
     color: var(--bone);
     line-height: 1;
     white-space: nowrap;
   }
-  .section-rule { flex: 1; height: 1px; background: var(--fog); }
-  .section-sub {
-    font-size: 0.82rem;
-    color: var(--ash);
-    font-style: italic;
-    max-width: 520px;
-    margin-bottom: 2.5rem;
-    line-height: 1.6;
+
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--fog), transparent);
   }
 
-  /* ═══ AGES ═══ */
+  .section-sub {
+    font-size: 0.84rem;
+    color: var(--ash);
+    font-style: italic;
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+    line-height: 1.65;
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     AGES GRID
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
   .ages-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -689,6 +899,7 @@ const ages = [
     background: var(--fog);
     border: 1px solid var(--fog);
   }
+
   .age-card {
     width: 100%;
     border: 0;
@@ -697,124 +908,133 @@ const ages = [
     position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 210px;
+    min-height: 200px;
     cursor: pointer;
-    transition: background 0.25s;
-    list-style: none;
+    transition: background 0.2s;
     text-align: left;
   }
+
   .age-card:hover,
   .age-card:focus-visible,
   .age-card[aria-expanded="true"] { background: var(--ink); }
+
   .age-card:focus-visible {
     outline: 2px solid var(--glow);
     outline-offset: -2px;
   }
-  .age-card[aria-expanded="true"] {
-    border-top: 2px solid var(--glow);
-  }
+
+  .age-card[aria-expanded="true"] { border-top: 2px solid var(--glow); }
+
   .age-num {
-    font-size: 0.58rem;
-    letter-spacing: 0.22em;
+    font-size: 0.56rem;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
     color: var(--ash);
     margin-bottom: 0.5rem;
   }
+
   .age-card.open-now .age-num { color: var(--glow); }
+
   .age-name {
     font-family: var(--font-display);
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--bone);
     line-height: 1.2;
     margin-bottom: 0.5rem;
   }
+
   .age-genre {
     display: block;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     color: var(--ash);
     font-style: italic;
     line-height: 1.45;
+    flex: 1;
   }
-  .age-card[aria-expanded="true"] .age-genre { color: var(--bone-dim); }
+
   .age-open-mark {
     position: absolute;
-    top: 0.8rem; right: 0.8rem;
-    font-size: 0.52rem;
+    top: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.5rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--glow);
     border: 1px solid var(--threat);
-    padding: 0.18rem 0.45rem;
+    padding: 0.15rem 0.4rem;
   }
+
   .age-action {
     display: inline-flex;
     align-items: center;
-    align-self: flex-start;
-    margin-top: auto;
-    padding-top: 1.2rem;
-    font-size: 0.58rem;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+    font-size: 0.56rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--glow);
+    opacity: 0;
+    transition: opacity 0.2s;
   }
-  .age-action::after {
-    content: '+';
-    margin-left: 0.6rem;
-    font-size: 0.9rem;
-    line-height: 1;
-  }
-  .age-card[aria-expanded="true"] .age-action::after { content: '-'; }
+
+  .age-action::after { content: '↗'; font-size: 0.7rem; }
+  .age-card[aria-expanded="true"] .age-action::after { content: '✕'; }
+  .age-card:hover .age-action,
+  .age-card:focus-visible .age-action,
+  .age-card[aria-expanded="true"] .age-action { opacity: 1; }
+
+  /* AGE MODAL */
   .age-modal-open { overflow: hidden; }
   .age-modal-shell[hidden] { display: none; }
   .age-modal-shell {
     position: fixed;
     inset: 0;
-    z-index: 100;
+    z-index: 200;
     display: grid;
     place-items: center;
     padding: 2rem;
   }
+
   .age-modal-overlay {
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(ellipse 60% 80% at 70% 20%, rgba(196,80,30,0.16), transparent 65%),
-      rgba(2, 2, 3, 0.82);
+    background: rgba(5,4,6,0.88);
+    backdrop-filter: blur(4px);
   }
+
   .age-modal {
     position: relative;
     z-index: 1;
-    width: min(920px, 100%);
-    max-height: min(84vh, 920px);
+    width: min(880px, 100%);
+    max-height: min(85vh, 900px);
     overflow: auto;
-    padding: 1.6rem;
+    padding: 1.75rem;
     border: 1px solid var(--fog);
-    box-shadow: 0 24px 80px rgba(0,0,0,0.62);
-    background:
-      radial-gradient(ellipse 60% 70% at 90% 0%, rgba(196,80,30,0.08), transparent 65%),
-      var(--ink);
+    background: var(--ink);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7);
     outline: none;
   }
+
   .age-modal-close {
     position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
+    top: 1rem;
+    right: 1rem;
     width: 2rem;
     height: 2rem;
     border: 1px solid var(--threat);
     background: var(--void);
     color: var(--bone);
-    font-size: 1.2rem;
-    line-height: 1;
+    font-size: 0.9rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
   }
-  .age-modal-close:hover,
-  .age-modal-close:focus-visible {
-    background: var(--threat);
-    outline: 2px solid var(--glow);
-    outline-offset: 2px;
-  }
+
+  .age-modal-close:hover { background: var(--threat); }
+
   .age-panel-head {
     display: flex;
     justify-content: space-between;
@@ -822,126 +1042,285 @@ const ages = [
     align-items: flex-start;
     margin-bottom: 1.2rem;
   }
+
   .age-panel-label {
-    font-size: 0.56rem;
-    letter-spacing: 0.18em;
+    font-size: 0.54rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--ash);
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.3rem;
   }
+
   .age-modal h3 {
     font-family: var(--font-display);
-    font-size: 1.55rem;
+    font-size: 1.6rem;
     color: var(--bone);
     margin: 0;
     line-height: 1.1;
   }
+
   .age-status {
-    flex: 0 0 auto;
-    max-width: 220px;
-    padding: 0.35rem 0.55rem;
+    flex-shrink: 0;
+    padding: 0.3rem 0.5rem;
     border: 1px solid var(--threat);
     color: var(--glow);
-    font-size: 0.58rem;
-    letter-spacing: 0.13em;
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     line-height: 1.4;
+    max-width: 180px;
+    text-align: right;
   }
+
   .age-chips {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1px;
-    margin: 0 0 1.4rem;
+    margin-bottom: 1px;
     background: var(--fog);
     border: 1px solid var(--fog);
   }
-  .age-chips div {
-    min-width: 0;
-    background: var(--void);
-    padding: 0.85rem;
-  }
+
+  .age-chips div { background: var(--void); padding: 0.8rem; min-width: 0; }
+
   .age-chips dt,
   .age-field span {
-    font-size: 0.55rem;
-    letter-spacing: 0.16em;
+    display: block;
+    font-size: 0.52rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--ash);
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.3rem;
   }
+
   .age-chips dd {
     margin: 0;
     color: var(--bone-dim);
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     line-height: 1.45;
   }
+
   .age-fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--fog);
+    border: 1px solid var(--fog);
+    border-top: none;
+    margin-bottom: 1px;
+  }
+
+  .age-field { background: var(--void); padding: 1rem; min-width: 0; }
+  .age-field--wide { grid-column: span 2; }
+  .age-field p { margin: 0; color: var(--bone-dim); font-size: 0.74rem; line-height: 1.55; }
+
+  .age-lineages {
+    border: 1px solid var(--fog);
+    border-top: none;
+    background: var(--void);
+    padding: 1rem;
+    max-height: 10rem;
+    overflow: auto;
+  }
+
+  .age-lineages span {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.52rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+
+  .age-lineages p { margin: 0; color: var(--bone-dim); font-size: 0.74rem; line-height: 1.65; }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     MÜTVIA PREVIEW
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
+  .mutvia-preview {
+    background: linear-gradient(to bottom, var(--void) 0%, #0e0b10 40%, var(--void) 100%);
+    border-top: 1px solid rgba(196,80,30,0.2);
+    border-bottom: 1px solid rgba(196,80,30,0.2);
+    padding: 5rem clamp(1.5rem, 5vw, 3rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mutvia-preview::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(ellipse 50% 60% at 80% 30%, rgba(196,80,30,0.07), transparent 70%);
+    pointer-events: none;
+  }
+
+  .mutvia-preview-inner {
+    max-width: 1060px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mutvia-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    max-width: 680px;
+    margin-bottom: 3rem;
+  }
+
+  .mutvia-logo {
+    width: clamp(160px, 20vw, 280px);
+    height: auto;
+    filter: drop-shadow(0 0 30px rgba(196,80,30,0.2));
+    margin-bottom: 0.5rem;
+  }
+
+  .mutvia-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--glow);
+  }
+
+  .mutvia-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: var(--bone);
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  .mutvia-desc {
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    color: var(--bone-dim);
+    line-height: 1.75;
+    max-width: 600px;
+    margin: 0;
+  }
+
+  .mutvia-verse {
+    border-left: 2px solid var(--glow);
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    margin: 0.5rem 0 0;
+    font-style: italic;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--ash);
+    line-height: 1.9;
+  }
+
+  .mutvia-verse em { display: block; }
+
+  /* MAP STRIP */
+  .mutvia-map-strip {
+    margin: 0 0 3rem;
+    border: 1px solid var(--fog);
+    overflow: hidden;
+  }
+
+  .mutvia-map-placeholder {
+    height: 300px;
+    background: linear-gradient(135deg, var(--ink), #0d0c0f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .map-placeholder-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fog);
+    border: 1px dashed var(--fog);
+    padding: 0.75rem 1.5rem;
+  }
+
+  /* BEAT CARDS */
+  .mutvia-beats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--fog);
     border: 1px solid var(--fog);
-  }
-  .age-field {
-    min-width: 0;
-    background: var(--void);
-    padding: 1rem;
-  }
-  .age-field--wide { grid-column: span 3; }
-  .age-field p {
-    margin: 0;
-    color: var(--bone-dim);
-    font-size: 0.76rem;
-    line-height: 1.55;
-  }
-  .age-subpanel {
-    margin-top: 1rem;
-    border: 1px solid var(--fog);
-    background: var(--void);
-  }
-  .age-subpanel summary {
-    padding: 0.85rem 1rem;
-    cursor: pointer;
-    color: var(--bone);
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-  .age-subpanel summary:focus-visible {
-    outline: 2px solid var(--glow);
-    outline-offset: -2px;
-  }
-  .age-subpanel p {
-    margin: 0;
-    padding: 0 1rem 1rem;
-    color: var(--bone-dim);
-    font-size: 0.78rem;
-    line-height: 1.65;
-  }
-  .age-lineages {
-    margin-top: 1rem;
-    border: 1px solid var(--fog);
-    background: var(--void);
-    padding: 1rem;
-    max-height: 12rem;
-    overflow: auto;
-  }
-  .age-lineages span {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.55rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ash);
-  }
-  .age-lineages p {
-    margin: 0;
-    color: var(--bone-dim);
-    font-size: 0.78rem;
-    line-height: 1.65;
+    margin-bottom: 3rem;
   }
 
-  /* ═══ WORLDS ═══ */
-  #worlds { padding-bottom: 0; }
+  .beat-card {
+    background: var(--void);
+    padding: 1.75rem 1.5rem;
+    transition: background 0.2s;
+    position: relative;
+  }
+
+  .beat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 0;
+    background: var(--glow);
+    transition: height 0.3s ease;
+  }
+
+  .beat-card:hover { background: var(--ink); }
+  .beat-card:hover::before { height: 100%; }
+
+  .beat-tag {
+    font-size: 0.52rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--glow);
+    margin-bottom: 0.4rem;
+  }
+
+  .beat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-bottom: 0.75rem;
+  }
+
+  .beat-heading {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--bone);
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+  }
+
+  .beat-body {
+    font-size: 0.8rem;
+    color: var(--ash);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .mutvia-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .mutvia-cta-note {
+    font-size: 0.68rem;
+    color: var(--ash);
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     WORLDS
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
+  .section--worlds { padding-bottom: 0; }
+
   .worlds-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -950,6 +1329,7 @@ const ages = [
     border: 1px solid var(--fog);
     margin-bottom: 1px;
   }
+
   .continents-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -957,46 +1337,57 @@ const ages = [
     background: var(--fog);
     border: 1px solid var(--fog);
     border-top: none;
+    margin-bottom: 5rem;
   }
+
   .world-card {
     background: var(--void);
-    padding: 1.5rem 1.6rem;
-    transition: background 0.25s;
+    padding: 2rem;
+    transition: background 0.2s;
   }
+
   .world-card:hover { background: var(--ink); }
-  .world-card.locked { opacity: 0.5; }
+  .world-card.locked { opacity: 0.45; }
+
   .world-card-eye {
-    font-size: 0.58rem;
-    letter-spacing: 0.22em;
+    font-size: 0.56rem;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
     color: var(--ash);
     margin-bottom: 0.4rem;
   }
+
   .world-card-name {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 600;
     color: var(--glow);
     margin-bottom: 0.5rem;
     line-height: 1;
   }
+
   .world-card.locked .world-card-name { color: var(--ash); }
-  .world-card-desc { font-size: 0.8rem; color: var(--ash); line-height: 1.6; }
+
+  .world-card-desc { font-size: 0.8rem; color: var(--bone-dim); line-height: 1.65; }
+
   .continent-card {
     background: var(--void);
-    padding: 1.3rem 1.5rem;
-    transition: background 0.25s;
+    padding: 1.5rem;
+    transition: background 0.2s;
   }
+
   .continent-card:hover { background: var(--ink); }
-  .continent-card.locked { opacity: 0.5; }
-  .continent-card.reserved { opacity: 0.35; }
+  .continent-card.locked { opacity: 0.45; }
+  .continent-card.reserved { opacity: 0.3; }
+
   .continent-card-label {
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
+    font-size: 0.54rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--ash);
     margin-bottom: 0.3rem;
   }
+
   .continent-card-name {
     font-family: var(--font-display);
     font-size: 1.2rem;
@@ -1004,25 +1395,31 @@ const ages = [
     color: var(--glow);
     margin-bottom: 0.3rem;
   }
+
   .continent-card.locked .continent-card-name { color: var(--ash); }
   .continent-card.reserved .continent-card-name { color: var(--fog); }
+
   .continent-card-meta { font-size: 0.7rem; color: var(--ash); font-style: italic; }
+
   .sub-head {
     display: flex;
     align-items: baseline;
-    gap: 1rem;
-    margin: 0;
-    padding-bottom: 0.8rem;
-    border-bottom: 1px solid var(--fog);
-  }
-  .sub-head-title {
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--bone-dim);
+    gap: 1.5rem;
+    padding: 1.5rem 0 0;
+    margin-bottom: 0;
   }
 
-  /* ═══ LINEAGES ═══ */
+  .sub-head-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bone-dim);
+    white-space: nowrap;
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     LINEAGES
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
   .lineage-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1030,12 +1427,15 @@ const ages = [
     background: var(--fog);
     border: 1px solid var(--fog);
   }
+
   .family-card {
     background: var(--void);
-    padding: 1.3rem 1.4rem;
-    transition: background 0.25s;
+    padding: 1.4rem 1.5rem;
+    transition: background 0.2s;
   }
+
   .family-card:hover { background: var(--ink); }
+
   .family-name {
     font-family: var(--font-display);
     font-size: 1rem;
@@ -1043,51 +1443,52 @@ const ages = [
     color: var(--bone);
     margin-bottom: 0.4rem;
   }
-  .family-peoples { font-size: 0.72rem; color: var(--ash); line-height: 1.75; }
+
+  .family-peoples { font-size: 0.72rem; color: var(--ash); line-height: 1.8; }
+
   .family-tag {
     display: inline-block;
-    margin-top: 0.6rem;
-    font-size: 0.56rem;
+    margin-top: 0.75rem;
+    font-size: 0.54rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--glow);
     border: 1px solid var(--threat);
-    padding: 0.15rem 0.45rem;
+    padding: 0.15rem 0.4rem;
   }
 
-  /* ═══ VOTE ═══ */
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     VOTE
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
   .vote {
-    padding: 6rem 3rem;
+    padding: 5rem clamp(1.5rem, 5vw, 3rem);
     background: var(--ink);
-    position: relative;
+    border-top: 1px solid var(--fog);
+    border-bottom: 1px solid var(--fog);
     text-align: center;
   }
-  .vote::before, .vote::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0; height: 1px;
-    background: linear-gradient(to right, transparent, var(--threat), transparent);
-    opacity: 0.5;
-  }
-  .vote::before { top: 0; }
-  .vote::after  { bottom: 0; }
+
   .vote-inner { max-width: 560px; margin: 0 auto; }
+
   .vote-eye {
-    font-size: 0.62rem;
-    letter-spacing: 0.24em;
+    font-size: 0.6rem;
+    letter-spacing: 0.26em;
     text-transform: uppercase;
     color: var(--glow);
     margin-bottom: 1rem;
   }
+
   .vote-title {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    font-size: clamp(1.4rem, 3vw, 2rem);
     font-weight: 600;
     color: var(--bone);
     line-height: 1.2;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.75rem;
   }
-  .vote-desc { font-size: 0.84rem; color: var(--ash); line-height: 1.7; margin-bottom: 2rem; }
+
+  .vote-desc { font-size: 0.82rem; color: var(--ash); line-height: 1.7; margin-bottom: 2rem; }
+
   .vote-opts {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1097,14 +1498,17 @@ const ages = [
     margin-bottom: 2rem;
     text-align: left;
   }
+
   .vote-opt {
     background: var(--void);
     padding: 1rem 1.1rem;
     cursor: pointer;
     transition: background 0.2s;
   }
+
   .vote-opt:hover { background: var(--haze); }
   .vote-opt input { display: none; }
+
   .vote-opt-name {
     font-family: var(--font-display);
     font-size: 1rem;
@@ -1113,31 +1517,45 @@ const ages = [
     display: block;
     margin-bottom: 0.15rem;
   }
+
   .vote-opt-genre { font-size: 0.68rem; color: var(--ash); font-style: italic; }
 
-  /* ═══ MAILING LIST ═══ */
-  .ml { padding: 7rem 3rem; text-align: center; }
-  .ml-inner { max-width: 500px; margin: 0 auto; }
-  .ml-mark {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    color: var(--threat);
-    line-height: 1;
-    margin-bottom: 1.5rem;
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     MAILING LIST
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
+  .ml {
+    padding: 7rem clamp(1.5rem, 5vw, 3rem);
+    text-align: center;
   }
+
+  .ml-inner { max-width: 480px; margin: 0 auto; }
+
+  .ml-grimwell {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    filter: sepia(0.3) contrast(1.1);
+    border: 1px solid var(--fog);
+  }
+
   .ml-title {
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-size: clamp(1.4rem, 3vw, 2rem);
     font-weight: 600;
     color: var(--bone);
     margin-bottom: 0.8rem;
     line-height: 1.2;
   }
-  .ml-desc { font-size: 0.84rem; color: var(--ash); line-height: 1.7; margin-bottom: 2rem; }
-  .ml-form { display: flex; max-width: 400px; margin: 0 auto; }
+
+  .ml-desc { font-size: 0.84rem; color: var(--ash); line-height: 1.75; margin-bottom: 2rem; }
+
+  .ml-form { display: flex; max-width: 380px; margin: 0 auto; }
+
   .ml-input {
     flex: 1;
-    padding: 0.8rem 1.1rem;
+    padding: 0.8rem 1rem;
     background: var(--ink);
     border: 1px solid var(--fog);
     border-right: none;
@@ -1146,8 +1564,10 @@ const ages = [
     font-size: 0.84rem;
     outline: none;
   }
+
   .ml-input::placeholder { color: var(--ash); }
   .ml-input:focus { border-color: var(--threat); }
+
   .ml-btn {
     padding: 0.8rem 1.3rem;
     background: var(--threat);
@@ -1155,42 +1575,51 @@ const ages = [
     color: var(--bone);
     font-family: var(--font-body);
     font-size: 0.68rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     cursor: pointer;
     transition: background 0.2s;
   }
-  .ml-btn:hover { background: var(--glow); }
-  .ml-note { margin-top: 1rem; font-size: 0.65rem; color: var(--ash); font-style: italic; }
 
-  /* ═══ FOOTER ═══ */
+  .ml-btn:hover { background: var(--glow); }
+  .ml-note { margin-top: 1rem; font-size: 0.64rem; color: var(--ash); font-style: italic; }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     FOOTER
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
   .footer {
     border-top: 1px solid var(--fog);
-    padding: 2rem 3rem;
+    padding: 2rem clamp(1.5rem, 5vw, 3rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.65rem;
+    font-size: 0.64rem;
     color: var(--ash);
-    letter-spacing: 0.08em;
     flex-wrap: wrap;
     gap: 1rem;
   }
+
   .footer-mark { font-family: var(--font-display); font-size: 1rem; color: var(--glow); }
-  .footer-nav { display: flex; gap: 0.8rem; align-items: center; }
+
+  .footer-nav { display: flex; gap: 0.75rem; align-items: center; }
+
   .footer-nav a {
     color: var(--ash);
     text-decoration: none;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     transition: color 0.2s;
   }
+
   .footer-nav a:hover { color: var(--bone); }
   .footer-nav span { color: var(--fog); }
-  .footer-copy { font-size: 0.62rem; color: var(--ash); opacity: 0.5; }
 
-  /* ═══ UTILITY ═══ */
+  .footer-copy { font-size: 0.6rem; color: var(--ash); opacity: 0.5; }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     UTILITY
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
   .sr-only {
     position: absolute;
     width: 1px; height: 1px;
@@ -1199,34 +1628,36 @@ const ages = [
     white-space: nowrap;
   }
 
-  /* ═══ RESPONSIVE ═══ */
-  @media (max-width: 900px) {
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━
+     RESPONSIVE
+  ━━━━━━━━━━━━━━━━━━━━━━━━ */
+  @media (max-width: 1024px) {
+    .ages-grid { grid-template-columns: repeat(4, 1fr); }
+    .mutvia-beats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 860px) {
     .ages-grid { grid-template-columns: repeat(2, 1fr); }
     .age-chips { grid-template-columns: repeat(2, 1fr); }
-    .age-fields { grid-template-columns: repeat(2, 1fr); }
-    .age-field--wide { grid-column: span 2; }
+    .lineage-grid { grid-template-columns: repeat(2, 1fr); }
+    .prop-strip-inner { grid-template-columns: 1fr; }
+    .prop-divider { width: 100%; height: 1px; }
+    .prop { padding: 1rem 0; }
   }
-  @media (max-width: 660px) {
+
+  @media (max-width: 640px) {
     .ages-grid { grid-template-columns: 1fr; }
-    .age-card { min-height: 180px; }
-    .age-panel-head { flex-direction: column; }
-    .age-status { max-width: none; }
-    .age-chips { grid-template-columns: 1fr; }
+    .age-card { min-height: 160px; }
+    .age-chips { grid-template-columns: 1fr 1fr; }
     .age-fields { grid-template-columns: 1fr; }
     .age-field--wide { grid-column: auto; }
+    .age-panel-head { flex-direction: column; }
     .worlds-grid { grid-template-columns: 1fr; }
     .continents-grid { grid-template-columns: 1fr; }
     .lineage-grid { grid-template-columns: 1fr; }
     .vote-opts { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 520px) {
-    .hero { padding: 0 1.5rem 5rem; }
-    .section { padding: 4rem 1.5rem; }
-    .vote { padding: 4rem 1.5rem; }
-    .ml { padding: 5rem 1.5rem; }
-    .footer { padding: 2rem 1.5rem; }
-    .divider { margin: 0 1.5rem; }
-    .ages-grid { grid-template-columns: 1fr; }
+    .mutvia-beats { grid-template-columns: 1fr; }
+    .hero { padding-bottom: 5rem; }
     .ml-form { flex-direction: column; }
     .ml-input { border-right: 1px solid var(--fog); border-bottom: none; }
     .ml-btn { width: 100%; }
