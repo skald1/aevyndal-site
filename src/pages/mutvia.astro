@@ -913,6 +913,38 @@ strong { color: #fff; font-weight: 500; }
   margin-top: 4rem;
 }
 
+.site-footer {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+  color: rgba(208,201,188,0.45);
+  text-align: center;
+}
+
+.site-footer::before {
+  content: '';
+  display: block;
+  width: min(180px, 40vw);
+  height: 1px;
+  margin: 0 auto 1.25rem;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(196,80,30,0.35),
+    transparent
+  );
+}
+
+.site-footer p {
+  margin: 0.25rem 0;
+  font-family: var(--font-heading);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  line-height: 1.8;
+  text-transform: uppercase;
+  color: inherit;
+}
+
 /* ============================================
    DIVIDER
    ============================================ */
@@ -1616,6 +1648,11 @@ strong { color: #fff; font-weight: 500; }
   </article>
 
 </main>
+
+<footer class="site-footer" aria-label="Publication details">
+  <p>© 1999–2026 Stephen J. Kraus.</p>
+  <p>Published by SJ Kraus d/b/a Grimwell Studio.</p>
+</footer>
 
 <script>
   const trigger = document.getElementById('map-trigger');
