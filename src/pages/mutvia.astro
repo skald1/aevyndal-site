@@ -416,7 +416,9 @@ strong { color: #fff; font-weight: 500; }
    ============================================ */
 
 .map-container {
-  margin: 2.5rem 0;
+  float: right;
+  width: min(42%, 360px);
+  margin: 0.35rem 0 1.5rem 2rem;
   position: relative;
 }
 
@@ -480,21 +482,29 @@ strong { color: #fff; font-weight: 500; }
   z-index: 1000;
   background: rgba(9,8,10,0.95);
   backdrop-filter: blur(8px);
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: 5rem 2rem 2rem;
-  cursor: zoom-out;
-  overflow: auto;
+  padding: 5rem 1rem 1rem;
+  cursor: grab;
+  overflow: hidden;
+  touch-action: none;
 }
 
 .lightbox.is-open { display: flex; }
 
+.lightbox.is-dragging { cursor: grabbing; }
+
 .lightbox img {
-  width: min(1400px, 96vw);
+  width: min(1600px, 96vw);
   max-width: none;
   height: auto;
   box-shadow: 0 0 80px rgba(0,0,0,0.8);
-  cursor: default;
+  cursor: inherit;
+  transform: translate(var(--pan-x, 0), var(--pan-y, 0)) scale(var(--zoom, 1));
+  transform-origin: center;
+  transition: transform 0.08s ease-out;
+  user-select: none;
+  will-change: transform;
 }
 
 .lightbox-close {
@@ -515,6 +525,36 @@ strong { color: #fff; font-weight: 500; }
 
 .lightbox-close:hover,
 .lightbox-close:focus-visible {
+  color: var(--cold-bone);
+  border-color: var(--blood-orange);
+}
+
+.lightbox-controls {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 1001;
+}
+
+.lightbox-controls button {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cold-ash);
+  background: rgba(9,8,10,0.65);
+  border: 1px solid rgba(92,86,80,0.3);
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.65rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.lightbox-controls button:hover,
+.lightbox-controls button:focus-visible {
   color: var(--cold-bone);
   border-color: var(--blood-orange);
 }
@@ -963,6 +1003,12 @@ strong { color: #fff; font-weight: 500; }
    ============================================ */
 
 @media (max-width: 640px) {
+  .map-container {
+    float: none;
+    width: 100%;
+    margin: 2rem 0;
+  }
+
   .stat-block { padding: 1.5rem; }
   .page-content { padding: 2rem 1.25rem 6rem; }
   .family-card { padding: 1.5rem; }
@@ -980,8 +1026,13 @@ strong { color: #fff; font-weight: 500; }
 <body>
 
 <div class="lightbox" id="map-lightbox" role="dialog" aria-label="Mütvia map" aria-modal="true">
+  <div class="lightbox-controls" aria-label="Map controls">
+    <button type="button" id="lightbox-zoom-out" aria-label="Zoom out">-</button>
+    <button type="button" id="lightbox-zoom-reset" aria-label="Reset map zoom">Reset</button>
+    <button type="button" id="lightbox-zoom-in" aria-label="Zoom in">+</button>
+  </div>
   <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close map">Close</button>
-  <img src="https://evindale.com/wp-content/uploads/2026/06/Mutvia-2026-scaled.jpg" alt="Map of Mütvia" id="lightbox-img">
+  <img src="https://evindale.com/wp-content/uploads/2026/06/Mutvia-2026.jpg" alt="Map of Mütvia" id="lightbox-img">
 </div>
 
 <!-- ============================================
@@ -1116,7 +1167,7 @@ strong { color: #fff; font-weight: 500; }
 
     <div class="map-container">
       <button class="map-trigger" id="map-trigger" type="button" aria-label="Open full map of Mütvia">
-        <img src="https://evindale.com/wp-content/uploads/2026/06/Mutvia-2026-scaled.jpg"
+        <img src="https://evindale.com/wp-content/uploads/2026/06/Mutvia-2026.jpg"
              alt="Map of Mütvia — The Land of 1,000 Princes"
              loading="lazy">
       </button>
@@ -1570,28 +1621,112 @@ strong { color: #fff; font-weight: 500; }
   const trigger = document.getElementById('map-trigger');
   const lightbox = document.getElementById('map-lightbox');
   const closeBtn = document.getElementById('lightbox-close');
+  const mapImg = document.getElementById('lightbox-img');
+  const zoomInBtn = document.getElementById('lightbox-zoom-in');
+  const zoomOutBtn = document.getElementById('lightbox-zoom-out');
+  const zoomResetBtn = document.getElementById('lightbox-zoom-reset');
+  const minZoom = 1;
+  const maxZoom = 5;
+  let zoom = 1;
+  let panX = 0;
+  let panY = 0;
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let dragPanX = 0;
+  let dragPanY = 0;
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function updateMapTransform() {
+    mapImg.style.setProperty('--zoom', zoom);
+    mapImg.style.setProperty('--pan-x', `${panX}px`);
+    mapImg.style.setProperty('--pan-y', `${panY}px`);
+  }
+
+  function resetMapView() {
+    zoom = 1;
+    panX = 0;
+    panY = 0;
+    updateMapTransform();
+  }
+
+  function zoomMap(multiplier) {
+    zoom = clamp(Number((zoom * multiplier).toFixed(2)), minZoom, maxZoom);
+    if (zoom === minZoom) {
+      panX = 0;
+      panY = 0;
+    }
+    updateMapTransform();
+  }
 
   function closeLightbox() {
     lightbox.classList.remove('is-open');
+    lightbox.classList.remove('is-dragging');
     document.body.style.overflow = '';
+    isDragging = false;
+    resetMapView();
     trigger.focus();
   }
 
   trigger.addEventListener('click', () => {
     lightbox.classList.add('is-open');
     document.body.style.overflow = 'hidden';
+    resetMapView();
     closeBtn.focus();
   });
 
   closeBtn.addEventListener('click', closeLightbox);
 
-  lightbox.addEventListener('click', (event) => {
-    if (event.target === lightbox) closeLightbox();
+  zoomInBtn.addEventListener('click', () => zoomMap(1.25));
+  zoomOutBtn.addEventListener('click', () => zoomMap(0.8));
+  zoomResetBtn.addEventListener('click', resetMapView);
+
+  lightbox.addEventListener('wheel', (event) => {
+    event.preventDefault();
+    zoomMap(event.deltaY < 0 ? 1.12 : 0.9);
+  }, { passive: false });
+
+  lightbox.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('button')) return;
+    isDragging = true;
+    dragStartX = event.clientX;
+    dragStartY = event.clientY;
+    dragPanX = panX;
+    dragPanY = panY;
+    lightbox.classList.add('is-dragging');
+    lightbox.setPointerCapture(event.pointerId);
+  });
+
+  lightbox.addEventListener('pointermove', (event) => {
+    if (!isDragging) return;
+    panX = dragPanX + event.clientX - dragStartX;
+    panY = dragPanY + event.clientY - dragStartY;
+    updateMapTransform();
+  });
+
+  lightbox.addEventListener('pointerup', (event) => {
+    isDragging = false;
+    lightbox.classList.remove('is-dragging');
+    lightbox.releasePointerCapture(event.pointerId);
+  });
+
+  lightbox.addEventListener('pointercancel', () => {
+    isDragging = false;
+    lightbox.classList.remove('is-dragging');
   });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
       closeLightbox();
+    } else if (lightbox.classList.contains('is-open') && (event.key === '+' || event.key === '=')) {
+      zoomMap(1.25);
+    } else if (lightbox.classList.contains('is-open') && event.key === '-') {
+      zoomMap(0.8);
+    } else if (lightbox.classList.contains('is-open') && event.key === '0') {
+      resetMapView();
     }
   });
 </script>
