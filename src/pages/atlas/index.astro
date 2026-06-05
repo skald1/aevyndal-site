@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { contentfulClient } from "../../lib/contentful";
+
+const entries = await contentfulClient.getEntries({ content_type: "country" });
+const countries = entries.items.map((entry: any) => ({
+  name: entry.fields.name,
+  age: entry.fields.age,
+  region: entry.fields.region,
+  slug: entry.fields.slug,
+  overview: entry.fields.overview,
+}));
+---
+
+<BaseLayout title="Atlas — Ævyndal" description="The countries and regions of Ævyndal">
+  <main class="atlas-index">
+    <header class="atlas-header">
+      <h1>The Atlas</h1>
+      <p>The known world of Ævyndal, as it has been revealed.</p>
+    </header>
+    <div class="country-grid">
+      {countries.map((country) => (
+        <a href={`/atlas/${country.slug}`} class="country-card">
+          <div class="country-age">{country.age}</div>
+          <h2>{country.name}</h2>
+          {country.overview && <p>{country.overview.slice(0, 120)}...</p>}
+        </a>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .atlas-index {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+  .atlas-header {
+    margin-bottom: 3rem;
+  }
+  .atlas-header h1 {
+    font-family: 'Crimson Text', serif;
+    font-size: 3rem;
+    color: #D0C9BC;
+  }
+  .atlas-header p {
+    font-family: 'Lora', serif;
+    color: #5C5650;
+  }
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .country-card {
+    background: #1A1614;
+    border: 1px solid #2a2420;
+    padding: 1.5rem;
+    text-decoration: none;
+    display: block;
+    transition: border-color 0.2s;
+  }
+  .country-card:hover {
+    border-color: #8B3218;
+  }
+  .country-age {
+    font-family: 'Lora', serif;
+    font-size: 0.75rem;
+    color: #8B3218;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  .country-card h2 {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.5rem;
+    color: #D0C9BC;
+    margin-bottom: 0.75rem;
+  }
+  .country-card p {
+    font-family: 'Lora', serif;
+    font-size: 0.875rem;
+    color: #5C5650;
+    line-height: 1.6;
+  }
+</style>
