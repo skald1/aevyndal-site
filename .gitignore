@@ -17,6 +17,10 @@ pnpm-debug.log*
 .env
 .env.production
 
+# local Contentful migration helpers can contain management tokens
+import-mutvia.mjs
+update-mutvia.mjs
+
 # macOS-specific files
 .DS_Store
 

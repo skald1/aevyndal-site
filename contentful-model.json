@@ -1,0 +1,28 @@
+{
+  "contentTypes": [
+    {
+      "sys": { "id": "country" },
+      "name": "Country",
+      "displayField": "name",
+      "fields": [
+        { "id": "name", "name": "Name", "type": "Symbol", "required": true },
+        { "id": "pronunciation", "name": "Pronunciation", "type": "Symbol", "required": false },
+        { "id": "alsoKnownAs", "name": "Also Known As", "type": "Symbol", "required": false },
+        { "id": "age", "name": "Age", "type": "Symbol", "required": true },
+        { "id": "region", "name": "Region", "type": "Symbol", "required": false },
+        { "id": "government", "name": "Government", "type": "Symbol", "required": false },
+        { "id": "capital", "name": "Capital", "type": "Symbol", "required": false },
+        { "id": "languages", "name": "Languages", "type": "Symbol", "required": false },
+        { "id": "primaryInhabitants", "name": "Primary Inhabitants", "type": "Symbol", "required": false },
+        { "id": "slug", "name": "Slug", "type": "Symbol", "required": true },
+        { "id": "overview", "name": "Overview", "type": "Text", "required": false },
+        { "id": "history", "name": "History", "type": "Text", "required": false },
+        { "id": "geography", "name": "Geography", "type": "Text", "required": false },
+        { "id": "culture", "name": "Culture", "type": "Text", "required": false },
+        { "id": "religion", "name": "Religion", "type": "Text", "required": false },
+        { "id": "notableFigures", "name": "Notable Figures", "type": "Text", "required": false },
+        { "id": "borders", "name": "Borders", "type": "Symbol", "required": false }
+      ]
+    }
+  ]
+}
