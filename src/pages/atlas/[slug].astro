@@ -24,6 +24,7 @@ try {
     const entries = await contentfulClient.getEntries({
       content_type: "country",
       "fields.slug": slug,
+      include: 2,
     });
     if (entries.items.length) country = entries.items[0].fields;
   }
@@ -33,7 +34,6 @@ if (!country) return Astro.redirect("/atlas");
 
 const heroImage = country.heroImage || "https://evindale.com/wp-content/uploads/2024/05/DarkGothicCastle1920x1080.webp";
 const countryLogo = country.flag?.[0]?.fields?.file?.url ? `https:${country.flag[0].fields.file.url}` : null;
-
 const agePrimaries: Record<string, string> = {
   "First Age": "#7B4FA6",
   "Second Age": "#B01C1C",
@@ -176,21 +176,23 @@ function toLocations(text: string): string {
 
   <header class="country-hero" role="banner">
     <div class="country-hero-bg" style={`background-image: url('${heroImage}')`} aria-hidden="true"></div>
-    <div class="country-hero-content">
-      <p class="country-hero-tagline">{country.age} &nbsp;·&nbsp; {country.region} &nbsp;·&nbsp; Ævyndal</p>
-      <div class="country-hero-title-row">
-        {countryLogo && (
-          <img src={countryLogo} alt={`${country.name} logo`} class="country-hero-logo" />
-        )}
-        <h1 class="country-hero-title">{country.name}</h1>
-      </div>
-      {country.alsoKnownAs && <p class="country-hero-epithet">{country.alsoKnownAs}</p>}
-      {country.heroVerse && (
-        <div class="country-hero-verse" aria-label="Opening verse">
-          <Fragment set:html={country.heroVerse.split("\n").map((l: string) => `<em>${l}</em>`).join("")} />
-        </div>
-      )}
+<div class="country-hero-content">
+  {countryLogo && (
+    <div class="country-hero-logo-wrap">
+      <img src={countryLogo} alt={`${country.name} logo`} class="country-hero-logo" />
     </div>
+  )}
+  <div class="country-hero-text">
+    <p class="country-hero-tagline">{country.age} &nbsp;·&nbsp; {country.region} &nbsp;·&nbsp; Ævyndal</p>
+    <h1 class="country-hero-title">{country.name}</h1>
+    {country.alsoKnownAs && <p class="country-hero-epithet">{country.alsoKnownAs}</p>}
+    {country.heroVerse && (
+      <div class="country-hero-verse" aria-label="Opening verse">
+        <Fragment set:html={country.heroVerse.split("\n").map((l: string) => `<em>${l}</em>`).join("")} />
+      </div>
+    )}
+  </div>
+</div>
     <a class="country-hero-scroll-hint" href="#atlas-entry" aria-label="Scroll to atlas entry">
       <div class="country-scroll-arrow"></div>
       <span>Atlas Entry</span>
@@ -319,13 +321,37 @@ function toLocations(text: string): string {
 .country-hero-content {
   position: relative;
   z-index: 1;
-  text-align: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: clamp(0.75rem, 2svh, 1.25rem);
+  justify-content: center;
+  gap: 3rem;
   max-width: 900px;
   padding: 0 2rem;
+  width: 100%;
+}
+
+.country-hero-logo-wrap {
+  width: 20%;
+  flex-shrink: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.country-hero-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 0 20px rgba(196,80,30,0.3));
+}
+
+.country-hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.5svh, 1rem);
+  text-align: left;
 }
 
 .country-hero-tagline {
@@ -335,22 +361,6 @@ function toLocations(text: string): string {
   text-transform: uppercase;
   color: #5C5650;
   animation: fadeInUp 1s ease 0.2s both;
-}
-
-.country-hero-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  animation: fadeInUp 1s ease 0.4s both;
-}
-
-.country-hero-logo {
-  height: clamp(60px, 8vw, 100px);
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 0 20px rgba(196,80,30,0.3));
-  flex-shrink: 0;
 }
 
 .country-hero-title {
@@ -583,7 +593,6 @@ function toLocations(text: string): string {
   .stat-block { padding: 1.5rem; }
   .page-content { padding: 2rem 1.25rem 6rem; }
   .country-hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
-  .country-hero-title-row { flex-direction: column; gap: 1rem; }
   .page-content :global(.figure-card-header) { padding: 1.25rem; }
   .page-content :global(.figure-card-body) { padding: 1.25rem; }
   .page-content :global(.faction-card) { grid-template-columns: 1fr; }
