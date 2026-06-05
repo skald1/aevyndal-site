@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 
     return entries.items
       .map((entry: any) => entry.fields.slug)
-      .filter((entrySlug: unknown) => typeof entrySlug === "string" && entrySlug !== "mutvia-fourth-age")
+      .filter((entrySlug: unknown) => typeof entrySlug === "string")
       .map((entrySlug: string) => ({
         params: { slug: entrySlug },
       }));
