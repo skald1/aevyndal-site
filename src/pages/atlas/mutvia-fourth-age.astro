@@ -3,17 +3,53 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { contentfulClient } from "../../lib/contentful";
 
 const slug = "mutvia-fourth-age";
+const fallbackCountry = {
+  name: "Mütvia",
+  pronunciation: "MOOT-vee-ah",
+  alsoKnownAs: "The Land of 1,000 Princes",
+  age: "Fourth Age",
+  region: "Northern Erinnal",
+  government:
+    "Decentralized principalities. Approximately 500 ruling ströikas at any given time, with hundreds more petty lords beneath them.",
+  capital: "None. Each principality is autonomous.",
+  languages: "Mütvian",
+  primaryInhabitants: "Klane (human), Slindar'il, Fayd'il, T'nao, Igyrlin",
+  borders:
+    "West: Sta'abri. East: Slindar'il Nation. Northeast: Amsträd. South: Cultrek.",
+  overview:
+    "Little can be said about Mütvia without thoughts of creatures that go bump in the night. This is the stuff of legends: dark forests, black soils, restless dead, and spirits that move through the trees with complete indifference to whether you survive them.\n\nThe deeper truth is that Mütvia is defined by The Land itself. Nor'dagha, patron deity of Mütvia, is present in it. The Land is her manifest body, aware and active, enforcing a balance between the three castes that define Mütvian society: Nobles, Commoners, and Drósti.\n\nSuperstition here is not ignorance. It is survival. Gloom is the ambient state. Hope is the work.",
+  history:
+    "Mütvia's defining historical wound is the Liratein War of 659 IC, a conflict between Stroikas Aken Arduuskjil of the east and Stroika Drerai Endasoi of the west. The war reshaped the noble landscape permanently and left old claims, old resentments, and old dead in the soil.\n\nHouse Veshk, stripped of lands in the fallout, became the Veshtari: Mütvia's primary intelligence network, operating under the cover of a traveling theater company.",
+  geography:
+    "The Gergi River bisects Mütvia culturally as much as physically, dividing the rolling-consonant north from the tapped-consonant south. In the north, names are kept secret. In the south, you stand by your name.\n\nMount Verich dominates the south-central landscape. The Vorichnaya Woods occupy the northeast. Moldev holds the Veiled Gate, where the First Murder occurred and where all souls pass on their way to what comes next.",
+  society:
+    "NOBLES\nNobles provide structure and direction. Their edicts shape a domain, and some have access to hidden secrets of The Land.\n\nCOMMONERS\nCommoners are the body of Mütvia. They know the Land's threats most intimately because they live closest to them.\n\nDRÓSTI\nThe six Drósti families carry bloodlines older and stranger than ordinary heritage. They occupy a third space the caste system acknowledges but cannot fully contain.",
+  culture:
+    "SUPERSTITION AS PHYSICS\nThe operational practices Mütvians follow are not folklore. They are the accumulated findings of centuries living beside things that eat people.\n\nXENOPHOBIA AS RISK MANAGEMENT\nA stranger who does not know the superstitions is a liability. A stranger who does not know the undead catalog is a danger.\n\nTHE UNDEAD\nMütvia's undead are scavengers, not predators: unabsorbed corpses returning to finish what the soil started.",
+  religion:
+    "Nor'dagha is Mütvia's patron. The Land is her manifest presence, not a symbol of her. When sacred places are wounded, she may withdraw, and what fills the absence is rarely merciful.\n\nThe Veiled Gate in Moldev is not only a religious symbol. It is operational infrastructure. Burial rites in Mütvia are the mechanism by which a soul is properly processed.",
+  notableFigures:
+    "RA'ATH WOLVESBANE — The central human villain of Mütvia's present, a hunter whose every accusation is a confession he will never speak.\n\nDETRIUS AKENSKJIL — Son of the fallen Stroikas Aken Arduuskjil. Believed to be a master vampire somewhere in the northern forests.\n\nBORDÜ MÖMA — The Crone of the Woods, manifestation of Nor'dagha's active presence in the deep forest.",
+  notableLocations:
+    "MOLDEV — Northern highlands and home of the Veiled Gate.\n\nMOUNT VERICH — Active volcano in south-central Mütvia, seat of House Dracovich.\n\nTHE GERGI RIVER — The line along which Mütvia divides its understanding of identity.\n\nGOYEK STROYN — Eagle Rock, a wounded sacred site of Nor'dagha.",
+};
 
-const entries = await contentfulClient.getEntries({ 
-  content_type: "country",
-  "fields.slug": slug,
-});
+let country = fallbackCountry;
 
-if (!entries.items.length) {
-  return Astro.redirect("/atlas");
+if (contentfulClient) {
+  try {
+    const entries = await contentfulClient.getEntries({
+      content_type: "country",
+      "fields.slug": slug,
+    });
+
+    if (entries.items.length) {
+      country = entries.items[0].fields as typeof fallbackCountry;
+    }
+  } catch (error) {
+    console.warn(`Contentful lookup failed for ${slug}; using local fallback.`, error);
+  }
 }
-
-const country = entries.items[0].fields as any;
 
 function toHTML(text: string): string {
   if (!text) return "";

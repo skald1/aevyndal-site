@@ -2,14 +2,36 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { contentfulClient } from "../../lib/contentful";
 
-const entries = await contentfulClient.getEntries({ content_type: "country" });
-const countries = entries.items.map((entry: any) => ({
-  name: entry.fields.name,
-  age: entry.fields.age,
-  region: entry.fields.region,
-  slug: entry.fields.slug,
-  overview: entry.fields.overview,
-}));
+const fallbackCountries = [
+  {
+    name: "Mütvia",
+    age: "Fourth Age",
+    region: "Northern Erinnal",
+    slug: "mutvia-fourth-age",
+    overview:
+      "The Land of 1,000 Princes: a dark country of restless dead, old rites, secret names, and survival disguised as superstition.",
+  },
+];
+
+let countries = fallbackCountries;
+
+if (contentfulClient) {
+  try {
+    const entries = await contentfulClient.getEntries({ content_type: "country" });
+
+    if (entries.items.length) {
+      countries = entries.items.map((entry: any) => ({
+        name: entry.fields.name,
+        age: entry.fields.age,
+        region: entry.fields.region,
+        slug: entry.fields.slug,
+        overview: entry.fields.overview,
+      }));
+    }
+  } catch (error) {
+    console.warn("Contentful atlas index lookup failed; using local fallback.", error);
+  }
+}
 ---
 
 <BaseLayout title="Atlas — Ævyndal" description="The countries and regions of Ævyndal">
