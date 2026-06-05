@@ -1,0 +1,256 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { contentfulClient } from "../../lib/contentful";
+
+const slug = "mutvia-fourth-age";
+
+const entries = await contentfulClient.getEntries({ 
+  content_type: "country",
+  "fields.slug": slug,
+});
+
+if (!entries.items.length) {
+  return Astro.redirect("/atlas");
+}
+
+const country = entries.items[0].fields as any;
+
+function toHTML(text: string): string {
+  if (!text) return "";
+  return text
+    .split(/\n\n+/)
+    .map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`)
+    .join("");
+}
+
+function toSections(text: string): string {
+  if (!text) return "";
+  return text
+    .split(/\n\n+/)
+    .map(block => {
+      const trimmed = block.trim();
+      if (trimmed === trimmed.toUpperCase() && !trimmed.includes(".")) {
+        return `<h3>${trimmed}</h3>`;
+      }
+      return `<p>${trimmed.replace(/\n/g, "<br>")}</p>`;
+    })
+    .join("");
+}
+
+function toFigures(text: string): string {
+  if (!text) return "";
+  return text
+    .split(/\n\n+/)
+    .map(block => {
+      const lines = block.trim().split(/\n/);
+      const first = lines[0];
+      const rest = lines.slice(1).join("<br>");
+      if (first === first.toUpperCase() && first.includes("—")) {
+        const [name, ...desc] = first.split("—");
+        return `<div class="figure-block">
+          <h3>${name.trim()}</h3>
+          <p>${desc.join("—").trim()}${rest ? "<br>" + rest : ""}</p>
+        </div>`;
+      }
+      return `<div class="figure-block"><p>${block.replace(/\n/g, "<br>")}</p></div>`;
+    })
+    .join("");
+}
+---
+
+<BaseLayout title={`${country.name} — Ævyndal Atlas`} description={country.overview || ""}>
+  <main class="country-page">
+
+    <nav class="breadcrumb">
+      <a href="/atlas">Atlas</a> / <span>{country.name}</span>
+    </nav>
+
+    <header class="country-header">
+      <div class="country-age">{country.age}</div>
+      <h1>{country.name}</h1>
+      {country.pronunciation && <p class="pronunciation">/{country.pronunciation}/</p>}
+      {country.alsoKnownAs && <p class="aka">Also known as: {country.alsoKnownAs}</p>}
+    </header>
+
+    <div class="country-meta">
+      {country.capital && <div><span>Capital</span><p>{country.capital}</p></div>}
+      {country.government && <div><span>Government</span><p>{country.government}</p></div>}
+      {country.languages && <div><span>Languages</span><p>{country.languages}</p></div>}
+      {country.primaryInhabitants && <div><span>Peoples</span><p>{country.primaryInhabitants}</p></div>}
+      {country.region && <div><span>Region</span><p>{country.region}</p></div>}
+      {country.borders && <div><span>Borders</span><p>{country.borders}</p></div>}
+    </div>
+
+<div class="country-body">
+  {country.overview && (
+    <section>
+      <h2>Overview</h2>
+      <Fragment set:html={toHTML(country.overview)} />
+    </section>
+  )}
+  {country.history && (
+    <section>
+      <h2>History</h2>
+      <Fragment set:html={toHTML(country.history)} />
+    </section>
+  )}
+  {country.geography && (
+    <section>
+      <h2>Geography</h2>
+      <Fragment set:html={toHTML(country.geography)} />
+    </section>
+  )}
+  {country.society && (
+    <section>
+      <h2>Society</h2>
+      <Fragment set:html={toSections(country.society)} />
+    </section>
+  )}
+  {country.culture && (
+    <section>
+      <h2>Culture</h2>
+      <Fragment set:html={toSections(country.culture)} />
+    </section>
+  )}
+  {country.religion && (
+    <section>
+      <h2>Religion & Belief</h2>
+      <Fragment set:html={toHTML(country.religion)} />
+    </section>
+  )}
+  {country.notableFigures && (
+    <section>
+      <h2>Notable Figures</h2>
+      <div class="figures">
+        <Fragment set:html={toFigures(country.notableFigures)} />
+      </div>
+    </section>
+  )}
+  {country.notableLocations && (
+    <section>
+      <h2>Notable Locations</h2>
+      <div class="figures">
+        <Fragment set:html={toFigures(country.notableLocations)} />
+      </div>
+    </section>
+  )}
+</div>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .country-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+  .breadcrumb {
+    font-family: 'Lora', serif;
+    font-size: 0.8rem;
+    color: #5C5650;
+    margin-bottom: 2rem;
+  }
+  .breadcrumb a {
+    color: #8B3218;
+    text-decoration: none;
+  }
+  .country-header {
+    margin-bottom: 2rem;
+  }
+  .country-age {
+    font-family: 'Lora', serif;
+    font-size: 0.75rem;
+    color: #8B3218;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  .country-header h1 {
+    font-family: 'Crimson Text', serif;
+    font-size: 4rem;
+    color: #D0C9BC;
+    margin-bottom: 0.5rem;
+  }
+  .pronunciation {
+    font-family: 'Lora', serif;
+    color: #5C5650;
+    font-style: italic;
+  }
+  .aka {
+    font-family: 'Lora', serif;
+    color: #5C5650;
+    font-size: 0.875rem;
+  }
+  .country-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    background: #1A1614;
+    border: 1px solid #2a2420;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .country-meta span {
+    font-family: 'Lora', serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #8B3218;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .country-meta p {
+    font-family: 'Lora', serif;
+    color: #D0C9BC;
+    font-size: 0.875rem;
+  }
+  .country-body section {
+    margin-bottom: 3rem;
+  }
+  .country-body h2 {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.75rem;
+    color: #D0C9BC;
+    border-bottom: 1px solid #2a2420;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .country-body p {
+    font-family: 'Lora', serif;
+    color: #8A8172;
+    line-height: 1.8;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  .figures {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .figure-block {
+    border-left: 2px solid #8B3218;
+    padding-left: 1.5rem;
+  }
+  .figure-block h3 {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.25rem;
+    color: #D0C9BC;
+    margin-bottom: 0.5rem;
+  }
+  .figure-block p {
+    font-family: 'Lora', serif;
+    color: #8A8172;
+    line-height: 1.8;
+    font-size: 0.95rem;
+  }
+  .country-body h3 {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  color: #C4501E;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+</style>
