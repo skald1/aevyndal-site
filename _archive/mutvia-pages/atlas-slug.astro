@@ -1,0 +1,601 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { contentfulClient } from "../../lib/contentful";
+
+export async function getStaticPaths() {
+  if (!contentfulClient) return [];
+  try {
+    const entries = await contentfulClient.getEntries({ content_type: "country" });
+    return entries.items
+      .map((entry: any) => entry.fields.slug)
+      .filter((entrySlug: unknown) => typeof entrySlug === "string")
+      .map((entrySlug: string) => ({ params: { slug: entrySlug } }));
+  } catch (error) {
+    console.warn("Contentful atlas path lookup failed.", error);
+    return [];
+  }
+}
+
+const { slug } = Astro.params;
+let country: any = null;
+
+try {
+  if (contentfulClient) {
+    const entries = await contentfulClient.getEntries({
+      content_type: "country",
+      "fields.slug": slug,
+      include: 2,
+    });
+    if (entries.items.length) country = entries.items[0].fields;
+  }
+} catch (e) {}
+
+if (!country) return Astro.redirect("/atlas");
+
+const heroImage = country.heroImage || "https://evindale.com/wp-content/uploads/2024/05/DarkGothicCastle1920x1080.webp";
+const countryLogo = country.flag?.[0]?.fields?.file?.url ? `https:${country.flag[0].fields.file.url}` : null;
+const agePrimaries: Record<string, string> = {
+  "First Age": "#7B4FA6",
+  "Second Age": "#B01C1C",
+  "Third Age": "#B5622A",
+  "Fourth Age": "#2A2440",
+  "Fifth Age": "#1A3320",
+  "Sixth Age": "#8AAD3A",
+  "Seventh Age": "#0D151C",
+  "Eighth Age": "#E8A030",
+};
+const ageColor = agePrimaries[country.age] || "#2A2440";
+
+const navSections = [
+  { id: "overview", label: "Overview", show: !!country.overview },
+  { id: "history", label: "History", show: !!country.history },
+  { id: "geography", label: "Geography", show: !!country.geography },
+  { id: "society", label: "Society", show: !!country.society },
+  { id: "culture", label: "Culture", show: !!country.culture },
+  { id: "religion", label: "Religion", show: !!country.religion },
+  { id: "figures", label: "Figures in Shadow", show: !!country.notableFigures },
+  { id: "borders", label: "Borders", show: !!country.borders },
+  { id: "locations", label: "Notable Locations", show: !!country.notableLocations },
+].filter(s => s.show);
+
+function toHTML(text: string): string {
+  if (!text) return "";
+  return text.split(/\n\n+/).map((p: string) => `<p>${p.replace(/\n/g, "<br>")}</p>`).join("");
+}
+
+// Society renderer — three visual tiers:
+// TIER 1: ALL CAPS with " — " = faction/caste header (major divider)
+// TIER 2: ALL CAPS house/family name at start of paragraph = faction card
+// TIER 3: regular prose
+function toSociety(text: string): string {
+  if (!text) return "";
+  const blocks = text.split(/\n\n+/);
+  return blocks.map((block: string) => {
+    const trimmed = block.trim();
+    // Tier 1: caste headers like "NOBLES — THE MIND"
+    if (trimmed === trimmed.toUpperCase() && trimmed.includes("—") && !trimmed.includes(".") && trimmed.length < 80) {
+      const [left, ...rest] = trimmed.split("—");
+      return `<div class="caste-header">
+        <div class="caste-header-name">${left.trim()}</div>
+        <div class="caste-header-sub">${rest.join("—").trim()}</div>
+      </div>`;
+    }
+    // Tier 2: faction cards — paragraph starting with ALL CAPS name followed by " — "
+    const factionMatch = trimmed.match(/^([A-ZÜÖÄÀÁÂÃÇÈÉÊËÌÍÎÏÑÒÓÔÕÙÚÛÝ\s']+)\s—\s(.+)/s);
+    if (factionMatch && factionMatch[1] === factionMatch[1].toUpperCase() && factionMatch[1].trim().split(" ").length <= 4) {
+      const name = factionMatch[1].trim();
+      const content = factionMatch[2].trim();
+      return `<div class="faction-card">
+        <div class="faction-sigil-slot" aria-hidden="true"></div>
+        <div class="faction-card-body">
+          <h4 class="faction-name">${name}</h4>
+          <p>${content.replace(/\n/g, "<br>")}</p>
+        </div>
+      </div>`;
+    }
+    return `<p>${trimmed.replace(/\n/g, "<br>")}</p>`;
+  }).join("");
+}
+
+function toSections(text: string): string {
+  if (!text) return "";
+  return text.split(/\n\n+/).map((block: string) => {
+    const trimmed = block.trim();
+    if (trimmed === trimmed.toUpperCase() && !trimmed.includes(".") && trimmed.length < 80) {
+      return `<h3 class="subsection-title">${trimmed}</h3>`;
+    }
+    return `<p>${trimmed.replace(/\n/g, "<br>")}</p>`;
+  }).join("");
+}
+
+// Figures renderer — each figure is one card, paragraphs within it are prose
+function toFigures(text: string): string {
+  if (!text) return "";
+  const blocks = text.split(/\n\n+/);
+  const figures: string[][] = [];
+  let current: string[] = [];
+
+  for (const block of blocks) {
+    const trimmed = block.trim();
+    const firstLine = trimmed.split("\n")[0];
+    // New figure starts when first line is ALL CAPS with an em dash
+    if (firstLine === firstLine.toUpperCase() && firstLine.includes("—") && firstLine.split(" ").length <= 6) {
+      if (current.length) figures.push(current);
+      current = [trimmed];
+    } else {
+      current.push(trimmed);
+    }
+  }
+  if (current.length) figures.push(current);
+
+  return figures.map((blocks: string[]) => {
+    const firstBlock = blocks[0];
+    const firstLine = firstBlock.split("\n")[0];
+    const dashIdx = firstLine.indexOf("—");
+    const name = firstLine.substring(0, dashIdx).trim();
+    const firstDesc = firstLine.substring(dashIdx + 1).trim();
+    const firstRest = firstBlock.split("\n").slice(1).join("<br>");
+    const remainingBlocks = blocks.slice(1);
+
+    return `<div class="figure-card">
+      <div class="figure-card-header">
+        <div class="figure-sigil-slot" aria-hidden="true"></div>
+        <div class="figure-card-title">
+          <h3 class="figure-name">${name}</h3>
+        </div>
+      </div>
+      <div class="figure-card-body">
+        <p>${firstDesc}${firstRest ? "<br>" + firstRest : ""}</p>
+        ${remainingBlocks.map((b: string) => `<p>${b.replace(/\n/g, "<br>")}</p>`).join("")}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function toLocations(text: string): string {
+  if (!text) return "";
+  return text.split(/\n\n+/).map((block: string) => {
+    const trimmed = block.trim();
+    const firstLine = trimmed.split("\n")[0];
+    const rest = trimmed.split("\n").slice(1).join(" ");
+    if (firstLine === firstLine.toUpperCase() && firstLine.includes("—")) {
+      const dashIdx = firstLine.indexOf("—");
+      const name = firstLine.substring(0, dashIdx).trim();
+      const desc = firstLine.substring(dashIdx + 1).trim();
+      return `<div class="location-entry">
+        <div class="location-name">${name}</div>
+        <p>${desc}${rest ? " " + rest : ""}</p>
+      </div>`;
+    }
+    return `<div class="location-entry"><p>${trimmed.replace(/\n/g, "<br>")}</p></div>`;
+  }).join("");
+}
+---
+
+<BaseLayout title={`${country.name} — Ævyndal Atlas`} description={country.overview ? country.overview.substring(0, 160) : ""} showStickyNav={false}>
+
+  <header class="country-hero" role="banner">
+    <div class="country-hero-bg" style={`background-image: url('${heroImage}')`} aria-hidden="true"></div>
+<div class="country-hero-content">
+  {countryLogo && (
+    <div class="country-hero-logo-wrap">
+      <img src={countryLogo} alt={`${country.name} logo`} class="country-hero-logo" />
+    </div>
+  )}
+  <div class="country-hero-text">
+    <p class="country-hero-tagline">{country.age} &nbsp;·&nbsp; {country.region} &nbsp;·&nbsp; Ævyndal</p>
+    <h1 class="country-hero-title">{country.name}</h1>
+    {country.alsoKnownAs && <p class="country-hero-epithet">{country.alsoKnownAs}</p>}
+    {country.heroVerse && (
+      <div class="country-hero-verse" aria-label="Opening verse">
+        <Fragment set:html={country.heroVerse.split("\n").map((l: string) => `<em>${l}</em>`).join("")} />
+      </div>
+    )}
+  </div>
+</div>
+    <a class="country-hero-scroll-hint" href="#atlas-entry" aria-label="Scroll to atlas entry">
+      <div class="country-scroll-arrow"></div>
+      <span>Atlas Entry</span>
+    </a>
+  </header>
+
+  <aside class="stat-block" id="atlas-entry" aria-label="Country statistics">
+    {country.pronunciation && <div class="stat-item"><span class="stat-label">Pronunciation</span><span class="stat-value">{country.pronunciation}</span></div>}
+    {country.alsoKnownAs && <div class="stat-item"><span class="stat-label">Epithet</span><span class="stat-value">{country.alsoKnownAs}</span></div>}
+    {country.government && <div class="stat-item"><span class="stat-label">Government</span><span class="stat-value">{country.government}</span></div>}
+    {country.capital && <div class="stat-item"><span class="stat-label">Capital</span><span class="stat-value">{country.capital}</span></div>}
+    {country.languages && <div class="stat-item"><span class="stat-label">Language</span><span class="stat-value">{country.languages}</span></div>}
+    {country.primaryInhabitants && <div class="stat-item"><span class="stat-label">Primary Inhabitants</span><span class="stat-value">{country.primaryInhabitants}</span></div>}
+    {country.age && <div class="stat-item"><span class="stat-label">Age</span><span class="stat-value">{country.age}</span></div>}
+    {country.region && <div class="stat-item"><span class="stat-label">Region</span><span class="stat-value">{country.region}</span></div>}
+  </aside>
+
+  {navSections.length > 0 && (
+    <nav class="page-nav" aria-label="Page sections">
+      <div class="page-nav-inner">
+        <a href="/atlas" class="page-nav-back">← Atlas</a>
+        {navSections.map(s => <a href={`#${s.id}`}>{s.label}</a>)}
+      </div>
+    </nav>
+  )}
+
+  <main class="page-content" id="main-content">
+
+    {country.overview && (
+      <article class="atlas-section" id="overview">
+        <div class="section-header"><h2 class="section-title">Overview</h2></div>
+        <Fragment set:html={toHTML(country.overview)} />
+      </article>
+    )}
+
+    {country.history && (
+      <article class="atlas-section" id="history">
+        <div class="section-header"><h2 class="section-title">History</h2></div>
+        <Fragment set:html={toSections(country.history)} />
+      </article>
+    )}
+
+    {country.geography && (
+      <article class="atlas-section" id="geography">
+        <div class="section-header"><h2 class="section-title">Geography</h2></div>
+        <Fragment set:html={toHTML(country.geography)} />
+      </article>
+    )}
+
+    {country.society && (
+      <article class="atlas-section" id="society">
+        <div class="section-header"><h2 class="section-title">Society</h2></div>
+        <Fragment set:html={toSociety(country.society)} />
+      </article>
+    )}
+
+    {country.culture && (
+      <article class="atlas-section" id="culture">
+        <div class="section-header"><h2 class="section-title">Culture</h2></div>
+        <Fragment set:html={toSections(country.culture)} />
+      </article>
+    )}
+
+    {country.religion && (
+      <article class="atlas-section" id="religion">
+        <div class="section-header"><h2 class="section-title">Religion & Belief</h2></div>
+        <Fragment set:html={toSections(country.religion)} />
+      </article>
+    )}
+
+    {country.notableFigures && (
+      <article class="atlas-section" id="figures">
+        <div class="section-header"><h2 class="section-title">Figures in Shadow</h2></div>
+        <div class="figures-list">
+          <Fragment set:html={toFigures(country.notableFigures)} />
+        </div>
+      </article>
+    )}
+
+    {country.notableLocations && (
+      <article class="atlas-section" id="locations">
+        <div class="section-header"><h2 class="section-title">Notable Locations</h2></div>
+        <Fragment set:html={toLocations(country.notableLocations)} />
+      </article>
+    )}
+
+  </main>
+
+</BaseLayout>
+
+<style define:vars={{ ageColor }}>
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* HERO */
+.country-hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem 6rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.country-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  filter: brightness(0.3) saturate(0.5);
+  z-index: 0;
+}
+
+.country-hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(9,8,10,0.7) 80%, #09080A 100%);
+}
+
+.country-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  max-width: 900px;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+.country-hero-logo-wrap {
+  width: 20%;
+  flex-shrink: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.country-hero-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 0 20px rgba(196,80,30,0.3));
+}
+
+.country-hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.5svh, 1rem);
+  text-align: left;
+}
+
+.country-hero-tagline {
+  font-family: 'Lora', serif;
+  font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #5C5650;
+  animation: fadeInUp 1s ease 0.2s both;
+}
+
+.country-hero-title {
+  font-family: 'Crimson Text', serif;
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  font-weight: 400;
+  color: #D0C9BC;
+  line-height: 1;
+  margin: 0;
+  text-shadow: 0 2px 40px rgba(0,0,0,0.8);
+}
+
+.country-hero-epithet {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  color: #5C5650;
+  animation: fadeInUp 1s ease 0.5s both;
+}
+
+.country-hero-verse {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  color: #5C5650;
+  line-height: 1.7;
+  animation: fadeInUp 1s ease 0.6s both;
+  margin-top: 0.5rem;
+}
+
+.country-hero-verse em { display: block; }
+
+.country-hero-scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: #5C5650;
+  font-family: 'Lora', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  animation: fadeIn 2s ease 1.5s both;
+  transition: color 0.2s;
+}
+
+.country-hero-scroll-hint:hover { color: #D0C9BC; }
+
+.country-scroll-arrow {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, #C4501E, transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+
+/* STAT BLOCK */
+.stat-block {
+  background: linear-gradient(135deg, #1e1a2e, #0f0d11);
+  border: 1px solid rgba(196,80,30,0.15);
+  border-left: 3px solid #C4501E;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem 2rem;
+}
+
+.stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
+.stat-label { font-family: 'Lora', serif; font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: #C4501E; }
+.stat-value { font-family: 'Lora', serif; font-size: 0.9rem; color: #D0C9BC; }
+
+/* NAV */
+.page-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(9,8,10,0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(196,80,30,0.15);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.page-nav::-webkit-scrollbar { display: none; }
+.page-nav-inner { display: flex; align-items: center; min-width: max-content; padding: 0 1.5rem; }
+.page-nav a { font-family: 'Lora', serif; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: #5C5650; text-decoration: none; padding: 1rem; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; white-space: nowrap; }
+.page-nav a:hover { color: #D0C9BC; border-bottom-color: #C4501E; }
+.page-nav-back { color: #8B3218 !important; margin-right: 0.5rem; border-right: 1px solid rgba(92,86,80,0.2); padding-right: 1.5rem !important; }
+
+/* PAGE */
+.page-content { max-width: 860px; margin: 0 auto; padding: 4rem 2rem 8rem; }
+.atlas-section { margin-bottom: 5rem; scroll-margin-top: 60px; }
+
+.section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(196,80,30,0.2); }
+.section-header::before { content: ''; display: block; width: 3px; height: 2rem; background: #C4501E; flex-shrink: 0; }
+.section-title { font-family: 'Crimson Text', serif; font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #D0C9BC; margin: 0; }
+
+/* PROSE */
+.page-content :global(p) { font-family: 'Lora', serif; font-size: 1rem; line-height: 1.85; color: #D0C9BC; margin-bottom: 1.25rem; }
+.page-content :global(p:last-child) { margin-bottom: 0; }
+.page-content :global(strong) { color: #fff; font-weight: 500; }
+.page-content :global(em) { color: #9aa0a8; }
+
+/* SUBSECTION TITLES */
+.page-content :global(.subsection-title) {
+  font-family: 'Crimson Text', serif;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+  margin: 2.5rem 0 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid #2A2440;
+}
+
+/* SOCIETY — CASTE HEADERS (Tier 1) */
+.page-content :global(.caste-header) {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 3rem 0 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(196,80,30,0.15);
+}
+.page-content :global(.caste-header-name) {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #C4501E;
+}
+.page-content :global(.caste-header-sub) {
+  font-family: 'Lora', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5C5650;
+}
+
+/* SOCIETY — FACTION CARDS (Tier 2) */
+.page-content :global(.faction-card) {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.25rem;
+  background: rgba(26,22,20,0.6);
+  border: 1px solid rgba(92,86,80,0.15);
+  border-top: 2px solid rgba(196,80,30,0.3);
+  padding: 1.5rem;
+  margin: 1.25rem 0;
+}
+.page-content :global(.faction-sigil-slot) {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(92,86,80,0.2);
+  background: rgba(9,8,10,0.4);
+  flex-shrink: 0;
+  display: none;
+}
+.page-content :global(.faction-sigil-slot:has(img)) { display: block; }
+.page-content :global(.faction-card-body) { display: flex; flex-direction: column; gap: 0.5rem; }
+.page-content :global(.faction-name) {
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: #D0C9BC;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+}
+
+/* FIGURES */
+.figures-list { display: flex; flex-direction: column; gap: 3rem; }
+
+.page-content :global(.figure-card) {
+  background: linear-gradient(135deg, rgba(139,50,24,0.05), rgba(9,8,10,0.5));
+  border: 1px solid rgba(139,50,24,0.2);
+  border-left: 3px solid #8B3218;
+  overflow: hidden;
+}
+.page-content :global(.figure-card-header) {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem 2rem 1.25rem;
+  border-bottom: 1px solid rgba(139,50,24,0.1);
+  background: rgba(139,50,24,0.04);
+}
+.page-content :global(.figure-sigil-slot) {
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgba(139,50,24,0.2);
+  background: rgba(9,8,10,0.6);
+  flex-shrink: 0;
+  display: none;
+}
+.page-content :global(.figure-sigil-slot:has(img)) { display: block; }
+.page-content :global(.figure-card-title) { flex: 1; }
+.page-content :global(.figure-name) {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.4rem;
+  color: #D0C9BC;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+.page-content :global(.figure-card-body) {
+  padding: 1.5rem 2rem 2rem;
+}
+.page-content :global(.figure-card-body p) {
+  margin-bottom: 1rem;
+}
+
+/* LOCATIONS */
+.page-content :global(.location-entry) { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(92,86,80,0.15); }
+.page-content :global(.location-entry:last-child) { border-bottom: none; }
+.page-content :global(.location-name) { font-family: 'Crimson Text', serif; font-size: 1rem; letter-spacing: 0.15em; text-transform: uppercase; color: #9aa0a8; margin-bottom: 0.75rem; }
+
+/* ANIMATIONS */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scrollPulse { 0%, 100% { opacity: 0.3; transform: scaleY(0.8); } 50% { opacity: 1; transform: scaleY(1); } }
+
+@media (max-width: 640px) {
+  .stat-block { padding: 1.5rem; }
+  .page-content { padding: 2rem 1.25rem 6rem; }
+  .country-hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+  .page-content :global(.figure-card-header) { padding: 1.25rem; }
+  .page-content :global(.figure-card-body) { padding: 1.25rem; }
+  .page-content :global(.faction-card) { grid-template-columns: 1fr; }
+}
+
+</style>

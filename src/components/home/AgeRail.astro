@@ -1,0 +1,27 @@
+---
+import { ageRailItems } from "../../data/ages";
+---
+
+<nav class="age-rail" id="ages" aria-label="Age navigation">
+  <div class="age-rail__scroller">
+    {ageRailItems.map((item, index) => (
+      <button
+        type="button"
+        class="age-rail__item"
+        style={`--age-color: ${item.color}; --age-progress: ${item.progress}%;`}
+        data-age-id={item.id}
+        data-age-control={item.id}
+        aria-controls={`age-${item.id}`}
+        aria-expanded={index === 0 ? "true" : "false"}
+      >
+        <span class="age-rail__dot" aria-hidden="true"></span>
+        <span class="age-rail__label">{item.label}</span>
+        {item.id !== "home" && (
+          <span class="age-rail__progress" aria-label={`${item.progress}% complete`}>
+            <span></span>
+          </span>
+        )}
+      </button>
+    ))}
+  </div>
+</nav>

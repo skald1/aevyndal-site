@@ -1,0 +1,40 @@
+---
+import { worldMetrics } from "../../data/home";
+
+const metricIcons = ["✧", "♙", "✦", "✚"];
+---
+
+<aside class="world-card" aria-labelledby="world-card-title">
+  <div class="world-card__inner">
+    <p class="world-card__eyebrow">The World Of</p>
+    <h2 id="world-card-title" class="world-card__title">
+      Ævyndal <span aria-hidden="true">✦</span>
+    </h2>
+    <div class="world-card__divider" aria-hidden="true"></div>
+
+    <dl class="world-card__stats">
+      {worldMetrics.map((metric, index) => (
+        <div class="world-card__row">
+          <dt>
+            <span class="world-card__icon" aria-hidden="true">{metricIcons[index]}</span>
+            <span class={metric.value === "Countless" ? "world-card__word" : "world-card__number"}>
+              {metric.value}
+            </span>
+          </dt>
+          <dd>{metric.label}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <blockquote class="world-card__quote">
+      <p>
+        “No force has yet succeeded<br />
+        in uniting Mütvia.<br />
+        Many have tried.<br />
+        Most have fed the soil.”
+      </p>
+    </blockquote>
+
+    <div class="world-card__endmark" aria-hidden="true"></div>
+  </div>
+</aside>

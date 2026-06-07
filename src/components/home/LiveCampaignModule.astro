@@ -1,0 +1,15 @@
+---
+import { liveCampaign } from "../../data/home";
+---
+
+<section class="module live-module" id="campaigns" aria-labelledby="live-module-title">
+  <div>
+    <p class="eyebrow">{liveCampaign.label}</p>
+    <h3 id="live-module-title">{liveCampaign.title}</h3>
+    <p>{liveCampaign.body}</p>
+  </div>
+  <div class="live-module__footer">
+    <span>{liveCampaign.status}</span>
+    <a class="button button--compact" href={liveCampaign.cta.href}>{liveCampaign.cta.label}</a>
+  </div>
+</section>

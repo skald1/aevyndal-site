@@ -1,0 +1,143 @@
+---
+import StartingLocations from "./StartingLocations.astro";
+import LiveCampaignModule from "./LiveCampaignModule.astro";
+import { ages } from "../../data/ages";
+import { homeOverview } from "../../data/home";
+
+const renderList = (items: string[]) => items;
+---
+
+<section class="age-content" aria-live="polite">
+  <article class="age-panel" id="age-home" data-age-panel="home">
+    <div class="age-grid">
+      <section class="age-overview">
+        <p class="eyebrow">{homeOverview.eyebrow}</p>
+        <h2>{homeOverview.title}</h2>
+        <div class="status-line">
+          <span>{homeOverview.status}</span>
+        </div>
+        <p>{homeOverview.body}</p>
+        <p class="tone-line">{homeOverview.tone}</p>
+        <div class="action-row">
+          {homeOverview.ctas.map((cta) => (
+            <a class="button button--ghost" href={cta.href}>{cta.label}</a>
+          ))}
+        </div>
+      </section>
+      <div class="module-stack">
+        <StartingLocations />
+        <section class="module">
+          <div class="module__header">
+            <p class="eyebrow">Table entry</p>
+            <h3>{homeOverview.middleTopTitle}</h3>
+          </div>
+          <ul>
+            {renderList(homeOverview.middleTopItems).map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+        <section class="module">
+          <div class="module__header">
+            <p class="eyebrow">Continuity</p>
+            <h3>{homeOverview.middleBottomTitle}</h3>
+          </div>
+          <ul>
+            {renderList(homeOverview.middleBottomItems).map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+      </div>
+      <aside class="module-stack">
+        <section class="module atlas-module">
+          <p class="eyebrow">Atlas</p>
+          <h3>{homeOverview.atlasTitle}</h3>
+          <div class="map-preview" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <p>{homeOverview.atlasBody}</p>
+        </section>
+        <LiveCampaignModule />
+        <section class="module" id="records">
+          <p class="eyebrow">Records</p>
+          <h3>Latest Notes</h3>
+          <ul>
+            {renderList(homeOverview.records).map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </article>
+
+  {ages.map((age) => (
+    <article class="age-panel" id={`age-${age.id}`} data-age-panel={age.id} hidden>
+      <div class="age-grid">
+        <section class="age-overview">
+          <p class="eyebrow">{age.title}</p>
+          <h2>{age.overview}</h2>
+          <div class="status-line">
+            <span>{age.badge}</span>
+            <span>{age.buildStatus}</span>
+          </div>
+          <p class="tone-line">{age.tone}</p>
+          <div class="action-row">
+            {age.ctas.map((cta) => (
+              <a class="button button--ghost" href={cta.href}>{cta.label}</a>
+            ))}
+          </div>
+        </section>
+        <div class="module-stack">
+          {age.id === "fourth" && <StartingLocations />}
+          <section class="module">
+            <div class="module__header">
+              <p class="eyebrow">Play surface</p>
+              <h3>{age.middleTopTitle}</h3>
+            </div>
+            <ul>
+              {renderList(age.middleTopItems).map((item) => <li>{item}</li>)}
+            </ul>
+          </section>
+          <section class="module">
+            <div class="module__header">
+              <p class="eyebrow">Hooks</p>
+              <h3>{age.middleBottomTitle}</h3>
+            </div>
+            <ul>
+              {renderList(age.middleBottomItems).map((item) => <li>{item}</li>)}
+            </ul>
+          </section>
+        </div>
+        <aside class="module-stack">
+          <section class="module atlas-module">
+            <p class="eyebrow">Atlas</p>
+            <h3>{age.atlasTitle}</h3>
+            <div class="map-preview" aria-hidden="true" data-age-map={age.id}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <p>{age.atlasBody}</p>
+          </section>
+          {age.id === "fourth" && <LiveCampaignModule />}
+          <section class="module">
+            <p class="eyebrow">Records</p>
+            <h3>Development Notes</h3>
+            <ul>
+              {renderList(age.records).map((item) => <li>{item}</li>)}
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </article>
+  ))}
+</section>
+
+<footer class="home-footer" aria-label="Site credits">
+  <a class="grimwell-credit" href="/about">
+    <img
+      class="grimwellFooterLogo"
+      src="/images/brand/grimwell-studio-logo.png"
+      alt="Grimwell Studio logo"
+    />
+    <span>Built by Grimwell Studio</span>
+  </a>
+</footer>

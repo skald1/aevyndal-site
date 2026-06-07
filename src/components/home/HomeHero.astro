@@ -1,0 +1,65 @@
+---
+import WorldOverviewCard from "./WorldOverviewCard.astro";
+import { heroTabs } from "../../data/home";
+---
+
+<section class="home-hero" id="homeHero" aria-labelledby="home-title">
+  <div class="mobile-header">
+    <a class="mobile-header__brand" href="/">Ævyndal</a>
+    <button class="mobile-header__menu" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu">
+      Menu
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobile-menu" data-open="false" aria-label="Mobile navigation">
+    <a href="/#ages">Ages</a>
+    <a href="/atlas">Atlas</a>
+    <a href="/mutvia">Mütvia</a>
+    <a href="/resources">Resources</a>
+    <a href="/about">About</a>
+  </nav>
+
+  <div class="hero-tabs" role="tablist" aria-label="Homepage focus">
+    {heroTabs.map((tab, index) => (
+      <button
+        type="button"
+        role="tab"
+        class="hero-tab"
+        data-hero-tab={tab.id}
+        aria-selected={index === 0 ? "true" : "false"}
+        aria-controls={`hero-panel-${tab.id}`}
+      >
+        {tab.label}
+      </button>
+    ))}
+  </div>
+
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="hero-wordmark">Ævyndal</p>
+      <h1 id="home-title">One World. Eight Ages.<br />Every Story <span>Persists.</span></h1>
+      <span class="hero-accent" aria-hidden="true"></span>
+      <p class="hero-copy__body">
+        A living world for characters<br />
+        who leave their mark.
+      </p>
+      <div class="action-row">
+        <a class="age-cta" href="#age-fourth">
+          <span>ENTER THE FOURTH AGE</span>
+          <span class="age-cta__arrow" aria-hidden="true">›</span>
+        </a>
+        <a class="button button--ghost" href="#ages">BROWSE THE AGES</a>
+      </div>
+      {heroTabs.map((tab, index) => (
+        <div
+          class="hero-panel"
+          id={`hero-panel-${tab.id}`}
+          data-hero-panel={tab.id}
+          role="tabpanel"
+          hidden={index !== 0}
+        >
+        </div>
+      ))}
+    </div>
+    <WorldOverviewCard />
+  </div>
+</section>

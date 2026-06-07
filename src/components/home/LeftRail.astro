@@ -1,0 +1,33 @@
+---
+import { primaryNavItems } from "../../data/home";
+
+const navIcons = {
+  Ages:
+    '<path d="M12 3.5v17" /><path d="M5.5 12h13" /><circle cx="12" cy="12" r="7.5" /><path d="m8.7 15.3 6.6-6.6" />',
+  Atlas:
+    '<path d="m3.5 7 5-2.5 7 2.5 5-2.5v12.5l-5 2.5-7-2.5-5 2.5z" /><path d="M8.5 4.5v12.5" /><path d="M15.5 7v12.5" />',
+  Campaigns:
+    '<path d="M7 4.5v15" /><path d="M7 5.5h10l-2 4 2 4H7" /><path d="M4.5 19.5h5" />',
+  Records:
+    '<path d="M6.5 4.5h8l3 3v12h-11z" /><path d="M14.5 4.5v4h4" /><path d="M9 12h6" /><path d="M9 15h5" />',
+  Resources:
+    '<path d="M12 3.5 4.5 7.5 12 11.5l7.5-4z" /><path d="m4.5 12 7.5 4 7.5-4" /><path d="m4.5 16.5 7.5 4 7.5-4" />',
+  About:
+    '<circle cx="12" cy="12" r="8" /><path d="M12 10.8v5.2" /><path d="M12 7.7h.01" />',
+};
+---
+
+<aside class="left-rail" aria-label="Primary navigation">
+  <a class="left-rail__brand" href="/" aria-label="Ævyndal home">
+    <img class="logoMark" src="/images/brand/aevyndal-logo.png" alt="Ævyndal logo" />
+    <span>ÆVYNDAL</span>
+  </a>
+  <nav class="left-rail__nav">
+    {primaryNavItems.slice(1).map((item) => (
+      <a href={item.href} aria-current={item.href === "/#ages" ? "page" : undefined}>
+        <svg class="left-rail__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={navIcons[item.label]}></svg>
+        <span>{item.label}</span>
+      </a>
+    ))}
+  </nav>
+</aside>
