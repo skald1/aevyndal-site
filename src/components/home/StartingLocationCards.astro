@@ -1,0 +1,37 @@
+---
+import GlassCard from "./GlassCard.astro";
+import SectionHeader from "./SectionHeader.astro";
+import type { CollectionEntry } from "astro:content";
+import { media } from "../../data/media";
+
+interface Props {
+  locations: CollectionEntry<"locations">[];
+}
+
+const { locations } = Astro.props;
+---
+
+<section class="home-section starting-places" id="starting-locations" aria-labelledby="starting-title">
+  <SectionHeader
+    label="Put me somewhere"
+    title="Begin with a place that notices you."
+    description="You do not need the whole map. You need a door, a responsibility, and someone who would notice if you did not return."
+  />
+  <div class="location-grid">
+    {locations.map(({ data: location }, index) => (
+      <GlassCard class={`cinematic-card cinematic-card--${index + 1}`}>
+        <div
+          slot="media"
+          class="cinematic-card__media"
+          style={`--card-image: url('${media.home.heroPoster}')`}
+          aria-hidden="true"
+        ></div>
+        <p class="card-category">{location.age}</p>
+        <h3>{location.title}</h3>
+        <p>{location.invitation}</p>
+        <p class="cinematic-card__belonging">{location.belonging}</p>
+        <a href={location.href}>Stand here awhile <span aria-hidden="true">→</span></a>
+      </GlassCard>
+    ))}
+  </div>
+</section>

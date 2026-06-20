@@ -1,0 +1,23 @@
+---
+import GlassCard from "./GlassCard.astro";
+import SectionHeader from "./SectionHeader.astro";
+import { identities } from "../../data/homepage";
+---
+
+<section class="home-section identities" id="identities" aria-labelledby="identities-title">
+  <SectionHeader
+    label="Who could I be?"
+    title="Choose a life, not a build."
+    description="Begin with what you value, who depends on you, and which responsibility makes walking away difficult."
+  />
+  <div class="identity-grid">
+    {identities.map((identity) => (
+      <GlassCard class="identity-window">
+        <p class="card-category">{identity.place}</p>
+        <h3>{identity.title}</h3>
+        <p>{identity.text}</p>
+        <a href="#ages">See where you might belong <span aria-hidden="true">→</span></a>
+      </GlassCard>
+    ))}
+  </div>
+</section>

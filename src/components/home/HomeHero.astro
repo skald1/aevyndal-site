@@ -1,6 +1,5 @@
 ---
 import WorldOverviewCard from "./WorldOverviewCard.astro";
-import { heroTabs } from "../../data/home";
 ---
 
 <section class="home-hero" id="homeHero" aria-labelledby="home-title">
@@ -11,54 +10,35 @@ import { heroTabs } from "../../data/home";
     </button>
   </div>
   <nav class="mobile-menu" id="mobile-menu" data-open="false" aria-label="Mobile navigation">
-    <a href="/#ages">Ages</a>
-    <a href="/atlas">Atlas</a>
-    <a href="/mutvia">Mütvia</a>
-    <a href="/resources">Resources</a>
-    <a href="/about">About</a>
+    <a href="/about">What is this?</a>
+    <a href="/#starting-locations">Put me somewhere</a>
+    <a href="/#identity-paths">Who could I be?</a>
+    <a href="/community">Can I belong?</a>
   </nav>
 
-  <div class="hero-tabs" role="tablist" aria-label="Homepage focus">
-    {heroTabs.map((tab, index) => (
-      <button
-        type="button"
-        role="tab"
-        class="hero-tab"
-        data-hero-tab={tab.id}
-        aria-selected={index === 0 ? "true" : "false"}
-        aria-controls={`hero-panel-${tab.id}`}
-      >
-        {tab.label}
-      </button>
-    ))}
-  </div>
+  <nav class="hero-tabs" aria-label="Ways into Aevyndal">
+    <a class="hero-tab" href="/about">What is this?</a>
+    <a class="hero-tab" href="#starting-locations">Put me somewhere</a>
+    <a class="hero-tab" href="#identity-paths">Who could I be?</a>
+    <a class="hero-tab" href="#stories">What stories live here?</a>
+  </nav>
 
   <div class="hero-grid">
     <div class="hero-copy">
       <p class="hero-wordmark">Ævyndal</p>
-      <h1 id="home-title">One World. Eight Ages.<br />Every Story <span>Persists.</span></h1>
+      <h1 id="home-title">Find a place that needs you.<br /><span>Become someone who belongs.</span></h1>
       <span class="hero-accent" aria-hidden="true"></span>
       <p class="hero-copy__body">
-        A living world for characters<br />
-        who leave their mark.
+        Begin with a home, a responsibility, and someone worth showing up for.<br />
+        The history can wait until it matters to your story.
       </p>
       <div class="action-row">
-        <a class="age-cta" href="#age-fourth">
-          <span>ENTER THE FOURTH AGE</span>
+        <a class="age-cta" href="#starting-locations">
+          <span>PUT ME SOMEWHERE</span>
           <span class="age-cta__arrow" aria-hidden="true">›</span>
         </a>
-        <a class="button button--ghost" href="#ages">BROWSE THE AGES</a>
+        <a class="button button--ghost" href="#identity-paths">WHO COULD I BE?</a>
       </div>
-      {heroTabs.map((tab, index) => (
-        <div
-          class="hero-panel"
-          id={`hero-panel-${tab.id}`}
-          data-hero-panel={tab.id}
-          role="tabpanel"
-          hidden={index !== 0}
-        >
-        </div>
-      ))}
     </div>
     <WorldOverviewCard />
   </div>

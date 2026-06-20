@@ -1,12 +1,12 @@
 ---
 import { worldMetrics } from "../../data/home";
 
-const metricIcons = ["✧", "♙", "✦", "✚"];
+const metricIcons = ["⌂", "◇", "○", "✦"];
 ---
 
 <aside class="world-card" aria-labelledby="world-card-title">
   <div class="world-card__inner">
-    <p class="world-card__eyebrow">The World Of</p>
+    <p class="world-card__eyebrow">Your Way Into</p>
     <h2 id="world-card-title" class="world-card__title">
       Ævyndal <span aria-hidden="true">✦</span>
     </h2>
@@ -17,7 +17,7 @@ const metricIcons = ["✧", "♙", "✦", "✚"];
         <div class="world-card__row">
           <dt>
             <span class="world-card__icon" aria-hidden="true">{metricIcons[index]}</span>
-            <span class={metric.value === "Countless" ? "world-card__word" : "world-card__number"}>
+            <span class="world-card__word">
               {metric.value}
             </span>
           </dt>
@@ -28,10 +28,10 @@ const metricIcons = ["✧", "♙", "✦", "✚"];
 
     <blockquote class="world-card__quote">
       <p>
-        “No force has yet succeeded<br />
-        in uniting Mütvia.<br />
-        Many have tried.<br />
-        Most have fed the soil.”
+        “You do not need to know the whole world.<br />
+        Begin with the people<br />
+        who would notice<br />
+        if you did not come home.”
       </p>
     </blockquote>
 

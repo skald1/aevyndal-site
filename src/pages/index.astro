@@ -1,77 +1,44 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import LeftRail from "../components/home/LeftRail.astro";
-import HomeHero from "../components/home/HomeHero.astro";
-import AgeRail from "../components/home/AgeRail.astro";
-import AgeContent from "../components/home/AgeContent.astro";
+import SiteShell from "../components/home/SiteShell.astro";
+import HeroSection from "../components/home/HeroSection.astro";
+import StoryPromises from "../components/home/StoryPromises.astro";
+import StartingLocationCards from "../components/home/StartingLocationCards.astro";
+import IdentityCards from "../components/home/IdentityCards.astro";
+import AgeExplorer from "../components/home/AgeExplorer.astro";
+import FeaturedArticles from "../components/home/FeaturedArticles.astro";
+import LivingWorldSection from "../components/home/LivingWorldSection.astro";
+import CommunitySection from "../components/home/CommunitySection.astro";
+import { getCollection } from "astro:content";
+import { media } from "../data/media";
+import "../styles/pages/home.scss";
+
+const ages = (await getCollection("ages", ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.homepageOrder - b.data.homepageOrder || a.data.ordinal - b.data.ordinal,
+);
+
+const locations = (await getCollection(
+  "locations",
+  ({ data }) => !data.draft && data.homepageFeatured,
+)).sort((a, b) => a.data.homepageOrder - b.data.homepageOrder);
 ---
 
 <BaseLayout
-  title="Ævyndal — Living Atlas"
-  description="A persistent TTRPG world setting shaped by campaigns, records, and playable Ages."
+  title="Ævyndal — Find Who You Could Be"
+  description="Find a place, a people, and a story you could belong to in the living world of Ævyndal."
   showStickyNav={false}
+  preloadImage={media.home.heroPoster}
 >
-  <div class="site-shell">
-    <LeftRail />
-    <main class="home-main">
-      <HomeHero />
-      <AgeRail />
-      <AgeContent />
-    </main>
-  </div>
+  <SiteShell>
+    <HeroSection />
+    <StoryPromises />
+    <StartingLocationCards locations={locations} />
+    <IdentityCards />
+    <AgeExplorer ages={ages} />
+    <FeaturedArticles />
+    <LivingWorldSection />
+    <CommunitySection />
+  </SiteShell>
 </BaseLayout>
 
-<script>
-  const setActive = (
-    controls: NodeListOf<HTMLElement>,
-    panels: NodeListOf<HTMLElement>,
-    id: string,
-    controlAttribute: string,
-    panelAttribute: string
-  ) => {
-    controls.forEach((control) => {
-      const isActive = control.dataset[controlAttribute] === id;
-      control.setAttribute("aria-selected", String(isActive));
-      control.setAttribute("aria-expanded", String(isActive));
-    });
-
-    panels.forEach((panel) => {
-      panel.hidden = panel.dataset[panelAttribute] !== id;
-    });
-  };
-
-  const heroTabs = document.querySelectorAll<HTMLElement>("[data-hero-tab]");
-  const heroPanels = document.querySelectorAll<HTMLElement>("[data-hero-panel]");
-  heroTabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const id = tab.dataset.heroTab;
-      if (id) setActive(heroTabs, heroPanels, id, "heroTab", "heroPanel");
-    });
-  });
-
-  const ageControls = document.querySelectorAll<HTMLElement>("[data-age-control]");
-  const agePanels = document.querySelectorAll<HTMLElement>("[data-age-panel]");
-  ageControls.forEach((control) => {
-    control.addEventListener("click", () => {
-      const id = control.dataset.ageControl;
-      if (!id) return;
-      setActive(ageControls, agePanels, id, "ageControl", "agePanel");
-      history.replaceState(null, "", `#age-${id}`);
-    });
-  });
-
-  const requestedAge = window.location.hash.replace("#age-", "");
-  const selectedAge = requestedAge && document.querySelector(`[data-age-panel="${requestedAge}"]`)
-    ? requestedAge
-    : "home";
-  setActive(ageControls, agePanels, selectedAge, "ageControl", "agePanel");
-
-  const menuToggle = document.querySelector<HTMLElement>("[data-menu-toggle]");
-  const mobileMenu = document.getElementById("mobile-menu");
-  menuToggle?.addEventListener("click", () => {
-    const isOpen = mobileMenu?.dataset.open === "true";
-    if (!mobileMenu) return;
-    mobileMenu.dataset.open = String(!isOpen);
-    menuToggle.setAttribute("aria-expanded", String(!isOpen));
-  });
-</script>
+<script src="../scripts/home.ts"></script>

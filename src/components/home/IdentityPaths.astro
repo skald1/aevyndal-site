@@ -1,0 +1,21 @@
+---
+import { identityPaths } from "../../data/home";
+---
+
+<section class="module identity-paths" id="identity-paths" aria-labelledby="identity-paths-title">
+  <div class="module__header">
+    <p class="eyebrow">Who could I be?</p>
+    <h3 id="identity-paths-title">Choose a life already tied to the world.</h3>
+  </div>
+  <div class="identity-list">
+    {identityPaths.map((path) => (
+      <article class="identity-card">
+        <p class="identity-card__place">{path.place}</p>
+        <h4>{path.title}</h4>
+        <p>{path.life}</p>
+        <p><strong>Someone who matters:</strong> {path.bond}</p>
+        <p><strong>What presses now:</strong> {path.pressure}</p>
+      </article>
+    ))}
+  </div>
+</section>

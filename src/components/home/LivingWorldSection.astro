@@ -1,0 +1,25 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import { livingWorld } from "../../data/homepage";
+---
+
+<section class="home-section living-world" id="living-world" aria-labelledby="living-title">
+  <SectionHeader
+    label="Is this active?"
+    title="The world is still becoming."
+    description="Tables leave consequences. New records arrive. The next open door is chosen in public."
+  />
+  <div class="living-list">
+    {livingWorld.map((item, index) => (
+      <article class="living-entry">
+        <span class="living-entry__marker" aria-hidden="true">{index + 1}</span>
+        <div>
+          <p class="card-category">{item.label}</p>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </div>
+        <a href="#community" aria-label={`Continue from ${item.title}`}>→</a>
+      </article>
+    ))}
+  </div>
+</section>

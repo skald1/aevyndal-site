@@ -1,0 +1,56 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import type { CollectionEntry } from "astro:content";
+import { media } from "../../data/media";
+
+interface Props {
+  ages: CollectionEntry<"ages">[];
+}
+
+const { ages } = Astro.props;
+const defaultAge = ages.find((age) => age.data.slug === "fourth-age")!.data;
+---
+
+<section class="home-section age-explorer" id="ages" aria-labelledby="ages-title">
+  <SectionHeader
+    label="What genre interests me?"
+    title="The same world under a different sky."
+    description="The interface remains familiar. The light, language, and kinds of lives available change around you."
+  />
+  <div class="age-explorer__grid" aria-label="Explore the eight ages">
+    {ages.map(({ data: age }) => {
+      const ageId = age.slug.replace(/-age$/, "");
+
+      return (
+        <a
+          id={`age-${ageId}`}
+          class="age-window"
+          href={`#age-${ageId}`}
+          style={`--age-accent: ${age.accent}`}
+          data-age-control={ageId}
+          data-age-label={`${age.label} Age`}
+          data-age-genre={age.genre}
+          data-age-mood={age.mood}
+          data-age-voice={age.excerpt}
+          data-age-color={age.accent}
+          aria-current={ageId === "fourth" ? "true" : undefined}
+        >
+          <span class="age-window__ordinal">{age.label}</span>
+          <strong>{age.genre}</strong>
+          <span>{age.mood}</span>
+        </a>
+      );
+    })}
+  </div>
+  <aside
+    class="age-reading"
+    style={`--age-image: url('${media.home.heroPoster}')`}
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    <p class="card-category" data-age-detail-label>{defaultAge.label} Age</p>
+    <h3 data-age-detail-genre>{defaultAge.genre}</h3>
+    <p data-age-detail-voice>{defaultAge.excerpt}</p>
+    <a href="#featured">Follow this feeling into the archive <span aria-hidden="true">→</span></a>
+  </aside>
+</section>

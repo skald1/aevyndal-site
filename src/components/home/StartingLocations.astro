@@ -4,8 +4,8 @@ import { startingLocations } from "../../data/home";
 
 <section class="module starting-locations" id="starting-locations" aria-labelledby="starting-locations-title">
   <div class="module__header">
-    <p class="eyebrow">Starting locations</p>
-    <h3 id="starting-locations-title">Open the map through play.</h3>
+    <p class="eyebrow">Put me somewhere</p>
+    <h3 id="starting-locations-title">Choose the life around you before the map.</h3>
   </div>
   <div class="location-list">
     {startingLocations.map((location) => (
@@ -14,9 +14,9 @@ import { startingLocations } from "../../data/home";
           <h4>{location.name}</h4>
           <span>{location.status}</span>
         </div>
+        <p><strong>What life feels like:</strong> {location.game}</p>
+        <p><strong>Why you might belong:</strong> {location.why}</p>
         <p><strong>What is it?</strong> {location.type}</p>
-        <p><strong>Game here:</strong> {location.game}</p>
-        <p><strong>Why start here?</strong> {location.why}</p>
       </article>
     ))}
   </div>

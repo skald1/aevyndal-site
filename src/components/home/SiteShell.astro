@@ -1,0 +1,20 @@
+---
+import AmbientBackdrop from "./AmbientBackdrop.astro";
+import FloatingHeroNav from "./FloatingHeroNav.astro";
+import GhostHeader from "./GhostHeader.astro";
+---
+
+<div class="world-shell" id="top" data-world-shell data-age="fourth">
+  <a class="skip-link" href="#main-content">Skip to the world</a>
+  <AmbientBackdrop />
+  <FloatingHeroNav />
+  <GhostHeader />
+  <main id="main-content" class="world-shell__content">
+    <slot />
+  </main>
+  <footer class="world-footer">
+    <p>There is always another road.</p>
+    <a href="#top">Return to the threshold</a>
+    <span class="world-footer__studio">Grimwell Studio</span>
+  </footer>
+</div>

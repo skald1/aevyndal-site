@@ -1,0 +1,23 @@
+---
+import GlassCard from "./GlassCard.astro";
+import SectionHeader from "./SectionHeader.astro";
+import { storyPromises } from "../../data/homepage";
+---
+
+<section class="home-section story-promises" id="stories" aria-labelledby="stories-title">
+  <SectionHeader
+    label="What stories exist here?"
+    title="Stories with somewhere to live."
+    description="Choose the kind of pressure you want to step into. The world will supply the people, places, and consequences."
+  />
+  <div class="story-grid">
+    {storyPromises.map((story, index) => (
+      <GlassCard class={`story-card story-card--${story.accent}`}>
+        <span class="story-card__number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+        <h3>{story.title}</h3>
+        <p>{story.text}</p>
+        <a href="#starting-locations">Find where this story begins <span aria-hidden="true">→</span></a>
+      </GlassCard>
+    ))}
+  </div>
+</section>

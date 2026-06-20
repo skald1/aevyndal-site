@@ -1,0 +1,30 @@
+---
+import GlassCard from "./GlassCard.astro";
+import SectionHeader from "./SectionHeader.astro";
+import { featuredArticles } from "../../data/homepage";
+import { media } from "../../data/media";
+---
+
+<section class="home-section featured-articles" id="featured" aria-labelledby="featured-title">
+  <SectionHeader
+    label="Tell me more"
+    title="Follow what caught at you."
+    description="The archive opens through ordinary questions: how people live, what they fear, and why they keep choosing one another."
+  />
+  <div class="featured-grid">
+    {featuredArticles.map((article, index) => (
+      <GlassCard class={`article-window article-window--${index + 1}`}>
+        <div
+          slot="media"
+          class="article-window__media"
+          style={`--card-image: url('${media.home.heroPoster}')`}
+          aria-hidden="true"
+        ></div>
+        <p class="card-category">{article.label}</p>
+        <h3>{article.title}</h3>
+        <p>{article.text}</p>
+        <a href={article.href}>Read the first page <span aria-hidden="true">→</span></a>
+      </GlassCard>
+    ))}
+  </div>
+</section>

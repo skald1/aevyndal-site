@@ -1,5 +1,6 @@
 ---
 import StartingLocations from "./StartingLocations.astro";
+import IdentityPaths from "./IdentityPaths.astro";
 import LiveCampaignModule from "./LiveCampaignModule.astro";
 import { ages } from "../../data/ages";
 import { homeOverview } from "../../data/home";
@@ -26,6 +27,7 @@ const renderList = (items: string[]) => items;
       </section>
       <div class="module-stack">
         <StartingLocations />
+        <IdentityPaths />
         <section class="module">
           <div class="module__header">
             <p class="eyebrow">Table entry</p>
@@ -57,7 +59,7 @@ const renderList = (items: string[]) => items;
           <p>{homeOverview.atlasBody}</p>
         </section>
         <LiveCampaignModule />
-        <section class="module" id="records">
+        <section class="module" id="stories">
           <p class="eyebrow">Records</p>
           <h3>Latest Notes</h3>
           <ul>

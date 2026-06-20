@@ -1,0 +1,38 @@
+:root {
+  color-scheme: dark;
+  --color-world: #06090d;
+  --color-blue-black: #0a1118;
+  --color-glass: 8, 14, 20;
+  --color-ink: #f0ede5;
+  --color-soft: #cbc8bf;
+  --color-muted: #929ba1;
+  --color-line: rgba(255, 255, 255, 0.12);
+  --color-line-strong: rgba(255, 255, 255, 0.22);
+  --color-accent: #bda468;
+  --color-secondary: #b8c4ce;
+  --color-atmosphere: #152330;
+  --radius-card: 24px;
+  --radius-control: 18px;
+  --radius-small: 12px;
+  --radius-pill: 999px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 48px;
+  --space-5: 96px;
+  --space-6: 160px;
+  --width-reading: 700px;
+  --width-article: 850px;
+  --width-section: 1400px;
+  --motion-fast: 250ms;
+  --motion-normal: 400ms;
+  --motion-slow: 700ms;
+  --motion-atmosphere: 1200ms;
+  --layer-world: 10;
+  --layer-atmosphere: 20;
+  --layer-transition: 30;
+  --layer-glass: 40;
+  --layer-information: 50;
+  --layer-navigation: 60;
+  --layer-search: 70;
+}

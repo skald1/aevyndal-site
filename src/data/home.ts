@@ -1,11 +1,11 @@
 export const primaryNavItems = [
-  { label: "Ævyndal", href: "/", shortLabel: "Home" },
-  { label: "Ages", href: "/#ages", shortLabel: "Ages" },
-  { label: "Atlas", href: "/atlas", shortLabel: "Atlas" },
-  { label: "Campaigns", href: "/#campaigns", shortLabel: "Campaigns" },
-  { label: "Records", href: "/#records", shortLabel: "Records" },
-  { label: "Resources", href: "/resources", shortLabel: "Resources" },
-  { label: "About", href: "/about", shortLabel: "About" },
+  { label: "Ævyndal", href: "/", shortLabel: "Home", icon: "About" },
+  { label: "What Is This?", href: "/about", shortLabel: "Discover", icon: "About" },
+  { label: "Put Me Somewhere", href: "/#starting-locations", shortLabel: "Find a Place", icon: "Atlas" },
+  { label: "Who Could I Be?", href: "/#identity-paths", shortLabel: "Choose a Life", icon: "Campaigns" },
+  { label: "What Stories?", href: "/#stories", shortLabel: "Find a Story", icon: "Records" },
+  { label: "Can I Use This?", href: "/resources", shortLabel: "Play", icon: "Resources" },
+  { label: "Can I Belong?", href: "/community", shortLabel: "Join In", icon: "Ages" },
 ];
 
 export const heroTabs = [
@@ -62,10 +62,34 @@ export const heroTabs = [
 ];
 
 export const worldMetrics = [
-  { value: "8", label: "Ages of History" },
-  { value: "18+", label: "Playable Peoples" },
-  { value: "Countless", label: "Stories" },
-  { value: "1", label: "World That Remembers" },
+  { value: "A place", label: "where someone knows your name" },
+  { value: "A duty", label: "that matters when you are absent" },
+  { value: "A bond", label: "worth protecting or repairing" },
+  { value: "A choice", label: "the world will remember" },
+];
+
+export const identityPaths = [
+  {
+    title: "A keeper of winter rites",
+    place: "A Mütvian village",
+    life: "You tend the customs that keep neighbors, ancestors, and The Land in uneasy balance.",
+    bond: "The family who taught you the rites no longer agrees on what they mean.",
+    pressure: "Winter is closing the roads, and one necessary ceremony has been refused.",
+  },
+  {
+    title: "A useful outsider",
+    place: "Cultrek City",
+    life: "You make a living crossing lines of trade, faith, and loyalty that locals cannot safely cross.",
+    bond: "Two people in rival circles both believe you are on their side.",
+    pressure: "A favor that once kept you alive has finally been called in.",
+  },
+  {
+    title: "A bearer of an old consequence",
+    place: "The roads of the Fourth Age",
+    life: "You carry a name, oath, relic, or mistake inherited from a story that never truly ended.",
+    bond: "Someone you love would be safer if you abandoned what was entrusted to you.",
+    pressure: "A place erased from modern maps has begun sending for you.",
+  },
 ];
 
 export const startingLocations = [
@@ -102,27 +126,27 @@ export const liveCampaign = {
 };
 
 export const homeOverview = {
-  eyebrow: "World overview",
-  title: "One setting, many eras, no reset button.",
-  status: "Open atlas",
+  eyebrow: "Find your way in",
+  title: "Begin with a place that needs someone like you.",
+  status: "No lore mastery required",
   tone: "Dark fantasy, political consequence, playable history, and human-scale choices against old powers.",
   body:
-    "Ævyndal is organized around Ages so a table can choose the kind of pressure it wants: mythic aftermath, empire, collapse, exploration, plague, recovery, or the dangerous present of the Fourth Age.",
+    "Choose somewhere to stand, someone to care about, and a responsibility you cannot easily leave behind. The world opens outward from there.",
   ctas: [
     { label: "Read Mütvia", href: "/mutvia" },
     { label: "Open the atlas", href: "/atlas" },
   ],
-  middleTopTitle: "Quick Start Playing",
+  middleTopTitle: "Become Part of the Place",
   middleTopItems: [
-    "Pick an Age by tone and readiness.",
-    "Choose a starting location with a clear pressure point.",
-    "Tie a character to a faction, road, oath, debt, or old mistake.",
+    "Choose a place whose ordinary life you want to protect, escape, or change.",
+    "Name one person who depends on you and one person you depend on.",
+    "Take on an oath, debt, duty, or old mistake that makes leaving complicated.",
   ],
-  middleBottomTitle: "What Makes It Persistent",
+  middleBottomTitle: "How Your Story Belongs",
   middleBottomItems: [
-    "Campaign outcomes become history.",
-    "Places keep scars from previous parties.",
-    "Records distinguish rumor, table canon, and open mystery.",
+    "Your choices alter lives before they alter maps.",
+    "Places remember who helped, who left, and what each victory cost.",
+    "Later stories inherit the relationships and consequences your table creates.",
   ],
   atlasTitle: "Atlas Preview",
   atlasBody:

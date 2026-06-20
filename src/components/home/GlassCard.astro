@@ -1,0 +1,14 @@
+---
+interface Props {
+  class?: string;
+}
+
+const className = Astro.props.class ?? "";
+---
+
+<article class:list={["glass-card", className]}>
+  <slot name="media" />
+  <div class="glass-card__content">
+    <slot />
+  </div>
+</article>
