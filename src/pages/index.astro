@@ -124,8 +124,9 @@ import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
   .age-note{position:absolute;left:3.4vw;top:15vh;width:19vw;min-width:220px;max-width:350px;z-index:6;font-family:var(--micro)}
   .age-note .index{font-size:9px;letter-spacing:.25em;color:var(--accent)}
   .age-note h2{font-family:var(--headline);font-size:clamp(22px,2.2vw,42px);font-weight:500;line-height:.96;margin:.7rem 0 1rem;text-transform:uppercase}
-  .age-note h2 .age-line{display:block;font-size:clamp(18px,1.45vw,30px);line-height:1;letter-spacing:.02em;color:var(--accent);margin-bottom:.4rem}
-  .age-note h2 sup{font-size:.48em;line-height:0;position:relative;top:-.2em}
+  .age-note h2 .age-line{display:block;font-size:24px;line-height:1;letter-spacing:.02em;color:var(--accent);margin-bottom:.4rem}
+  .age-note h2 .age-ordinal{display:inline-flex;align-items:flex-start;line-height:1;vertical-align:baseline}
+  .age-note h2 .age-suffix{font-size:.45em;line-height:1;transform:translateY(.14em)}
   .age-note p{font-family:var(--ui);font-size:clamp(10px,.75vw,13px);line-height:1.58;color:var(--muted);max-width:38ch}
   .age-note .line{width:72px;height:1px;background:var(--accent);margin-top:18px;position:relative}
   .age-note .line::after{content:"";position:absolute;right:-4px;top:-3px;width:7px;height:7px;border:1px solid var(--accent);transform:rotate(45deg)}
@@ -219,7 +220,7 @@ import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
 
   <section class="age-note" aria-label="Current age">
     <div class="index" id="ageIndex">04 / 08</div>
-    <h2 id="ageName"><span class="age-line">4<sup>th</sup> Age:</span>The Harrow</h2>
+    <h2 id="ageName"><span class="age-line"><span class="age-ordinal">4<span class="age-suffix">th</span></span> Age:</span>The Harrow</h2>
     <p id="agePrompt">Great empires mature, trade flourishes, and civilization spreads across the landscape. Beneath that prosperity, cults rise, demons endure, surviving Italti stir, and old conspiracies move in the shadows. This is an age of dark exploration, politics, epic quests, and impossible things buried beneath ordinary life.</p>
     <div class="line" aria-hidden="true"></div>
   </section>
@@ -312,7 +313,7 @@ const ordinals = [
 ];
 function setAgeHeading(age){
   const [number, suffix] = ordinals[age];
-  ageName.innerHTML = `<span class="age-line">${number}<sup>${suffix}</sup> Age:</span>${ages[age].name}`;
+  ageName.innerHTML = `<span class="age-line"><span class="age-ordinal">${number}<span class="age-suffix">${suffix}</span></span> Age:</span>${ages[age].name}`;
 }
 const positions = [
   [19,16,-1,.82],[40,10,1,.50],[63,13,0,.70],[87,16,1,.45],[24,31,-1,.78],[82,32,0,.78],[91,48,1,.65],[19,56,0,.75],[36,61,-1,.58],[74,59,1,.48],[24,68,0,.72],[56,72,1,.42],[80,76,-1,.52],[40,82,0,.64]
