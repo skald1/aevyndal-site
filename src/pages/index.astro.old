@@ -1,0 +1,143 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ScrollCue from "../components/ScrollCue.astro";
+import AgeExplorer from "../components/AgeExplorer.astro";
+import LineageStrip from "../components/LineageStrip.astro";
+import { fallbackCountry, fallbackLineages } from "../data/fallbacks";
+import { getAges, getFeaturedCountry, getLineages, getLocations } from "../lib/sanity";
+
+const [ages, sanityLineages, sanityCountry, locations] = await Promise.all([
+  getAges(),
+  getLineages(), // Real Sanity query; temporary fallback below is used only while empty.
+  getFeaturedCountry(), // Real Sanity query; temporary fallback below is used only while empty.
+  getLocations(),
+]);
+
+if (ages.length !== 8) {
+  throw new Error(`Expected 8 published Sanity Ages, received ${ages.length}.`);
+}
+
+const fourthAge = ages.find((age) => age.mostBuilt && !age.locked);
+if (!fourthAge) throw new Error("No unlocked, most-built Age exists in Sanity.");
+
+const lineages = sanityLineages.length ? sanityLineages : fallbackLineages;
+const country = sanityCountry ?? fallbackCountry;
+---
+
+<BaseLayout
+  title="Ævyndal — A Living World Archive"
+  description="Explore the Ages, peoples, places, and campaigns of Ævyndal."
+  homepage
+>
+  <main class="snap-page" id="main-content" data-snap-page>
+    <section class="viewport viewport--hero" id="home" data-hero-viewport>
+      <div class="hero-atmosphere" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <article class="hero-pitch">
+          <p class="eyebrow">The Fourth Age · {fourthAge.genre}</p>
+          <h1>{fourthAge.toneStatement}</h1>
+          <p class="hero-context">A living archive of places, peoples, and consequences shaped at the table.</p>
+          <a class="button" href="/locations">Starting Locations</a>
+        </article>
+
+        <article class="audition-pitch">
+          <p class="eyebrow">A campaign in Mütvia</p>
+          <h2>The Returned</h2>
+          <p>Auditions are opening for a new campaign set in Mütvia. Tell us how you like to play and what kind of table helps you do your best work.</p>
+          <a class="button button--quiet" href="/audition">Learn More</a>
+        </article>
+      </div>
+      <ScrollCue href="#ages" label="Continue to the Ages" />
+    </section>
+
+    <section
+      class="viewport viewport--ages"
+      id="ages"
+      data-age-section
+      style={`--age-color: ${fourthAge.color}; --age-accent: ${fourthAge.accentColor}`}
+    >
+      <div class="section-inner">
+        <p class="eyebrow">Eight eras, one world</p>
+        <h2>Every Age changes the genre.</h2>
+        <p class="section-intro">Ævyndal spans eight Ages. Each offers a different kind of story while carrying the consequences of the Ages before it.</p>
+        <AgeExplorer ages={ages} locations={locations} defaultAgeId={fourthAge._id} />
+      </div>
+      <ScrollCue href="#peoples" label="Continue to meet the peoples" />
+    </section>
+
+    <section class="viewport viewport--peoples" id="peoples">
+      <div class="section-inner">
+        <p class="eyebrow">Meet the peoples</p>
+        <h2>These are not the elves and dwarves you know.</h2>
+        <p class="section-intro">Familiar silhouettes give way to different duties, values, relationships, and ways of belonging.</p>
+        <LineageStrip lineages={lineages} />
+      </div>
+      <ScrollCue href="#country" label="Continue to the featured country" />
+    </section>
+
+    <section class="viewport viewport--country" id="country">
+      <div class="country-card">
+        <p class="eyebrow">Featured Country {country.temporary ? "· Preview" : ""}</p>
+        <h2>{country.name}</h2>
+        {country.epithet && <p class="country-epithet">{country.epithet}</p>}
+        <p>{country.toneStatement}</p>
+        <div class="country-actions">
+          <a class="button" href={`/atlas/${country.slug.current}`}>Read More</a>
+          <a class="button button--quiet" href="/atlas">Open Atlas</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const container = document.querySelector<HTMLElement>("[data-snap-page]");
+  const hero = document.querySelector<HTMLElement>("[data-hero-viewport]");
+  const nav = document.querySelector<HTMLElement>("[data-site-nav]");
+
+  if (container && hero && nav) {
+    const observer = new IntersectionObserver(
+      ([entry]) => nav.classList.toggle("is-solid", !entry?.isIntersecting),
+      { root: container, threshold: 0.35 },
+    );
+    observer.observe(hero);
+  }
+</script>
+
+<style>
+  @property --age-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #2a2440;
+  }
+  @property --age-accent {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #6b5fa8;
+  }
+  .snap-page { height: 100svh; overflow-y: auto; scroll-snap-type: y mandatory; background: var(--night); }
+  .viewport { position: relative; width: 100%; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; padding: 6rem clamp(1.15rem, 5vw, 5rem) 4.5rem; overflow: hidden; scroll-snap-align: start; scroll-snap-stop: always; }
+  .section-inner, .hero-grid { position: relative; z-index: 2; width: min(76rem, 100%); min-width: 0; margin: 0 auto; }
+  .section-intro { max-width: 48rem; margin: -1rem 0 0; color: var(--muted); }
+  .viewport--hero { background: linear-gradient(120deg, rgba(5,5,10,.22), rgba(5,5,10,.88)), radial-gradient(circle at 18% 28%, #3b315d, transparent 45%), #090811; }
+  .hero-atmosphere { position: absolute; inset: -10%; opacity: .4; background: radial-gradient(ellipse at 25% 30%, rgba(130,118,176,.28), transparent 35%), repeating-linear-gradient(115deg, transparent 0 70px, rgba(255,255,255,.018) 72px 73px); animation: drift 18s ease-in-out infinite alternate; }
+  .hero-grid { display: grid; gap: 1rem; align-items: stretch; }
+  .hero-pitch, .audition-pitch { min-width: 0; padding: clamp(1.2rem, 3vw, 2.2rem); background: rgba(8,7,15,.35); border: 1px solid var(--line); border-radius: 1.5rem; backdrop-filter: blur(12px); }
+  .hero-pitch h1 { max-width: 15ch; margin-bottom: 1rem; font-size: clamp(2.2rem, 6vw, 5.7rem); }
+  .hero-context, .audition-pitch p { max-width: 43rem; color: var(--muted); }
+  .audition-pitch { align-self: end; }
+  .audition-pitch h2 { margin-bottom: .6rem; font-size: clamp(2rem, 5vw, 4rem); }
+  .viewport--ages { --accent: var(--age-accent); background-color: var(--age-color); background-image: radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--age-accent) 24%, transparent), transparent 35%), linear-gradient(150deg, color-mix(in srgb, var(--age-color) 78%, #08070d), #08070d 70%); transition: --age-color 600ms ease, --age-accent 600ms ease, background-color 600ms ease; }
+  .viewport--ages h2, .viewport--peoples h2 { margin-bottom: 1.1rem; }
+  .viewport--peoples { background: radial-gradient(circle at 15% 20%, rgba(80,96,84,.22), transparent 38%), linear-gradient(155deg, #111612, #080a09 70%); }
+  .viewport--country { background: linear-gradient(90deg, rgba(7,7,10,.9), rgba(7,7,10,.35)), radial-gradient(circle at 80% 40%, rgba(98,83,123,.3), transparent 40%), #09080d; }
+  .country-card { width: min(42rem, 100%); margin-left: max(0px, calc((100vw - 76rem) / 2)); padding: clamp(1.5rem, 5vw, 3rem); background: rgba(12,10,18,.58); border: 1px solid var(--line); border-radius: 1.8rem; backdrop-filter: blur(16px); }
+  .country-card h2 { margin-bottom: .3rem; }
+  .country-card > p:last-of-type { color: var(--muted); }
+  .country-epithet { color: color-mix(in srgb, var(--accent) 45%, white); font-family: var(--serif); font-size: 1.35rem; }
+  .country-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.4rem; }
+  @keyframes drift { to { transform: translate3d(3%, -2%, 0) scale(1.04); } }
+  @media (min-width: 800px) { .hero-grid { grid-template-columns: 1.35fr .65fr; } }
+  @media (max-height: 760px) { .viewport { padding-top: 5.2rem; } .hero-pitch h1 { font-size: clamp(2rem, 5vw, 4rem); } }
+  @media (prefers-reduced-motion: reduce) { .hero-atmosphere { animation: none; } .snap-page { scroll-snap-type: y proximity; } }
+</style>
