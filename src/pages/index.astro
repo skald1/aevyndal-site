@@ -84,24 +84,6 @@ import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
   .nav button{position:relative;padding:10px 0;opacity:.82}
   .nav button::after{content:"";position:absolute;left:0;right:100%;bottom:4px;height:1px;background:var(--accent);transition:right .45s var(--ease)}
   .nav button:hover::after,.nav button:focus-visible::after{right:0}
-  .age-chip {
-    position:absolute;
-    left:3.4vw;
-    top:76px;
-    z-index:21;
-
-    font-family:var(--micro);
-    font-size:10px;
-    font-weight:400;
-    line-height:1;
-    letter-spacing:.28em;
-    text-transform:uppercase;
-
-    color:var(--accent);
-    opacity:.94;
-    white-space:nowrap;
-  }
-
   .role-field,.phrase-field{position:absolute;inset:0;pointer-events:none}
   .role-field{z-index:3}
   .phrase-field{left:26vw;top:22vh;width:min(56vw,980px);height:44vh;z-index:4;position:absolute}
@@ -207,7 +189,7 @@ import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
   @media (max-width:760px){
     html,body{overflow:auto;min-height:100%}.world{min-height:100svh;height:auto;overflow:hidden}
     .topbar{height:64px;padding:0 20px}.nav{gap:16px}.nav button:nth-child(-n+3){display:none}
-    .mark-logo{max-width:220px;height:auto}.age-chip{left:20px;top:70px;font-size:9px;line-height:1}.age-note{left:20px;top:98px;width:calc(100% - 40px)}.age-note p{max-width:44ch}.age-note .line{display:none}
+    .mark-logo{max-width:220px;height:auto}.age-note{left:20px;top:98px;width:calc(100% - 40px)}.age-note p{max-width:44ch}.age-note .line{display:none}
     .headline-wrap{position:relative;left:auto;top:auto;width:auto;padding:260px 18px 0;margin:0;min-height:62svh}
     .phrase-field{left:0;top:170px;width:100%;height:34svh}
     .headline{font-size:clamp(68px,19vw,132px);line-height:.8}.headline .line:nth-child(2),.headline .line:last-child{margin-left:0}
@@ -233,11 +215,9 @@ import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
     </nav>
   </header>
 
-  <div class="age-chip" id="ageChip">4th Age</div>
-
   <section class="age-note" aria-label="Current age">
     <div class="index" id="ageIndex">04 / 08</div>
-    <h2 id="ageName">The Harrow</h2>
+    <h2 id="ageName">4th Age: The Harrow</h2>
     <p id="agePrompt">Great empires mature, trade flourishes, and civilization spreads across the landscape. Beneath that prosperity, cults rise, demons endure, surviving Italti stir, and old conspiracies move in the shadows. This is an age of dark exploration, politics, epic quests, and impossible things buried beneath ordinary life.</p>
     <div class="line" aria-hidden="true"></div>
   </section>
@@ -305,7 +285,6 @@ const world = document.querySelector('.world');
 const roleField = document.getElementById('roleField');
 const phraseField = document.getElementById('phraseField');
 const headline = document.getElementById('heroTitle');
-const ageChip = document.getElementById('ageChip');
 const ageIndex = document.getElementById('ageIndex');
 const ageName = document.getElementById('ageName');
 const agePrompt = document.getElementById('agePrompt');
@@ -382,9 +361,8 @@ function setAge(age,userInitiated=false){
   buildPhrases(age);
   setTimeout(()=>{
     world.dataset.age=String(age);
-    ageChip.textContent=ordinal[age] + ' Age';
     ageIndex.textContent=String(age).padStart(2,'0')+' / 08';
-    ageName.textContent=ages[age].name;
+    ageName.textContent=ordinal[age] + ' Age: ' + ages[age].name;
     agePrompt.textContent=ages[age].prompt;
     pathTitle.textContent=ages[age].path[0];
     pathQuote.textContent=ages[age].path[1];
@@ -401,7 +379,7 @@ buttons.forEach(b=>b.addEventListener('click',()=>setAge(Number(b.dataset.age),t
 
 buildRoles(4,true);
 buildPhrases(4,true);
-ageChip.textContent='4th Age';
+ageName.textContent='4th Age: ' + ages[4].name;
 restartCycle();
 startPhraseCycle();
 
