@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Ævyndal — Living World Archive</title>
+<style>
+  :root{
+    --bg:#07090d;
+    --bg2:#10161d;
+    --ink:#d8d9d6;
+    --muted:#8a9298;
+    --line:rgba(216,217,214,.16);
+    --line-soft:rgba(216,217,214,.07);
+    --accent:#8d7446;
+    --accent-rgb:141,116,70;
+    --headline: Georgia, 'Times New Roman', serif;
+    --ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --micro: 'Courier New', ui-monospace, monospace;
+    --ease:cubic-bezier(.22,.8,.22,1);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);overflow:hidden}
+  body{font-family:var(--ui);transition:background 1.6s var(--ease),color 1.2s var(--ease)}
+  button,input{font:inherit;color:inherit}
+  button{border:0;background:none;padding:0;cursor:pointer}
+  a{color:inherit;text-decoration:none}
+
+  .world{
+    position:relative;
+    width:100%;height:100%;
+    isolation:isolate;
+    background:
+      radial-gradient(90vw 70vh at 78% 12%, rgba(52,77,86,.24), transparent 63%),
+      radial-gradient(65vw 75vh at 60% 90%, rgba(var(--accent-rgb),.08), transparent 72%),
+      linear-gradient(120deg,var(--bg),var(--bg2) 58%,var(--bg));
+    transition:background 1.8s var(--ease);
+  }
+  .world::before{
+    content:"";position:absolute;inset:0;z-index:-8;opacity:.38;pointer-events:none;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg,var(--line-soft) 1px, transparent 1px),
+      linear-gradient(rgba(var(--accent-rgb),.08) 1px, transparent 1px),
+      linear-gradient(90deg,rgba(var(--accent-rgb),.08) 1px, transparent 1px);
+    background-size:64px 64px,64px 64px,256px 256px,256px 256px;
+    mask-image:linear-gradient(90deg,rgba(0,0,0,.45),#000 20%,#000 82%,rgba(0,0,0,.25));
+    animation:gridDrift 28s linear infinite;
+  }
+  .world::after{
+    content:"";position:absolute;inset:-30%;z-index:-9;pointer-events:none;opacity:.5;
+    background:
+      repeating-radial-gradient(circle at 50% 40%,rgba(255,255,255,.035) 0 1px,transparent 1px 5px),
+      radial-gradient(circle at 12% 62%,rgba(255,255,255,.025),transparent 24%),
+      radial-gradient(circle at 83% 28%,rgba(255,255,255,.03),transparent 18%);
+    filter:contrast(140%);
+    animation:grainShift .8s steps(2) infinite;
+  }
+  @keyframes gridDrift{to{background-position:64px 64px,-64px 64px,0 256px,256px 0}}
+  @keyframes grainShift{0%,100%{transform:translate3d(0,0,0)}25%{transform:translate3d(1.2%,.4%,0)}50%{transform:translate3d(-.7%,1.1%,0)}75%{transform:translate3d(.3%,-.9%,0)}}
+
+  .constructs{position:absolute;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
+  .constructs i{position:absolute;display:block;border-color:var(--line);opacity:.8;transition:border-color 1.4s var(--ease),opacity 1.4s var(--ease)}
+  .constructs .c1{left:9%;top:0;height:100%;border-left:1px solid var(--line)}
+  .constructs .c2{left:15%;top:0;height:100%;border-left:1px solid rgba(var(--accent-rgb),.18)}
+  .constructs .c3{left:54%;top:0;height:100%;border-left:1px solid var(--line-soft)}
+  .constructs .c4{left:73%;top:0;height:100%;border-left:1px solid var(--line-soft)}
+  .constructs .c5{left:0;top:18%;width:100%;border-top:1px solid rgba(var(--accent-rgb),.26)}
+  .constructs .c6{left:0;top:73%;width:100%;border-top:1px solid rgba(var(--accent-rgb),.24)}
+  .constructs .c7{left:17%;top:31%;width:56%;height:24%;border:1px solid var(--line-soft);clip-path:polygon(0 12%,77% 12%,77% 0,100% 44%,90% 44%,90% 100%,10% 100%,10% 80%,0 80%)}
+  .constructs .c8{right:-4%;top:8%;width:29%;height:52%;border:1px solid var(--line-soft);transform:skewY(-7deg)}
+  .constructs .c9{left:28%;top:7%;width:22%;height:1px;background:var(--line);transform:rotate(-42deg);transform-origin:left center}
+  .constructs .c10{right:9%;bottom:3%;width:33%;height:1px;background:var(--line);transform:rotate(36deg);transform-origin:right center}
+
+  .topbar{position:absolute;inset:0 0 auto 0;height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 3.4vw;z-index:20}
+  .mark{display:inline-flex;align-items:center;white-space:nowrap;transition:opacity .8s var(--ease),transform .4s var(--ease)}
+  .mark:hover{transform:translateY(-1px)}
+  .mark-logo{display:block;height:18px;width:auto;filter:invert(1) brightness(2) contrast(1.05);opacity:.94}
+  .nav{display:flex;gap:2.1vw;align-items:center;font-family:var(--micro);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+  .nav button{position:relative;padding:10px 0;opacity:.82}
+  .nav button::after{content:"";position:absolute;left:0;right:100%;bottom:4px;height:1px;background:var(--accent);transition:right .45s var(--ease)}
+  .nav button:hover::after,.nav button:focus-visible::after{right:0}
+  .age-chip{position:absolute;left:3.4vw;top:76px;z-index:21;font-family:var(--micro);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);opacity:.94;white-space:nowrap}
+
+  .role-field,.phrase-field{position:absolute;inset:0;pointer-events:none}
+  .role-field{z-index:3}
+  .phrase-field{left:26vw;top:22vh;width:min(56vw,980px);height:44vh;z-index:4;position:absolute}
+
+  .role{
+    position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r));
+    font-family:var(--micro);font-size:clamp(10px,1.15vw,18px);letter-spacing:.18em;text-transform:uppercase;
+    color:rgba(242,242,238,.86);white-space:nowrap;opacity:0;filter:blur(4px);
+    transition:opacity .9s var(--ease),filter .9s var(--ease),transform 1.2s var(--ease),color 1.2s var(--ease);
+  }
+  .role.visible{opacity:var(--o,.72);filter:blur(0);transform:translate(-50%,-50%) rotate(var(--r)) translate3d(var(--dx,0),var(--dy,0),0)}
+  .role:nth-child(3n){color:rgba(var(--accent-rgb),.92)}
+  .role:nth-child(5n){writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.25em}
+  .role::before{content:"";position:absolute;right:calc(100% + 10px);top:50%;width:clamp(18px,4vw,70px);height:1px;background:linear-gradient(90deg,transparent,var(--line));}
+
+  .phrase{
+    position:absolute;left:var(--px);top:var(--py);transform:translate(-50%,-50%) rotate(var(--pr,0deg));
+    font-family:var(--headline);font-size:clamp(18px,1.85vw,34px);line-height:1;letter-spacing:.03em;text-transform:uppercase;
+    color:rgba(228,229,226,.22);white-space:nowrap;opacity:0;filter:blur(6px);mix-blend-mode:screen;
+    transition:opacity .8s var(--ease),filter .8s var(--ease),transform 1s var(--ease),color 1.2s var(--ease);
+  }
+  .phrase.visible{opacity:1;filter:blur(0);transform:translate(-50%,-50%) rotate(var(--pr,0deg)) translate3d(var(--pdx,0),var(--pdy,0),0)}
+  .phrase:nth-child(odd){color:rgba(var(--accent-rgb),.30)}
+  .phrase[data-ghost="1"]{font-size:clamp(16px,1.35vw,26px);opacity:.6}
+
+  .headline-wrap{position:absolute;left:27.8vw;top:23vh;width:min(54vw,970px);z-index:7;pointer-events:none}
+  .kicker{font-family:var(--micro);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin:0 0 14px 1.2%}
+  .headline{
+    margin:0;font-family:var(--headline);font-size:clamp(72px,8.6vw,176px);font-weight:500;line-height:.74;letter-spacing:-.055em;text-transform:uppercase;color:rgba(223,225,223,.88);
+    transition:font-family .65s var(--ease),letter-spacing .8s var(--ease),filter .9s var(--ease),transform 1s var(--ease);
+    mix-blend-mode:screen;text-wrap:balance;
+  }
+  .headline .line{display:block;position:relative}
+  .headline .line:nth-child(2){margin-left:4.1vw}
+  .headline .line:last-child{margin-left:8.8vw;color:transparent;-webkit-text-stroke:1px rgba(225,225,220,.68);text-shadow:10px 0 0 rgba(225,225,220,.07),20px 0 0 rgba(225,225,220,.045),30px 0 0 rgba(var(--accent-rgb),.09)}
+  .headline.age-shift{filter:blur(5px);transform:translateY(10px) scale(.995)}
+
+  .age-note{position:absolute;left:3.4vw;top:15vh;width:19vw;min-width:220px;max-width:350px;z-index:6;font-family:var(--micro)}
+  .age-note .index{font-size:9px;letter-spacing:.25em;color:var(--accent)}
+  .age-note h2{font-family:var(--headline);font-size:clamp(22px,2.2vw,42px);font-weight:500;line-height:1;margin:.7rem 0 1rem;text-transform:uppercase}
+  .age-note p{font-family:var(--ui);font-size:clamp(10px,.75vw,13px);line-height:1.58;color:var(--muted);max-width:38ch}
+  .age-note .line{width:72px;height:1px;background:var(--accent);margin-top:18px;position:relative}
+  .age-note .line::after{content:"";position:absolute;right:-4px;top:-3px;width:7px;height:7px;border:1px solid var(--accent);transform:rotate(45deg)}
+
+  .identity-panel{position:absolute;right:3.3vw;top:31vh;width:min(23vw,390px);min-width:270px;padding:26px 26px 22px;z-index:9;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));backdrop-filter:blur(13px);border:1px solid rgba(255,255,255,.1);border-radius:0 26px 0 26px;box-shadow:0 26px 70px rgba(0,0,0,.26);transition:transform .75s var(--ease),opacity .75s var(--ease),border-color 1.2s var(--ease)}
+  .identity-panel:hover{transform:translateY(-4px);border-color:rgba(var(--accent-rgb),.42)}
+  .identity-panel .eyebrow{font-family:var(--micro);font-size:9px;letter-spacing:.32em;color:var(--accent);text-transform:uppercase}
+  .identity-panel h3{font-family:var(--headline);font-weight:500;font-size:clamp(30px,3vw,52px);margin:8px 0 14px;text-transform:uppercase}
+  .identity-panel blockquote{margin:0 0 22px;font-family:var(--headline);font-size:clamp(16px,1.25vw,22px);line-height:1.35;color:rgba(239,239,234,.82)}
+  .paths{display:grid;gap:0}
+  .path{position:relative;text-align:left;padding:12px 0;border-top:1px solid var(--line);font-size:12px;letter-spacing:.09em;color:rgba(240,240,235,.76);overflow:hidden}
+  .path::after{content:"↗";position:absolute;right:2px;top:12px;transform:translate(-5px,5px);opacity:0;transition:.35s var(--ease)}
+  .path:hover::after{transform:none;opacity:1}
+  .meta{margin-top:18px;font-family:var(--micro);font-size:9px;letter-spacing:.16em;color:var(--muted)}
+
+  .micro{position:absolute;z-index:5;font-family:var(--micro);text-transform:uppercase;letter-spacing:.13em;color:rgba(230,231,228,.62)}
+  .micro b{display:block;font-size:9px;color:var(--accent);font-weight:400;margin-bottom:5px}
+  .micro span{font-size:10px;line-height:1.35}
+  .m1{left:31vw;bottom:19vh}.m2{right:10vw;bottom:15vh}.m3{left:4vw;bottom:14vh;writing-mode:vertical-rl}
+
+  .age-rail{position:absolute;left:23vw;right:3.3vw;bottom:20px;height:50px;z-index:15;display:flex;align-items:flex-end;gap:0;overflow:hidden}
+  .age-rail::before{content:"";position:absolute;left:0;right:0;bottom:17px;height:1px;background:var(--line)}
+  .age-btn{position:relative;flex:1;text-align:left;padding:0 10px 28px 0;font-family:var(--micro);font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,220,216,.38);transition:color .5s var(--ease)}
+  .age-btn::after{content:"";position:absolute;left:0;bottom:14px;width:5px;height:5px;border:1px solid currentColor;background:var(--bg);transform:rotate(45deg);transition:all .55s var(--ease)}
+  .age-btn:hover{color:rgba(220,220,216,.72)}
+  .age-btn.active{color:var(--accent)}
+  .age-btn.active::after{width:9px;height:9px;bottom:12px;background:var(--accent);box-shadow:0 0 0 6px rgba(var(--accent-rgb),.08)}
+
+  .search-dock{position:absolute;left:3.4vw;bottom:24px;z-index:18;width:min(16vw,240px);min-width:180px}
+  .search-dock label{display:block;font-family:var(--micro);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .search-dock .line{display:flex;align-items:center;border-bottom:1px solid var(--line);transition:border-color .4s ease}
+  .search-dock input{width:100%;background:transparent;border:0;outline:none;padding:7px 0 10px;font-size:12px;color:var(--ink)}
+  .search-dock input::placeholder{color:rgba(210,210,206,.26)}
+  .search-dock .line:focus-within{border-color:var(--accent)}
+
+  .pulse{position:absolute;left:66%;top:52%;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 rgba(var(--accent-rgb),.3);z-index:8;animation:pulse 2.8s ease-out infinite}
+  @keyframes pulse{70%,100%{box-shadow:0 0 0 30px rgba(var(--accent-rgb),0)}}
+
+  .toast{position:absolute;left:50%;bottom:76px;transform:translateX(-50%) translateY(15px);opacity:0;z-index:30;background:rgba(8,10,14,.88);backdrop-filter:blur(12px);border:1px solid var(--line);padding:10px 14px;font-family:var(--micro);font-size:9px;letter-spacing:.16em;text-transform:uppercase;transition:.4s var(--ease);pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .world[data-age="1"]{--bg:#090806;--bg2:#17120d;--accent:#b49a6a;--accent-rgb:180,154,106;--headline:Palatino Linotype,Book Antiqua,Palatino,serif}
+  .world[data-age="2"]{--bg:#100a07;--bg2:#21120c;--accent:#a9643d;--accent-rgb:169,100,61;--headline:Georgia,'Times New Roman',serif}
+  .world[data-age="3"]{--bg:#071015;--bg2:#11232a;--accent:#6f8791;--accent-rgb:111,135,145;--headline:Baskerville,Georgia,serif}
+  .world[data-age="4"]{--bg:#07090d;--bg2:#10161d;--accent:#8d7446;--accent-rgb:141,116,70;--headline:Georgia,'Times New Roman',serif}
+  .world[data-age="5"]{--bg:#0d0d09;--bg2:#1a1b10;--accent:#818d58;--accent-rgb:129,141,88;--headline:'Courier New',monospace}
+  .world[data-age="6"]{--bg:#090b0e;--bg2:#1a1d21;--accent:#9a8668;--accent-rgb:154,134,104;--headline:'Arial Narrow','Helvetica Neue',Arial,sans-serif}
+  .world[data-age="7"]{--bg:#05080d;--bg2:#071722;--accent:#7194a5;--accent-rgb:113,148,165;--headline:Consolas,'Courier New',monospace}
+  .world[data-age="8"]{--bg:#0a100d;--bg2:#16231a;--accent:#9ea86f;--accent-rgb:158,168,111;--headline:Trebuchet MS,Segoe UI,sans-serif}
+  .world[data-age="5"] .headline{letter-spacing:-.09em}
+  .world[data-age="6"] .headline{letter-spacing:-.075em;font-weight:700}
+  .world[data-age="7"] .headline{letter-spacing:-.08em;font-weight:700}
+  .world[data-age="8"] .headline{letter-spacing:-.085em;font-weight:300}
+
+  @media (max-width:1100px){
+    .headline-wrap{left:22vw;width:68vw;top:25vh}
+    .phrase-field{left:20vw;width:60vw}
+    .identity-panel{display:none}
+    .age-note{width:16vw;min-width:150px}.age-note p{font-size:11px}
+    .role:nth-child(n+11){display:none}
+    .age-rail{left:20vw}
+  }
+  @media (max-width:760px){
+    html,body{overflow:auto;min-height:100%}.world{min-height:100svh;height:auto;overflow:hidden}
+    .topbar{height:64px;padding:0 20px}.nav{gap:16px}.nav button:nth-child(-n+3){display:none}
+    .mark-logo{height:15px}.age-chip{left:20px;top:70px;font-size:9px}.age-note{left:20px;top:98px;width:calc(100% - 40px)}.age-note p{max-width:44ch}.age-note .line{display:none}
+    .headline-wrap{position:relative;left:auto;top:auto;width:auto;padding:260px 18px 0;margin:0;min-height:62svh}
+    .phrase-field{left:0;top:170px;width:100%;height:34svh}
+    .headline{font-size:clamp(68px,19vw,132px);line-height:.8}.headline .line:nth-child(2),.headline .line:last-child{margin-left:0}
+    .role{font-size:9px}.role:nth-child(n+8){display:none}.phrase:nth-child(n+4){display:none}.micro{display:none}.pulse{display:none}
+    .search-dock{position:relative;left:auto;bottom:auto;margin:0 20px 92px;width:auto;min-width:0}
+    .age-rail{position:fixed;left:0;right:0;bottom:0;height:72px;padding:0 14px;background:linear-gradient(180deg,transparent,rgba(4,5,7,.95) 34%);backdrop-filter:blur(8px);overflow-x:auto}.age-btn{min-width:92px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  }
+</style>
+</head>
+<body>
+<main class="world" data-age="4" aria-live="polite">
+  <div class="constructs" aria-hidden="true">
+    <i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i><i class="c5"></i><i class="c6"></i><i class="c7"></i><i class="c8"></i><i class="c9"></i><i class="c10"></i>
+  </div>
+
+  <header class="topbar">
+    <a class="mark" href="#" aria-label="Ævyndal home"><img class="mark-logo" src="ghostwriter_images/context/3a4d3678-6bbf-534e-ae57-6cf3b66999ff.png" alt="ÆVYNDAL" /></a>
+    <nav class="nav" aria-label="Primary navigation">
+      <button data-nav="ages">Ages</button><button data-nav="places">Places</button><button data-nav="people">People</button><button data-nav="stories">Stories</button><button data-nav="search">Search</button>
+    </nav>
+  </header>
+
+  <div class="age-chip" id="ageChip">4th Age</div>
+
+  <section class="age-note" aria-label="Current age">
+    <div class="index" id="ageIndex">04 / 08</div>
+    <h2 id="ageName">The Harrow</h2>
+    <p id="agePrompt">Great empires mature, trade flourishes, and civilization spreads across the landscape. Beneath that prosperity, cults rise, demons endure, surviving Italti stir, and old conspiracies move in the shadows. This is an age of dark exploration, politics, epic quests, and impossible things buried beneath ordinary life.</p>
+    <div class="line" aria-hidden="true"></div>
+  </section>
+
+  <div class="role-field" id="roleField" aria-hidden="true"></div>
+  <div class="phrase-field" id="phraseField" aria-hidden="true"></div>
+
+  <section class="headline-wrap" aria-labelledby="heroTitle">
+    <div class="kicker">The Living World Archive</div>
+    <h1 class="headline" id="heroTitle">
+      <span class="line">Who</span>
+      <span class="line">are</span>
+      <span class="line">you?</span>
+    </h1>
+  </section>
+
+  <aside class="identity-panel" id="identityPanel">
+    <div class="eyebrow">Current path</div>
+    <h3 id="pathTitle">Witch</h3>
+    <blockquote id="pathQuote">You know which doors should remain closed. You also know who will come knocking anyway.</blockquote>
+    <div class="paths">
+      <button class="path">Live among them</button>
+      <button class="path">Learn what they fear</button>
+      <button class="path">Find where you belong</button>
+    </div>
+    <div class="meta" id="pathMeta">4 ages · 13 regions · 42 stories</div>
+  </aside>
+
+  <div class="micro m1"><b>01 / Mütvia</b><span>The land remembers what you bury</span></div>
+  <div class="micro m2"><b>02 / Cultrek</b><span>Everything is legal somewhere</span></div>
+  <div class="micro m3"><b>03 / Archive</b><span>Some histories are looking back</span></div>
+  <i class="pulse" aria-hidden="true"></i>
+
+  <form class="search-dock" id="searchForm" role="search">
+    <label for="archiveSearch">Search the archive</label>
+    <div class="line"><input id="archiveSearch" type="search" placeholder="Try “Mütvia”, “witch”, or “7th Age”" autocomplete="off" /></div>
+  </form>
+
+  <nav class="age-rail" aria-label="Choose an age">
+    <button class="age-btn" data-age="1">01 Creation</button>
+    <button class="age-btn" data-age="2">02 God-Kings</button>
+    <button class="age-btn" data-age="3">03 Expansion</button>
+    <button class="age-btn active" data-age="4">04 Harrow</button>
+    <button class="age-btn" data-age="5">05 Collapse</button>
+    <button class="age-btn" data-age="6">06 Reason</button>
+    <button class="age-btn" data-age="7">07 Syndicate</button>
+    <button class="age-btn" data-age="8">08 Hope</button>
+  </nav>
+
+  <div class="toast" id="toast" role="status"></div>
+</main>
+<script>
+const ages = {
+  1:{name:'Creation',prompt:'Sythlia creates the worlds through the Eight Elements, raising mountains, seas, spirits, and the first peoples before ending her work with Ævyn, the Great Consort. Life is eternal, death does not yet exist, and creation still feels close enough to touch.',roles:['first witness','shape-singer','elemental keeper','pathfinder','maker','memory bearer','consort','river speaker','wild child','threshold walker','stone tender','sky listener','oath giver','name keeper'],phrases:['Find yourself here','What will you become','Begin somewhere','Choose your beginning','Step into the first stories','Become part of the making'],path:['First Witness','The world is unfinished. You remember the first time the river chose a direction.','1 age · 8 elements · countless beginnings']},
+  2:{name:'God-Kings',prompt:'Ævyn dies and the divine order fractures. The Italti rise as god-kings, tyrants, prophets, monsters, and living miracles. Mortals survive beneath powers they cannot openly challenge in an age of tribes, cults, ancient belief, rebellion, and unknowable high magic.',roles:['oath-breaker','temple slave','rebel','oracle','bronze captain','monster hunter','idol keeper','tribute runner','god-killer','deserter','healer','charioteer','hostage prince','grave singer'],phrases:['Refuse the throne','Who survives power','What will you become','Choose your defiance','Find yourself in the revolt','Step into legend'],path:['Rebel','You have seen what kneeling costs. The harder question is who you become after you stand.','22 fallen italti · 9 rebellions · no safe loyalties']},
+  3:{name:'Expansion',prompt:'The Ride of the Hunt breaks Italti rule and the surviving god-kings flee into remote places. Mortals claim the world for themselves: kingdoms expand, roads connect distant lands, ruins open, monsters are pushed back, and exploration becomes the promise and danger of the age.',roles:['cartographer','ruin delver','envoy','road warden','monster hunter','settler','relic thief','river guide','court mage','frontier healer','scribe','scout','merchant','exile'],phrases:['Go farther in','Find yourself here','What will you discover','Who claims the horizon','Choose the next road','Become the mapmaker'],path:['Cartographer','Your map is not empty. It is full of people who were never asked what the road should be called.','31 routes · 17 frontiers · 6 lost cities']},
+  4:{name:'The Harrow',prompt:'Great empires mature, trade flourishes, and civilization spreads across the landscape. Beneath that prosperity, cults rise, demons endure, surviving Italti stir, and old conspiracies move in the shadows. This is an age of dark exploration, politics, epic quests, and impossible things buried beneath ordinary life.',roles:['witch','pilgrim','hunter','scholar','merchant','noble','smuggler','drósti','grave tender','mercenary','inquisitor','courier','heir','heretic'],phrases:['Find yourself here','What will you become','Choose your shadow','Who belongs in the dark','Step into the hidden world','Become the one who knows'],path:['Witch','You know which doors should remain closed. You also know who will come knocking anyway.','4 ages · 13 regions · 42 stories']},
+  5:{name:'Collapse',prompt:'Mortals reconfigure the Caldra\'fa Helix and Nor\'dagha rises as the predominant power. Nature reclaims authority over civilization: cities fall, roads vanish, and old systems collapse. Stories turn toward survival, ancient tombs, lost knowledge, settlement defense, and carving new paths through a world that refuses to remain conquered.',roles:['path cutter','seed keeper','ruin doctor','bridge guard','storm refugee','tomb reader','water finder','village speaker','beast guide','salvager','midwife','scout','fire watcher','memory carrier'],phrases:['Save what remains','What will endure','Find yourself here','Choose what survives','Become a keeper','Carry the future forward'],path:['Seed Keeper','You carry tomorrow in a pouch small enough to lose. Everyone knows it.','5 enclaves · 63 reclaimed paths · 1 long winter']},
+  6:{name:'Reason',prompt:'The last ancient temple of Sythlia is plundered and razed, marking the decline of old faith and the rise of science. Industry, experimentation, occult research, and invention reshape daily life. Magic becomes something to study as much as practice, while secret societies and new technologies challenge inherited truths.',roles:['investigator','inventor','occultist','factory medic','archivist','strike organizer','engineer','medium','photographer','anatomist','smuggler','reporter','astronomer','saboteur'],phrases:['Question everything','What will you become','Find yourself here','Choose what you prove','Become the witness','Step inside the inquiry'],path:['Investigator','The machine works. The ghost is real. Your employer insists only one of those statements can be true.','26 societies · 9 districts · 117 unsolved cases']},
+  7:{name:'Syndicate',prompt:'The successful Ion-X Drive opens intergalactic travel within a mortal lifetime, and the Syndicate rises with it. Civilization expands across worlds and galaxies under corporate rule. Power becomes systemic: surveillance, engineered belief, military enforcement, psychological control, black operations, and resistance all exist inside a civilization optimized until people become its raw material.',roles:['runner','simulant','smuggler','defector','memory thief','cell leader','corporate priest','void pilot','data ghost','terraformer','bounty hunter','black-ops asset','engineer','agitator'],phrases:['Break the system','Find yourself here','What will you become','Choose your signal','Become ungovernable','Step beyond the gate'],path:['Defector','Your old clearance still opens doors. Every door remembers that you betrayed it.','3 galaxies · 117.8 billion people · 1 system']},
+  8:{name:'Hope',prompt:'The Syndicate collapses and communities inherit the ruins of an interstellar civilization. Faith, science, and magic begin to converge again as people rebuild deliberately rather than simply restoring what failed. Hope is practical work: teaching, repairing, growing, organizing, exploring, and defending fragile futures from the systems that still want to return.',roles:['teacher','engineer','gardener','mystic','organizer','artist','navigator','repairer','healer','historian','builder','mediator','farmer','signal keeper'],phrases:['Find yourself here','What will you become','Build what comes next','Choose your becoming','Become part of the future','Who will you help'],path:['Builder','The future is not waiting to be discovered. It is waiting for someone to show up with tools.','8 regions · 34 communes · 109 unfinished plans']}
+};
+
+const world = document.querySelector('.world');
+const roleField = document.getElementById('roleField');
+const phraseField = document.getElementById('phraseField');
+const headline = document.getElementById('heroTitle');
+const ageChip = document.getElementById('ageChip');
+const ageIndex = document.getElementById('ageIndex');
+const ageName = document.getElementById('ageName');
+const agePrompt = document.getElementById('agePrompt');
+const pathTitle = document.getElementById('pathTitle');
+const pathQuote = document.getElementById('pathQuote');
+const pathMeta = document.getElementById('pathMeta');
+const buttons = [...document.querySelectorAll('.age-btn')];
+const toast = document.getElementById('toast');
+let currentAge = 4;
+let cycle;
+let phraseCycle;
+
+const ordinal = ['','1st','2nd','3rd','4th','5th','6th','7th','8th'];
+const positions = [
+  [19,16,-1,.82],[40,10,1,.50],[63,13,0,.70],[87,16,1,.45],[24,31,-1,.78],[82,32,0,.78],[91,48,1,.65],[19,56,0,.75],[36,61,-1,.58],[74,59,1,.48],[24,68,0,.72],[56,72,1,.42],[80,76,-1,.52],[40,82,0,.64]
+];
+const phrasePositions = [
+  [28,24,-8,12,-4],[72,25,7,-10,6],[39,48,-5,8,4],[66,54,5,-8,-3],[31,70,-3,12,-5],[74,73,4,-10,4]
+];
+
+function buildRoles(age, immediate=false){
+  const words = ages[age].roles;
+  const old = [...roleField.children];
+  old.forEach(el=>el.classList.remove('visible'));
+  const change = ()=>{
+    roleField.innerHTML='';
+    words.forEach((word,i)=>{
+      const p=positions[i%positions.length];
+      const el=document.createElement('span');
+      el.className='role';el.textContent=word;
+      el.style.setProperty('--x',p[0]+'%');el.style.setProperty('--y',p[1]+'%');
+      el.style.setProperty('--r',p[2]+'deg');el.style.setProperty('--o',p[3]);
+      el.style.setProperty('--dx',((i%3)-1)*6+'px');el.style.setProperty('--dy',((i%4)-1.5)*4+'px');
+      roleField.appendChild(el);
+      requestAnimationFrame(()=>setTimeout(()=>el.classList.add('visible'), immediate?0:60+i*42));
+    });
+  };
+  if(immediate) change(); else setTimeout(change,520);
+}
+
+function buildPhrases(age, immediate=false){
+  const phrases = ages[age].phrases;
+  [...phraseField.children].forEach(el=>el.classList.remove('visible'));
+  const change = ()=>{
+    phraseField.innerHTML='';
+    const used = [...phrases].sort(()=>Math.random()-.5);
+    phrasePositions.forEach((p,i)=>{
+      const el=document.createElement('span');
+      el.className='phrase';
+      el.dataset.ghost = i > 3 ? '1' : '0';
+      el.textContent = used[i % used.length];
+      el.style.setProperty('--px',p[0]+'%');
+      el.style.setProperty('--py',p[1]+'%');
+      el.style.setProperty('--pr',p[2]+'deg');
+      el.style.setProperty('--pdx',p[3]+'px');
+      el.style.setProperty('--pdy',p[4]+'px');
+      phraseField.appendChild(el);
+      requestAnimationFrame(()=>setTimeout(()=>el.classList.add('visible'), immediate?0:90+i*55));
+    });
+  };
+  if(immediate) change(); else setTimeout(change,260);
+}
+
+function startPhraseCycle(){
+  clearInterval(phraseCycle);
+  phraseCycle = setInterval(()=>buildPhrases(currentAge), 3200);
+}
+
+function setAge(age,userInitiated=false){
+  if(age===currentAge && userInitiated) return;
+  currentAge=age;
+  headline.classList.add('age-shift');
+  buildRoles(age);
+  buildPhrases(age);
+  setTimeout(()=>{
+    world.dataset.age=String(age);
+    ageChip.textContent=ordinal[age] + ' Age';
+    ageIndex.textContent=String(age).padStart(2,'0')+' / 08';
+    ageName.textContent=ages[age].name;
+    agePrompt.textContent=ages[age].prompt;
+    pathTitle.textContent=ages[age].path[0];
+    pathQuote.textContent=ages[age].path[1];
+    pathMeta.textContent=ages[age].path[2];
+    buttons.forEach(b=>b.classList.toggle('active',Number(b.dataset.age)===age));
+    headline.classList.remove('age-shift');
+  },650);
+  if(userInitiated) restartCycle();
+}
+
+function nextAge(){setAge(currentAge===8?1:currentAge+1)}
+function restartCycle(){clearInterval(cycle);cycle=setInterval(nextAge,9000);startPhraseCycle()}
+buttons.forEach(b=>b.addEventListener('click',()=>setAge(Number(b.dataset.age),true)));
+
+buildRoles(4,true);
+buildPhrases(4,true);
+ageChip.textContent='4th Age';
+restartCycle();
+startPhraseCycle();
+
+document.querySelectorAll('.path').forEach(btn=>btn.addEventListener('click',()=>showToast(btn.textContent+' — route preview opened')));
+document.querySelectorAll('[data-nav]').forEach(btn=>btn.addEventListener('click',()=>{
+  const target=btn.dataset.nav;
+  if(target==='search') document.getElementById('archiveSearch').focus();
+  else showToast(target+' index opened');
+}));
+
+document.getElementById('searchForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const q=document.getElementById('archiveSearch').value.trim();
+  showToast(q?`Searching the archive for “${q}”`:'Enter a name, place, role, or age');
+});
+
+function showToast(msg){
+  toast.textContent=msg;
+  toast.classList.add('show');
+  clearTimeout(showToast.t);
+  showToast.t=setTimeout(()=>toast.classList.remove('show'),2200)
+}
+
+let raf;
+window.addEventListener('pointermove',e=>{
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  cancelAnimationFrame(raf);
+  raf=requestAnimationFrame(()=>{
+    const nx=(e.clientX/innerWidth-.5), ny=(e.clientY/innerHeight-.5);
+    [...roleField.children].forEach((el,i)=>{
+      const depth=(i%5+1)*.7;
+      el.style.marginLeft=(nx*depth*5)+'px';
+      el.style.marginTop=(ny*depth*4)+'px';
+    });
+    [...phraseField.children].forEach((el,i)=>{
+      const depth=(i%4+1)*.55;
+      el.style.marginLeft=(nx*depth*8)+'px';
+      el.style.marginTop=(ny*depth*6)+'px';
+    });
+  });
+});
+</script>
+</body>
+</html>
