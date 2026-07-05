@@ -123,10 +123,19 @@ import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
   .headline .line:last-child{margin-left:8.8vw;color:transparent;-webkit-text-stroke:1px rgba(225,225,220,.68);text-shadow:10px 0 0 rgba(225,225,220,.07),20px 0 0 rgba(225,225,220,.045),30px 0 0 rgba(var(--accent-rgb),.09)}
   .headline.age-shift{filter:blur(5px);transform:translateY(10px) scale(.995)}
 
-  .age-note{position:absolute;left:3.4vw;top:15vh;width:19vw;min-width:220px;max-width:350px;z-index:6;font-family:var(--micro)}
+  .age-note{position:absolute;left:3.4vw;top:15vh;width:21vw;min-width:260px;max-width:350px;z-index:6;font-family:var(--micro)}
   .age-note .index{font-size:9px;letter-spacing:.25em;color:var(--accent)}
-  .age-note h2{font-family:var(--headline);font-size:clamp(22px,2.2vw,42px);font-weight:500;line-height:1;margin:.7rem 0 1rem;text-transform:uppercase}
-  .age-note p{font-family:var(--ui);font-size:clamp(10px,.75vw,13px);line-height:1.58;color:var(--muted);max-width:38ch}
+  .age-note h2 {
+  font-family: var(--headline);
+  font-size: clamp(42px, 4.6vw, 84px);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin: .7rem 0 1.2rem;
+  text-transform: uppercase;
+  max-width: 5ch;
+}
+  .age-note p{font-family:var(--ui);font-size: clamp(11px, .82vw, 14px);line-height:1.55;color:var(--muted);max-width:38ch}
   .age-note .line{width:72px;height:1px;background:var(--accent);margin-top:18px;position:relative}
   .age-note .line::after{content:"";position:absolute;right:-4px;top:-3px;width:7px;height:7px;border:1px solid var(--accent);transform:rotate(45deg)}
 
