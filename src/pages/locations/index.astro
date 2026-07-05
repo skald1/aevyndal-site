@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getLocations } from "../../lib/sanity";
+
+const locations = await getLocations();
+---
+
+<BaseLayout title="Starting Locations — Ævyndal" description="Find a place to begin in Ævyndal.">
+  <main class="page-shell" id="main-content">
+    <div class="page-shell__inner">
+      <p class="eyebrow">Starting Locations</p>
+      <h1>Find somewhere to stand.</h1>
+      <p class="lede">Each starting location will offer a place, a pressure, and people who would notice your choices.</p>
+      {locations.length ? (
+        <div class="location-list">
+          {locations.map((location) => <article><h2>{location.title}</h2><p>{location.pitch}</p></article>)}
+        </div>
+      ) : (
+        <div class="placeholder-block">The first starting locations are being prepared.</div>
+      )}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .location-list { display: grid; gap: 1rem; margin-top: 3rem; }
+  .location-list article { padding: 1.5rem; border: 1px solid var(--line); border-radius: 1.25rem; }
+  .location-list h2 { font-size: 2.5rem; }
+  .location-list p { color: var(--muted); }
+</style>

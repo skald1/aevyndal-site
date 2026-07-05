@@ -1,0 +1,124 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const questions = [
+  "I am comfortable exploring dark fantasy themes.",
+  "I enjoy character-driven choices with lasting consequences.",
+  "I prefer a collaborative table where players share narrative responsibility.",
+  "I am comfortable using safety tools and discussing boundaries before play.",
+  "I enjoy sessions that balance roleplay, exploration, and combat.",
+  "I can commit to a regular campaign schedule.",
+  "I welcome thoughtful feedback from the group and Game Master.",
+];
+
+const scale = [
+  [1, "Strongly disagree"],
+  [2, "Disagree"],
+  [3, "Neither agree nor disagree"],
+  [4, "Agree"],
+  [5, "Strongly agree"],
+] as const;
+---
+
+<BaseLayout
+  title="The Returned Audition — Ævyndal"
+  description="Share your play preferences for The Returned, a campaign set in Mütvia."
+>
+  <main class="page-shell" id="main-content">
+    <div class="page-shell__inner audition-page">
+      <p class="eyebrow">The Returned · Mütvia</p>
+      <h1>Find the right table.</h1>
+      <p class="lede">This short form helps us understand how you like to play. The wording is provisional; final audition questions will replace it before applications formally open.</p>
+
+      <form data-audition-form>
+        <label class="text-field">
+          <span>Name or handle <small>(optional)</small></span>
+          <input type="text" name="handle" autocomplete="name" maxlength="100" />
+        </label>
+
+        {questions.map((question, index) => (
+          <fieldset>
+            <legend><span>{String(index + 1).padStart(2, "0")}</span>{question}</legend>
+            <div class="scale">
+              {scale.map(([value, label]) => (
+                <label>
+                  <input type="radio" name={`question${index + 1}`} value={value} required />
+                  <span>{value}</span>
+                  <small>{label}</small>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        ))}
+
+        <p class="form-error" data-form-error role="alert" hidden></p>
+        <button class="button" type="submit">Submit response</button>
+      </form>
+
+      <section class="confirmation" data-confirmation tabindex="-1" hidden>
+        <p class="eyebrow">Response received</p>
+        <h2>Thank you.</h2>
+        <p>Your response has been recorded.</p>
+        <a class="button button--quiet" href="/">Return to Ævyndal</a>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-audition-form]");
+  const confirmation = document.querySelector<HTMLElement>("[data-confirmation]");
+  const error = document.querySelector<HTMLElement>("[data-form-error]");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submit = form.querySelector<HTMLButtonElement>("button[type='submit']");
+    if (submit) submit.disabled = true;
+    if (error) error.hidden = true;
+
+    try {
+      const response = await fetch("/api/audition-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+
+      if (!response.ok) throw new Error("Submission failed");
+      form.hidden = true;
+      if (confirmation) {
+        confirmation.hidden = false;
+        confirmation.focus();
+      }
+    } catch {
+      if (error) {
+        error.textContent = "We could not record your response. Please try again in a moment.";
+        error.hidden = false;
+      }
+    } finally {
+      if (submit) submit.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .audition-page { max-width: 60rem; }
+  .audition-page h1 { margin-bottom: 1rem; }
+  form { display: grid; gap: 1rem; margin-top: 3rem; }
+  .text-field, fieldset { padding: 1.2rem; background: rgba(255,255,255,.035); border: 1px solid var(--line); border-radius: 1.25rem; }
+  .text-field { display: grid; gap: .65rem; }
+  .text-field span { font-weight: 600; }
+  .text-field small { color: var(--muted); font-weight: 400; }
+  .text-field input { min-height: 2.8rem; padding: .65rem .8rem; color: var(--ink); background: rgba(0,0,0,.2); border: 1px solid var(--line); border-radius: .7rem; }
+  fieldset { margin: 0; }
+  legend { width: 100%; padding: 0 0 1rem; font-family: var(--serif); font-size: 1.25rem; }
+  legend span { margin-right: .65rem; color: var(--accent); font-family: var(--sans); font-size: .7rem; }
+  .scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: .35rem; }
+  .scale label { position: relative; display: grid; justify-items: center; gap: .4rem; padding: .7rem .2rem; color: var(--muted); border: 1px solid transparent; border-radius: .8rem; cursor: pointer; text-align: center; }
+  .scale label:has(input:checked) { color: var(--ink); background: color-mix(in srgb, var(--accent) 35%, transparent); border-color: var(--accent); }
+  .scale input { width: 1.1rem; height: 1.1rem; accent-color: var(--accent); }
+  .scale small { display: none; font-size: .62rem; line-height: 1.25; }
+  .form-error { color: #ffc4bb; }
+  .confirmation { padding: 3rem 0; }
+  .confirmation h2 { margin-bottom: .5rem; }
+  @media (min-width: 700px) { .scale small { display: block; } }
+</style>

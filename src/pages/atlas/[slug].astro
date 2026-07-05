@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { fallbackCountry } from "../../data/fallbacks";
+import { getCountries } from "../../lib/sanity";
+import type { Country } from "../../types/content";
+
+export async function getStaticPaths() {
+  const published = await getCountries();
+  const countries = published.length ? published : [fallbackCountry];
+  return countries.map((country) => ({ params: { slug: country.slug.current }, props: { country } }));
+}
+
+const { country } = Astro.props as { country: Country };
+---
+
+<BaseLayout title={`${country.name} — Atlas of Ævyndal`} description={country.toneStatement ?? country.epithet ?? country.name}>
+  <main class="page-shell" id="main-content">
+    <div class="page-shell__inner">
+      <p class="eyebrow">Atlas {country.temporary ? "· Preview" : ""}</p>
+      <h1>{country.name}</h1>
+      {country.epithet && <p class="lede">{country.epithet}</p>}
+      <p class="lede">{country.toneStatement}</p>
+      <div class="placeholder-block">The full country entry will open here.</div>
+    </div>
+  </main>
+</BaseLayout>

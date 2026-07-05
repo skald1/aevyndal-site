@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { fallbackLineages } from "../../data/fallbacks";
+import { getLineages } from "../../lib/sanity";
+import type { Lineage } from "../../types/content";
+
+export async function getStaticPaths() {
+  const published = await getLineages();
+  const lineages = published.length ? published : fallbackLineages;
+  return lineages.map((lineage) => ({ params: { slug: lineage.slug.current }, props: { lineage } }));
+}
+
+const { lineage } = Astro.props as { lineage: Lineage };
+---
+
+<BaseLayout title={`${lineage.name} — Peoples of Ævyndal`} description={lineage.identityHook ?? `Meet the ${lineage.name}.`}>
+  <main class="page-shell" id="main-content">
+    <div class="page-shell__inner">
+      <p class="eyebrow">People {lineage.temporary ? "· Preview" : ""}</p>
+      <h1>{lineage.name}</h1>
+      {lineage.genericBridge && <p class="lede">{lineage.genericBridge}</p>}
+      <p class="lede">{lineage.identityHook}</p>
+      {lineage.description && <p>{lineage.description}</p>}
+      <div class="identity-blocks">
+        <section><h2>You Might…</h2><p>{lineage.youMight ?? "This perspective is still being written."}</p></section>
+        <section><h2>Others See…</h2><p>{lineage.othersSee ?? "This perspective is still being written."}</p></section>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  h1 { text-transform: capitalize; }
+  .identity-blocks { display: grid; gap: 1rem; margin-top: 4rem; }
+  .identity-blocks section { padding: 1.5rem; background: rgba(255,255,255,.035); border: 1px solid var(--line); border-radius: 1.5rem; }
+  .identity-blocks h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+  .identity-blocks p { color: var(--muted); }
+  @media (min-width: 720px) { .identity-blocks { grid-template-columns: 1fr 1fr; } }
+</style>

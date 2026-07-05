@@ -1,0 +1,34 @@
+---
+import type { Lineage } from "../types/content";
+import { sanityImageUrl } from "../lib/sanity";
+
+interface Props { lineages: Lineage[]; }
+const { lineages } = Astro.props;
+---
+
+<div class="lineage-strip" aria-label="Peoples of Ævyndal">
+  {lineages.map((lineage) => {
+    const portrait = sanityImageUrl(lineage.portrait, 600);
+    return (
+      <a class="lineage-card" href={`/peoples/${lineage.slug.current}`}>
+        <div class="lineage-portrait">
+          {portrait ? <img src={portrait} alt="" loading="lazy" /> : <span aria-hidden="true">{lineage.name.charAt(0)}</span>}
+        </div>
+        <p class="eyebrow">{lineage.temporary ? "Preview" : "People"}</p>
+        <h3>{lineage.name}</h3>
+        <p>{lineage.identityHook ?? "Their place in the archive is still being written."}</p>
+      </a>
+    );
+  })}
+</div>
+
+<style>
+  .lineage-strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(15.5rem, 78vw); gap: 1rem; margin-top: 2rem; padding: .25rem 0 1rem; overflow-x: auto; scroll-snap-type: x mandatory; }
+  .lineage-card { min-height: 19rem; padding: 1rem; color: var(--ink); background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.02)); border: 1px solid var(--line); border-radius: 1.5rem; scroll-snap-align: start; text-decoration: none; }
+  .lineage-portrait { height: 8rem; display: grid; place-items: center; margin-bottom: 1.2rem; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,.1), transparent 65%); border-radius: 1rem; }
+  .lineage-portrait img { width: 100%; height: 100%; object-fit: cover; }
+  .lineage-portrait span { font-family: var(--serif); font-size: 4rem; color: var(--accent); text-transform: uppercase; }
+  .lineage-card h3 { margin-bottom: .4rem; text-transform: capitalize; }
+  .lineage-card p:last-child { color: var(--muted); }
+  @media (min-width: 900px) { .lineage-strip { grid-auto-columns: minmax(15rem, 1fr); } }
+</style>

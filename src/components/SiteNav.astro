@@ -1,0 +1,28 @@
+---
+interface Props {
+  homepage?: boolean;
+}
+
+const { homepage = false } = Astro.props;
+const links = [
+  ["Ages", "/#ages"],
+  ["Atlas", "/atlas"],
+  ["Peoples", "/#peoples"],
+  ["Faiths", "/#country"],
+  ["Lore", "/#ages"],
+  ["Campaigns", "/audition"],
+];
+---
+
+<header class:list={["site-nav", { "site-nav--ghost": homepage }]} data-site-nav>
+  <a class="wordmark" href="/" aria-label="Ævyndal home">ÆVYNDAL</a>
+  <nav aria-label="Primary navigation">
+    {links.map(([label, href]) => <a href={href}>{label}</a>)}
+  </nav>
+  <button class="search-placeholder" type="button" aria-label="Search is coming soon" title="Search coming soon">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="6.5"></circle>
+      <path d="m16 16 4 4"></path>
+    </svg>
+  </button>
+</header>

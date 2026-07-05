@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { fallbackCountry } from "../../data/fallbacks";
+import { getCountries } from "../../lib/sanity";
+
+const published = await getCountries();
+const countries = published.length ? published : [fallbackCountry];
+---
+
+<BaseLayout title="Atlas — Ævyndal" description="Open the atlas of Ævyndal.">
+  <main class="page-shell" id="main-content">
+    <div class="page-shell__inner">
+      <p class="eyebrow">The Atlas</p>
+      <h1>Begin somewhere.</h1>
+      <p class="lede">Countries and regions will gather here as the archive opens.</p>
+      <div class="atlas-list">
+        {countries.map((country) => <a href={`/atlas/${country.slug.current}`}><span>{country.epithet}</span><strong>{country.name}</strong></a>)}
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .atlas-list { display: grid; gap: 1rem; margin-top: 3rem; }
+  .atlas-list a { display: grid; gap: .3rem; padding: 1.5rem; background: rgba(255,255,255,.035); border: 1px solid var(--line); border-radius: 1.25rem; text-decoration: none; }
+  .atlas-list span { color: var(--muted); }
+  .atlas-list strong { font-family: var(--serif); font-size: 2rem; }
+</style>

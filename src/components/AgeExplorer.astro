@@ -1,0 +1,148 @@
+---
+import type { Age, Location } from "../types/content";
+
+interface Props {
+  ages: Age[];
+  locations: Location[];
+  defaultAgeId: string;
+}
+
+const { ages, locations, defaultAgeId } = Astro.props;
+
+function excerpt(text = "") {
+  const sentences = text.match(/[^.!?]+[.!?]+/g);
+  return sentences ? sentences.slice(0, 3).join(" ").trim() : text;
+}
+---
+
+<div class="age-tabs" role="tablist" aria-label="The eight Ages of Ævyndal">
+  {ages.map((age) => (
+    <button
+      type="button"
+      role="tab"
+      id={`age-tab-${age.slug.current}`}
+      aria-controls={`age-panel-${age.slug.current}`}
+      aria-selected={age._id === defaultAgeId ? "true" : "false"}
+      tabindex={age._id === defaultAgeId ? 0 : -1}
+      data-age-tab
+      data-target={age.slug.current}
+      data-color={age.color ?? "#2A2440"}
+      data-accent={age.accentColor ?? "#6b5fa8"}
+    >
+      {age.label}
+    </button>
+  ))}
+</div>
+
+<div class="age-panels">
+  {ages.map((age) => {
+    const location = locations.find((item) => item.ageId === age._id);
+    const selected = age._id === defaultAgeId;
+
+    return (
+      <article
+        class="age-panel"
+        id={`age-panel-${age.slug.current}`}
+        role="tabpanel"
+        aria-labelledby={`age-tab-${age.slug.current}`}
+        aria-hidden={selected ? "false" : "true"}
+        data-age-panel={age.slug.current}
+        inert={selected ? undefined : true}
+      >
+        <div class="age-card age-card--overview">
+          <p class="eyebrow">{age.genre} {age.era ? `· ${age.era}` : ""}</p>
+          <h3>{age.name}</h3>
+          {age.subtitle && <p class="age-subtitle">{age.subtitle}</p>}
+          <p class="age-description">{excerpt(age.description)}</p>
+          {age.locked && (
+            <div class="age-progress" aria-label={`${age.buildPercent}% complete`}>
+              <div><span style={`width: ${age.buildPercent}%`}></span></div>
+              <small>{age.buildStatus ?? "In development"} · {age.buildPercent}%</small>
+            </div>
+          )}
+          <a class="button" href={`/ages/${age.slug.current}`}>Read More</a>
+        </div>
+
+        <div class="age-card age-card--location">
+          <p class="eyebrow">Starting Location</p>
+          {location ? (
+            <>
+              <h3>{location.title}</h3>
+              {location.genreLine && <p>{location.genreLine}</p>}
+              {location.pitch && <p>{location.pitch}</p>}
+            </>
+          ) : (
+            <div class="coming-soon">
+              <span aria-hidden="true">◇</span>
+              <h3>Coming soon</h3>
+              <p>A first place to stand in this Age is still being prepared.</p>
+            </div>
+          )}
+        </div>
+      </article>
+    );
+  })}
+</div>
+
+<script>
+  const section = document.querySelector<HTMLElement>("[data-age-section]");
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-age-tab]"));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-age-panel]"));
+
+  function selectAge(tab: HTMLButtonElement) {
+    const target = tab.dataset.target;
+    if (!target || !section) return;
+
+    section.style.setProperty("--age-color", tab.dataset.color ?? "#2A2440");
+    section.style.setProperty("--age-accent", tab.dataset.accent ?? "#6b5fa8");
+
+    tabs.forEach((candidate) => {
+      const active = candidate === tab;
+      candidate.setAttribute("aria-selected", String(active));
+      candidate.tabIndex = active ? 0 : -1;
+    });
+
+    panels.forEach((panel) => {
+      const active = panel.dataset.agePanel === target;
+      panel.setAttribute("aria-hidden", String(!active));
+      panel.toggleAttribute("inert", !active);
+    });
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => selectAge(tab));
+    tab.addEventListener("pointerenter", (event) => {
+      if ((event as PointerEvent).pointerType === "mouse") selectAge(tab);
+    });
+    tab.addEventListener("focus", () => selectAge(tab));
+    tab.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      event.preventDefault();
+      const direction = event.key === "ArrowRight" ? 1 : -1;
+      tabs[(index + direction + tabs.length) % tabs.length]?.focus();
+    });
+  });
+</script>
+
+<style>
+  .age-tabs { display: flex; gap: .35rem; margin: 1.5rem 0; padding-bottom: .4rem; overflow-x: auto; scrollbar-width: thin; }
+  .age-tabs button { flex: 0 0 auto; padding: .7rem .9rem; color: var(--muted); background: rgba(255,255,255,.035); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; transition: color 400ms ease, background-color 400ms ease, border-color 400ms ease; }
+  .age-tabs button[aria-selected="true"] { color: var(--ink); background: color-mix(in srgb, var(--age-accent) 45%, transparent); border-color: color-mix(in srgb, var(--age-accent) 75%, white); }
+  .age-panels { display: grid; }
+  .age-panel { grid-area: 1 / 1; display: grid; gap: 1rem; opacity: 1; visibility: visible; transition: opacity 400ms ease, visibility 0s linear; }
+  .age-panel[aria-hidden="true"] { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 400ms ease, visibility 0s linear 400ms; }
+  .age-card { min-height: 20rem; padding: clamp(1.2rem, 3vw, 2rem); background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025)); border: 1px solid var(--line); border-radius: 1.5rem; backdrop-filter: blur(16px); transition: background-color 400ms ease, border-color 400ms ease; }
+  .age-card--overview { display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; }
+  .age-card h3 { margin-bottom: .5rem; }
+  .age-card p { max-width: 52rem; color: var(--muted); }
+  .age-card .button { margin-top: auto; transition: background-color 400ms ease, border-color 400ms ease, color 400ms ease, transform 250ms ease; }
+  .age-description { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; }
+  .age-subtitle { font-family: var(--serif); font-size: 1.2rem; }
+  .age-progress { margin: 1.2rem 0; }
+  .age-progress > div { height: 3px; overflow: hidden; background: rgba(255,255,255,.1); border-radius: 99px; }
+  .age-progress span { display: block; height: 100%; background: var(--age-accent); transition: background-color 400ms ease; }
+  .age-progress small { display: block; margin-top: .5rem; color: var(--muted); }
+  .coming-soon { min-height: 9rem; display: grid; align-content: center; justify-items: start; }
+  .coming-soon > span { color: var(--age-accent); font-size: 1.8rem; transition: color 400ms ease; }
+  @media (min-width: 760px) { .age-panel { grid-template-columns: minmax(0, 1.45fr) minmax(16rem, .75fr); } }
+</style>
