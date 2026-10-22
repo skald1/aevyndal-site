@@ -1,5 +1,47 @@
 ---
 import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
+
+/*
+ * The Dig: the homepage is a cross-section through the eight Ages.
+ * Newest Age on top, oldest at the bottom. Sealed strata are Ages
+ * with no recovered artifact yet; give one an artifact to open it.
+ */
+
+type Age = {
+  n: number;
+  ordinal: string;
+  name: string;
+  began: string;
+  sealed: boolean;
+  tone: "light" | "dark";
+};
+
+const ages: Age[] = [
+  { n: 8, ordinal: "8th", name: "Dawn of Hope", began: "IC 5208", sealed: false, tone: "light" },
+  { n: 7, ordinal: "7th", name: "Rise of the Syndicate", began: "IC 2323", sealed: true, tone: "light" },
+  { n: 6, ordinal: "6th", name: "Rise of Science", began: "IC 1770", sealed: false, tone: "dark" },
+  { n: 5, ordinal: "5th", name: "Fall of the Gods", began: "IC 1436", sealed: false, tone: "dark" },
+  { n: 4, ordinal: "4th", name: "Age of Exploration", began: "IC 1", sealed: false, tone: "dark" },
+  { n: 3, ordinal: "3rd", name: "Expansion of Empires", began: "IC −67", sealed: true, tone: "dark" },
+  { n: 2, ordinal: "2nd", name: "Chaos and God-Kings", began: "IC −1380", sealed: true, tone: "dark" },
+  { n: 1, ordinal: "1st", name: "Age of Creation", began: "before all reckoning", sealed: true, tone: "dark" },
+];
+
+type Work = { age: string; title: string; kind: string; line: string };
+
+const works: Work[] = [
+  { age: "8", title: "Edge of the System", kind: "Campaign", line: "In development." },
+  { age: "6", title: "Untimely Heroes: The Thirteenth Hour", kind: "Show, played in Pathfinder 2e", line: "Fallendrift forgets. Somebody has to keep count." },
+  { age: "5", title: "Deadlight", kind: "Campaign", line: "In development." },
+  { age: "4", title: "The Returned", kind: "Show, played in Pathfinder 2e", line: "Mütvia. The land remembers what you bury." },
+  { age: "4", title: "The Last Contract", kind: "Episodic campaign for game stores", line: "A dead man's ledger. His unfinished work, and his debts." },
+  { age: "4", title: "Stillness", kind: "One-shot horror mystery, audio drama to follow", line: "The quiet arrives first." },
+  { age: "?", title: "Zero Rebels", kind: "Campaign", line: "In development." },
+  { age: "?", title: "Fragments", kind: "Campaign", line: "In development." },
+  { age: "All", title: "ARIS", kind: "Roleplaying system, alpha", line: "The native system for Ævyndal. Magic costs years of your life." },
+];
+
+const byN = (n: number) => ages.find((a) => a.n === n)!;
 ---
 
 <!doctype html>
@@ -7,437 +49,414 @@ import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Ævyndal — Living World Archive</title>
+<title>Ævyndal</title>
+<meta name="description" content="A dark fantasy world, eight Ages deep. Start digging." />
+<meta property="og:title" content="Ævyndal" />
+<meta property="og:description" content="A dark fantasy world, eight Ages deep. Start digging." />
+<meta name="theme-color" content="#1d1b2b" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Spectral:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@400&family=Special+Elite&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Homemade+Apple&display=swap" rel="stylesheet" />
 <style is:global>
   :root{
-    --bg:#07090d;
-    --bg2:#10161d;
-    --ink:#d8d9d6;
-    --muted:#8a9298;
-    --line:rgba(216,217,214,.16);
-    --line-soft:rgba(216,217,214,.07);
-    --accent:#8d7446;
-    --accent-rgb:141,116,70;
-    --headline: Georgia, 'Times New Roman', serif;
-    --ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --micro: 'Courier New', ui-monospace, monospace;
-    --ease:cubic-bezier(.22,.8,.22,1);
+    --sky:#1d1b2b; --sky-ink:#ebe6dc;
+    --display:"Cormorant Garamond", Georgia, serif;
+    --body:Spectral, Georgia, serif;
+    --gutter:clamp(1rem, 5vw, 4.5rem);
+    --edge:30px;
   }
   *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);overflow:hidden}
-  body{font-family:var(--ui);transition:background 1.6s var(--ease),color 1.2s var(--ease)}
-  button,input{font:inherit;color:inherit}
-  button{border:0;background:none;padding:0;cursor:pointer}
-  a{color:inherit;text-decoration:none}
+  html{scroll-behavior:smooth;background:#151112}
+  body{margin:0;font-family:var(--body);font-size:1.0625rem;line-height:1.7;color:var(--sky-ink);background:var(--sky);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  :focus-visible{outline:2px solid currentColor;outline-offset:4px}
+  .skip{position:fixed;z-index:99;left:.75rem;top:.75rem;padding:.6rem .9rem;background:#ebe6dc;color:#151112;transform:translateY(-200%)}
+  .skip:focus{transform:none}
 
-  .world{
-    position:relative;
-    width:100%;height:100%;
-    isolation:isolate;
-    background:
-      radial-gradient(90vw 70vh at 78% 12%, rgba(52,77,86,.24), transparent 63%),
-      radial-gradient(65vw 75vh at 60% 90%, rgba(var(--accent-rgb),.08), transparent 72%),
-      linear-gradient(120deg,var(--bg),var(--bg2) 58%,var(--bg));
-    transition:background 1.8s var(--ease);
+  /* Navigation: takes the colour of whatever layer is under it */
+  .nav{position:fixed;z-index:50;inset:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem var(--gutter);color:var(--nav-ink,#ebe6dc);background:color-mix(in srgb,var(--nav-bg,#1d1b2b) 88%,transparent);backdrop-filter:blur(10px);transition:background .6s ease,color .6s ease}
+  .nav__home{font-family:var(--display);font-size:1.35rem;font-weight:600;letter-spacing:.04em;text-decoration:none}
+  .nav__links{display:flex;gap:clamp(.9rem,3vw,2.2rem);font-size:.9rem}
+  .nav__links a{text-decoration:none;opacity:.8}
+  .nav__links a:hover{opacity:1;text-decoration:underline;text-underline-offset:.3em}
+
+  /* Depth gauge */
+  .gauge{position:fixed;z-index:40;right:clamp(.6rem,2vw,1.6rem);top:50%;transform:translateY(-50%);display:none;flex-direction:column;gap:.55rem;color:var(--nav-ink,#ebe6dc);transition:color .6s ease}
+  .gauge a{display:flex;align-items:center;justify-content:flex-end;gap:.6rem;text-decoration:none;font-family:var(--display);font-size:1rem;line-height:1;opacity:.45}
+  .gauge a::after{content:"";width:14px;height:1px;background:currentColor}
+  .gauge a span{opacity:0;transition:opacity .3s ease;font-style:italic}
+  .gauge a.is-here{opacity:1}
+  .gauge a.is-here::after{width:30px}
+  .gauge a.is-here span,.gauge a:hover span{opacity:1}
+  .depth-mobile{position:fixed;z-index:40;left:var(--gutter);bottom:.8rem;font-family:var(--display);font-style:italic;font-size:1rem;color:var(--nav-ink,#ebe6dc);opacity:0;transition:opacity .4s ease,color .6s ease;pointer-events:none}
+  .depth-mobile.is-on{opacity:.85}
+  @media (min-width:900px){.gauge{display:flex}.depth-mobile{display:none}}
+
+  /* Surface */
+  .surface{position:relative;min-height:100svh;display:grid;align-content:center;padding:7rem var(--gutter) 9rem;background:
+      radial-gradient(120% 70% at 80% 0%, #2c2942 0%, transparent 60%), var(--sky);overflow:hidden}
+  .surface__mark{width:min(640px,88vw);height:auto;display:block;margin-left:-2%}
+  .surface h1{margin:1.6rem 0 0;max-width:15ch;font-family:var(--display);font-weight:500;font-size:clamp(2.4rem,7vw,5.2rem);line-height:1.02;letter-spacing:-.01em}
+  .surface__sub{margin:1.2rem 0 0;max-width:34ch;font-size:1.1rem;opacity:.75}
+  .surface__dig{display:inline-flex;align-items:center;gap:.7rem;margin-top:2.6rem;font-family:var(--display);font-size:1.5rem;font-style:italic;text-decoration:none;width:max-content}
+  .surface__dig svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.4;animation:sink 2.4s ease-in-out infinite}
+  @keyframes sink{50%{transform:translateY(6px)}}
+  .surface h1,.surface__sub,.surface__dig{opacity:0;animation:arrive 1.4s ease forwards}
+  .surface__sub{animation-delay:.5s}.surface__dig{animation-delay:1s}
+  @keyframes arrive{to{opacity:1}}
+
+  /* Strata */
+  .layer{position:relative;padding:5.5rem var(--gutter) 6rem;background:var(--bg);color:var(--ink)}
+  .layer::before{content:"";position:absolute;left:0;right:0;top:calc(var(--edge) * -1 + 1px);height:var(--edge);background:var(--bg);clip-path:var(--cut)}
+  .layer::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .layer:nth-of-type(3n){--cut:polygon(0 70%,7% 40%,15% 55%,26% 20%,34% 45%,47% 30%,58% 60%,66% 25%,78% 50%,88% 15%,95% 45%,100% 35%,100% 100%,0 100%)}
+  .layer:nth-of-type(3n+1){--cut:polygon(0 40%,10% 60%,19% 30%,31% 50%,40% 15%,52% 45%,61% 35%,73% 65%,82% 30%,91% 50%,100% 20%,100% 100%,0 100%)}
+  .layer:nth-of-type(3n+2){--cut:polygon(0 25%,9% 50%,21% 35%,29% 65%,43% 40%,55% 20%,64% 50%,72% 30%,85% 55%,93% 25%,100% 55%,100% 100%,0 100%)}
+
+  .layer[data-age="8"]{--bg:#c9cab4;--ink:#22251c;--hint:#4f5a33}
+  .layer[data-age="7"]{--bg:#a9a596;--ink:#25231d;--hint:#3f3c33}
+  .layer[data-age="6"]{--bg:#5f5850;--ink:#f1ece2;--hint:#ddd2c0}
+  .layer[data-age="5"]{--bg:#474330;--ink:#eee8d6;--hint:#d6cfa7}
+  .layer[data-age="4"]{--bg:#382a22;--ink:#efe6da;--hint:#d9a07c}
+  .layer[data-age="3"]{--bg:#2c2320;--ink:#d9cfc6;--hint:#b9aca1}
+  .layer[data-age="2"]{--bg:#231b19;--ink:#d1c6bc;--hint:#ac9e92}
+  .layer[data-age="1"]{--bg:#1b1514;--ink:#c9bdb3;--hint:#a39488}
+
+  .layer__inner{display:grid;gap:2.4rem;max-width:72rem}
+  .layer h2{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(2.6rem,7vw,4.6rem);line-height:.95}
+  .layer__name{margin:.5rem 0 0;font-family:var(--display);font-style:italic;font-size:clamp(1.35rem,3vw,1.9rem);line-height:1.2}
+  .layer__began{margin:.35rem 0 0;font-size:.95rem;color:var(--hint)}
+  .note{max-width:34ch;margin:0;font-style:italic;color:var(--hint)}
+  .note::before{content:"Field note. ";font-style:normal;color:var(--ink);opacity:.8}
+
+  @media (min-width:900px){
+    .layer{padding:7.5rem calc(var(--gutter) + 5rem) 8rem var(--gutter)}
+    .layer__inner{grid-template-columns:minmax(16rem,5fr) 7fr;align-items:start;gap:3rem 4rem}
+    .layer__inner .note{grid-column:1;grid-row:2;align-self:end}
+    .layer__inner .artifact{grid-column:2;grid-row:1 / span 2}
+    .layer.flip .layer__inner{grid-template-columns:7fr minmax(16rem,5fr)}
+    .layer.flip .layer__head,.layer.flip .note{grid-column:2}
+    .layer.flip .layer__inner .artifact{grid-column:1}
   }
-  .world::before{
-    content:"";position:absolute;inset:0;z-index:-8;opacity:.38;pointer-events:none;
-    background-image:
-      linear-gradient(var(--line-soft) 1px, transparent 1px),
-      linear-gradient(90deg,var(--line-soft) 1px, transparent 1px),
-      linear-gradient(rgba(var(--accent-rgb),.08) 1px, transparent 1px),
-      linear-gradient(90deg,rgba(var(--accent-rgb),.08) 1px, transparent 1px);
-    background-size:64px 64px,64px 64px,256px 256px,256px 256px;
-    mask-image:linear-gradient(90deg,rgba(0,0,0,.45),#000 20%,#000 82%,rgba(0,0,0,.25));
-    animation:gridDrift 28s linear infinite;
-  }
-  .world::after{
-    content:"";position:absolute;inset:-30%;z-index:-9;pointer-events:none;opacity:.5;
-    background:
-      repeating-radial-gradient(circle at 50% 40%,rgba(255,255,255,.035) 0 1px,transparent 1px 5px),
-      radial-gradient(circle at 12% 62%,rgba(255,255,255,.025),transparent 24%),
-      radial-gradient(circle at 83% 28%,rgba(255,255,255,.03),transparent 18%);
-    filter:contrast(140%);
-    animation:grainShift .8s steps(2) infinite;
-  }
-  @keyframes gridDrift{to{background-position:64px 64px,-64px 64px,0 256px,256px 0}}
-  @keyframes grainShift{0%,100%{transform:translate3d(0,0,0)}25%{transform:translate3d(1.2%,.4%,0)}50%{transform:translate3d(-.7%,1.1%,0)}75%{transform:translate3d(.3%,-.9%,0)}}
 
-  .constructs{position:absolute;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
-  .constructs i{position:absolute;display:block;border-color:var(--line);opacity:.8;transition:border-color 1.4s var(--ease),opacity 1.4s var(--ease)}
-  .constructs .c1{left:9%;top:0;height:100%;border-left:1px solid var(--line)}
-  .constructs .c2{left:15%;top:0;height:100%;border-left:1px solid rgba(var(--accent-rgb),.18)}
-  .constructs .c3{left:54%;top:0;height:100%;border-left:1px solid var(--line-soft)}
-  .constructs .c4{left:73%;top:0;height:100%;border-left:1px solid var(--line-soft)}
-  .constructs .c5{left:0;top:18%;width:100%;border-top:1px solid rgba(var(--accent-rgb),.26)}
-  .constructs .c6{left:0;top:73%;width:100%;border-top:1px solid rgba(var(--accent-rgb),.24)}
-  .constructs .c7{left:17%;top:31%;width:56%;height:24%;border:1px solid var(--line-soft);clip-path:polygon(0 12%,77% 12%,77% 0,100% 44%,90% 44%,90% 100%,10% 100%,10% 80%,0 80%)}
-  .constructs .c8{right:-4%;top:8%;width:29%;height:52%;border:1px solid var(--line-soft);transform:skewY(-7deg)}
-  .constructs .c9{left:28%;top:7%;width:22%;height:1px;background:var(--line);transform:rotate(-42deg);transform-origin:left center}
-  .constructs .c10{right:9%;bottom:3%;width:33%;height:1px;background:var(--line);transform:rotate(36deg);transform-origin:right center}
+  .layer--sealed{padding-top:3.2rem;padding-bottom:3.6rem}
+  .layer--sealed .layer__inner{display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem 1.4rem}
+  .layer--sealed h2{font-size:clamp(1.7rem,4vw,2.4rem);opacity:.75}
+  .layer--sealed .layer__name{margin:0;font-size:1.25rem;opacity:.75}
+  .layer--sealed .sealed{margin:0;font-size:.95rem;color:var(--hint);flex-basis:100%}
 
-  .topbar{position:absolute;inset:0 0 auto 0;height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 3.4vw;z-index:20}
-  .mark{display:inline-flex;align-items:center;white-space:nowrap;transition:opacity .8s var(--ease),transform .4s var(--ease)}
-  .mark:hover{transform:translateY(-1px)}
-  .mark-logo{display:block;height:auto;width:220px;opacity:1}
-  .nav{display:flex;gap:2.1vw;align-items:center;font-family:var(--micro);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
-  .nav button{position:relative;padding:10px 0;opacity:.82}
-  .nav button::after{content:"";position:absolute;left:0;right:100%;bottom:4px;height:1px;background:var(--accent);transition:right .45s var(--ease)}
-  .nav button:hover::after,.nav button:focus-visible::after{right:0}
-  .role-field,.phrase-field{position:absolute;inset:0;pointer-events:none}
-  .role-field{z-index:3}
-  .phrase-field{left:26vw;top:22vh;width:min(56vw,980px);height:44vh;z-index:4;position:absolute}
+  /* Artifacts: each one is the object it claims to be */
+  .artifact{margin:0;justify-self:start;max-width:32rem;width:100%}
 
-  .role{
-    position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r));
-    font-family:var(--micro);font-size:clamp(10px,1.15vw,18px);letter-spacing:.18em;text-transform:uppercase;
-    color:rgba(242,242,238,.86);white-space:nowrap;opacity:0;filter:blur(4px);
-    transition:opacity .9s var(--ease),filter .9s var(--ease),transform 1.2s var(--ease),color 1.2s var(--ease);
-  }
-  .role.visible{opacity:var(--o,.72);filter:blur(0);transform:translate(-50%,-50%) rotate(var(--r)) translate3d(var(--dx,0),var(--dy,0),0)}
-  .role:nth-child(3n){color:rgba(var(--accent-rgb),.92)}
-  .role:nth-child(5n){writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.25em}
-  .role::before{content:"";position:absolute;right:calc(100% + 10px);top:50%;width:clamp(18px,4vw,70px);height:1px;background:linear-gradient(90deg,transparent,var(--line));}
+  .order{background:#ecebe2;color:#23241f;padding:1.6rem 1.5rem 1.8rem;font-family:"IBM Plex Mono",monospace;font-size:.86rem;line-height:1.65;transform:rotate(-1.2deg);box-shadow:0 1px 0 #d8d7cc,0 18px 40px -22px rgba(25,28,15,.6);border-top:6px solid #8e9a72}
+  .order p{margin:0}
+  .order__head{display:flex;justify-content:space-between;gap:1rem;padding-bottom:.7rem;margin-bottom:.9rem;border-bottom:1px dashed #9a9a8c}
+  .order dl{margin:0 0 1rem;display:grid;grid-template-columns:max-content 1fr;gap:.15rem 1rem}
+  .order dt{color:#66665a}.order dd{margin:0}
+  .order__warn{margin-top:.25rem !important}
+  .order__scrawl{margin-top:1.4rem !important;font-family:"Homemade Apple",cursive;font-size:1rem;line-height:1.9;color:#2b3a6b;transform:rotate(-2deg)}
 
-  .phrase{
-    position:absolute;left:var(--px);top:var(--py);transform:translate(-50%,-50%) rotate(var(--pr,0deg));
-    font-family:var(--headline);font-size:clamp(18px,1.85vw,34px);line-height:1;letter-spacing:.03em;text-transform:uppercase;
-    color:rgba(228,229,226,.22);white-space:nowrap;opacity:0;filter:blur(6px);mix-blend-mode:screen;
-    transition:opacity .8s var(--ease),filter .8s var(--ease),transform 1s var(--ease),color 1.2s var(--ease);
-  }
-  .phrase.visible{opacity:1;filter:blur(0);transform:translate(-50%,-50%) rotate(var(--pr,0deg)) translate3d(var(--pdx,0),var(--pdy,0),0)}
-  .phrase:nth-child(odd){color:rgba(var(--accent-rgb),.30)}
-  .phrase[data-ghost="1"]{font-size:clamp(16px,1.35vw,26px);opacity:.6}
+  .card{background:#e7dcc6;color:#29231c;padding:1.8rem 1.7rem 2rem;font-family:"Special Elite",monospace;font-size:1rem;line-height:1.75;transform:rotate(1.4deg);box-shadow:0 22px 40px -26px rgba(0,0,0,.75);background-image:linear-gradient(transparent 1.68em,rgba(110,90,60,.18) 1.68em,rgba(110,90,60,.18) calc(1.68em + 1px),transparent calc(1.68em + 1px));background-size:100% 1.75em;background-position:0 1.6rem}
+  .card p{margin:0 0 .9rem}
+  .card__blank{display:block;border-bottom:1px solid #6a5b48;height:1.6rem;margin:.2rem 0 .3rem;width:85%}
+  .card__blank:nth-of-type(2){width:70%}
 
-  .headline-wrap{position:absolute;left:27.8vw;top:23vh;width:min(54vw,970px);z-index:7;pointer-events:none}
-  .kicker{font-family:var(--micro);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin:0 0 14px 1.2%}
-  .headline{
-    margin:0;font-family:var(--headline);font-size:clamp(72px,8.6vw,176px);font-weight:500;line-height:.74;letter-spacing:-.055em;text-transform:uppercase;color:rgba(223,225,223,.88);
-    transition:font-family .65s var(--ease),letter-spacing .8s var(--ease),filter .9s var(--ease),transform 1s var(--ease);
-    mix-blend-mode:screen;text-wrap:balance;
-  }
-  .headline .line{display:block;position:relative}
-  .headline .line:nth-child(2){margin-left:4.1vw}
-  .headline .line:last-child{margin-left:8.8vw;color:transparent;-webkit-text-stroke:1px rgba(225,225,220,.68);text-shadow:10px 0 0 rgba(225,225,220,.07),20px 0 0 rgba(225,225,220,.045),30px 0 0 rgba(var(--accent-rgb),.09)}
-  .headline.age-shift{filter:blur(5px);transform:translateY(10px) scale(.995)}
+  .post{position:relative;max-width:19rem;margin-inline:auto 0;padding:2.4rem 1.4rem 2.8rem;background:linear-gradient(90deg,#5d4b33,#78624a 18%,#6b563f 50%,#7a644b 82%,#574630);color:#2a2016;font-family:"IM Fell English SC",serif;text-align:center;border-radius:6px 6px 2px 2px;box-shadow:inset 0 0 30px rgba(0,0,0,.35),0 24px 40px -26px rgba(0,0,0,.8)}
+  .post::before{content:"";position:absolute;inset:0;border-radius:inherit;background:repeating-linear-gradient(90deg,transparent 0 9px,rgba(0,0,0,.07) 9px 10px,transparent 10px 23px);pointer-events:none}
+  .post p{position:relative;margin:0;text-shadow:0 1px 0 rgba(255,235,200,.22),0 -1px 0 rgba(0,0,0,.45);letter-spacing:.06em}
+  .post__cut1{font-size:1.15rem;opacity:.72;padding-bottom:2.6rem}
+  .post__cut2{font-size:1.3rem;opacity:.9;line-height:1.35;padding-bottom:3.2rem}
+  .post__cut3{font-size:1.75rem;color:#e9dcc2 !important;text-shadow:0 1px 0 rgba(0,0,0,.6) !important}
+  .post__soil{position:absolute;left:-12%;right:-12%;bottom:-1.2rem;height:2.6rem;background:var(--bg);clip-path:polygon(0 45%,12% 25%,26% 40%,40% 15%,55% 35%,70% 20%,84% 40%,100% 25%,100% 100%,0 100%)}
 
-  .age-note{position:absolute;left:3.4vw;top:15vh;width:19vw;min-width:220px;max-width:350px;z-index:6;font-family:var(--micro)}
-  .age-note .index{font-size:9px;letter-spacing:.25em;color:var(--accent)}
-  .age-note h2{font-family:var(--headline);font-size:clamp(22px,2.2vw,42px);font-weight:500;line-height:.96;margin:.7rem 0 1rem;text-transform:uppercase}
-  .age-note h2 .age-line{display:block;font-size:24px;line-height:1;letter-spacing:.02em;color:var(--accent);margin-bottom:.4rem}
-  .age-note h2 .age-ordinal{display:inline-flex;align-items:flex-start;line-height:1;vertical-align:baseline}
-  .age-note h2 .age-suffix{font-size:.45em;line-height:1;transform:translateY(.14em)}
-  .age-note p{font-family:var(--ui);font-size:clamp(10px,.75vw,13px);line-height:1.58;color:var(--muted);max-width:38ch}
-  .age-note .line{width:72px;height:1px;background:var(--accent);margin-top:18px;position:relative}
-  .age-note .line::after{content:"";position:absolute;right:-4px;top:-3px;width:7px;height:7px;border:1px solid var(--accent);transform:rotate(45deg)}
+  .ledger{background:#d9cba9;color:#2c2015;padding:2rem 1.8rem 2.2rem 3.2rem;font-family:"IM Fell English",serif;font-size:1.06rem;line-height:1.75;transform:rotate(-.8deg);box-shadow:0 24px 44px -26px rgba(0,0,0,.85);background-image:linear-gradient(90deg,transparent 2.3rem,rgba(150,40,30,.45) 2.3rem,rgba(150,40,30,.45) calc(2.3rem + 1px),transparent calc(2.3rem + 1px)),linear-gradient(transparent 1.72em,rgba(60,80,110,.22) 1.72em,rgba(60,80,110,.22) calc(1.72em + 1px),transparent calc(1.72em + 1px));background-size:100% 100%,100% 1.75em}
+  .ledger h3{margin:0 0 1rem;font-weight:400;font-style:italic;font-size:1.35rem;line-height:1.3}
+  .ledger h4{margin:1rem 0 .1rem;font-weight:400;font-size:1rem;text-decoration:underline;text-underline-offset:.25em}
+  .ledger ul{margin:0;padding:0;list-style:none;font-style:italic}
+  .ledger__strike{text-decoration:line-through;text-decoration-color:rgba(44,32,21,.7)}
+  .ledger__hand{margin:1.6rem 0 0;font-family:"Homemade Apple",cursive;font-size:1.02rem;line-height:2;color:#4a1b14;transform:rotate(-1.5deg)}
 
-  .identity-panel{position:absolute;right:3.3vw;top:31vh;width:min(23vw,390px);min-width:270px;padding:26px 26px 22px;z-index:9;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.012));backdrop-filter:blur(13px);border:1px solid rgba(255,255,255,.1);border-radius:0 26px 0 26px;box-shadow:0 26px 70px rgba(0,0,0,.26);transition:transform .75s var(--ease),opacity .75s var(--ease),border-color 1.2s var(--ease)}
-  .identity-panel:hover{transform:translateY(-4px);border-color:rgba(var(--accent-rgb),.42)}
-  .identity-panel .eyebrow{font-family:var(--micro);font-size:9px;letter-spacing:.32em;color:var(--accent);text-transform:uppercase}
-  .identity-panel h3{font-family:var(--headline);font-weight:500;font-size:clamp(30px,3vw,52px);margin:8px 0 14px;text-transform:uppercase}
-  .identity-panel blockquote{margin:0 0 22px;font-family:var(--headline);font-size:clamp(16px,1.25vw,22px);line-height:1.35;color:rgba(239,239,234,.82)}
-  .paths{display:grid;gap:0}
-  .path{position:relative;text-align:left;padding:12px 0;border-top:1px solid var(--line);font-size:12px;letter-spacing:.09em;color:rgba(240,240,235,.76);overflow:hidden}
-  .path::after{content:"↗";position:absolute;right:2px;top:12px;transform:translate(-5px,5px);opacity:0;transition:.35s var(--ease)}
-  .path:hover::after{transform:none;opacity:1}
-  .meta{margin-top:18px;font-family:var(--micro);font-size:9px;letter-spacing:.16em;color:var(--muted)}
+  /* Bedrock */
+  .bedrock{position:relative;padding:6rem var(--gutter) 5rem;background:#151112;color:#e8e0d6}
+  .bedrock::before{content:"";position:absolute;left:0;right:0;top:calc(var(--edge) * -1 + 1px);height:var(--edge);background:#151112;clip-path:polygon(0 55%,14% 35%,22% 60%,37% 30%,49% 50%,63% 20%,74% 45%,86% 30%,100% 50%,100% 100%,0 100%)}
+  .bedrock__mark{width:min(420px,78vw);height:auto;display:block;margin:0 0 3rem -1%}
+  .dispatches{max-width:38rem}
+  .bedrock h2{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(2.6rem,7vw,4.4rem);line-height:1}
+  .dispatches p{margin:1rem 0 0;max-width:36ch;font-size:1.1rem}
+  .signup{margin-top:2rem;display:flex;flex-wrap:wrap;gap:.8rem}
+  .signup label{flex-basis:100%;font-size:.95rem;opacity:.8}
+  .signup input{flex:1 1 15rem;min-height:3.1rem;padding:.7rem .9rem;background:transparent;color:inherit;border:1px solid rgba(232,224,214,.45);border-radius:2px;font:inherit}
+  .signup input:focus{outline:none;border-color:#e8e0d6}
+  .signup button{min-height:3.1rem;padding:.7rem 1.3rem;background:#e8e0d6;color:#151112;border:0;border-radius:2px;font:inherit;font-weight:600;cursor:pointer}
+  .signup button:hover{background:#fff}
+  .signup button[disabled]{opacity:.6;cursor:wait}
+  .signup__status{flex-basis:100%;min-height:1.6em;margin:.2rem 0 0;font-style:italic}
+  .signup__fine{margin-top:1.2rem !important;font-size:.9rem !important;opacity:.6}
 
-  .micro{position:absolute;z-index:5;font-family:var(--micro);text-transform:uppercase;letter-spacing:.13em;color:rgba(230,231,228,.62)}
-  .micro b{display:block;font-size:9px;color:var(--accent);font-weight:400;margin-bottom:5px}
-  .micro span{font-size:10px;line-height:1.35}
-  .m1{left:31vw;bottom:19vh}.m2{right:10vw;bottom:15vh}.m3{left:4vw;bottom:14vh;writing-mode:vertical-rl}
+  .works{margin-top:7rem;max-width:60rem}
+  .works__intro{margin:.8rem 0 2.6rem;max-width:40ch;font-size:1.1rem;opacity:.8}
+  .works ol{margin:0;padding:0;list-style:none}
+  .works li{display:grid;grid-template-columns:3.4rem 1fr;gap:0 1.2rem;padding:1.15rem 0}
+  .works li + li{border-top:1px solid rgba(232,224,214,.12)}
+  .works__age{font-family:var(--display);font-size:2.2rem;line-height:1;opacity:.55;text-align:right}
+  .works__age small{display:block;font-size:.8rem;font-style:italic;opacity:.9;margin-top:.15rem}
+  .works h3{margin:0;font-family:var(--display);font-weight:600;font-size:1.55rem;line-height:1.15}
+  .works__kind{margin:.15rem 0 0;font-size:.92rem;opacity:.65}
+  .works__line{margin:.35rem 0 0;font-style:italic}
+  .works__stream{margin-top:2rem;font-size:1rem;opacity:.8}
 
-  .age-rail{position:absolute;left:23vw;right:3.3vw;bottom:20px;height:50px;z-index:15;display:flex;align-items:flex-end;gap:0;overflow:hidden}
-  .age-rail::before{content:"";position:absolute;left:0;right:0;bottom:17px;height:1px;background:var(--line)}
-  .age-btn{position:relative;flex:1;text-align:left;padding:0 10px 28px 0;font-family:var(--micro);font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:rgba(220,220,216,.38);transition:color .5s var(--ease)}
-  .age-btn::after{content:"";position:absolute;left:0;bottom:14px;width:5px;height:5px;border:1px solid currentColor;background:var(--bg);transform:rotate(45deg);transition:all .55s var(--ease)}
-  .age-btn:hover{color:rgba(220,220,216,.72)}
-  .age-btn.active{color:var(--accent)}
-  .age-btn.active::after{width:9px;height:9px;bottom:12px;background:var(--accent);box-shadow:0 0 0 6px rgba(var(--accent-rgb),.08)}
+  .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem 2rem;margin-top:6rem;padding-top:1.6rem;border-top:1px solid rgba(232,224,214,.15);font-size:.9rem;opacity:.65}
+  .foot p{margin:0}
+  .foot nav{display:flex;gap:1.4rem}
 
-  .search-dock{position:absolute;left:3.4vw;bottom:24px;z-index:18;width:min(16vw,240px);min-width:180px}
-  .search-dock label{display:block;font-family:var(--micro);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-  .search-dock .line{display:flex;align-items:center;border-bottom:1px solid var(--line);transition:border-color .4s ease}
-  .search-dock input{width:100%;background:transparent;border:0;outline:none;padding:7px 0 10px;font-size:12px;color:var(--ink)}
-  .search-dock input::placeholder{color:rgba(210,210,206,.26)}
-  .search-dock .line:focus-within{border-color:var(--accent)}
-
-  .pulse{position:absolute;left:66%;top:52%;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 rgba(var(--accent-rgb),.3);z-index:8;animation:pulse 2.8s ease-out infinite}
-  @keyframes pulse{70%,100%{box-shadow:0 0 0 30px rgba(var(--accent-rgb),0)}}
-
-  .toast{position:absolute;left:50%;bottom:76px;transform:translateX(-50%) translateY(15px);opacity:0;z-index:30;background:rgba(8,10,14,.88);backdrop-filter:blur(12px);border:1px solid var(--line);padding:10px 14px;font-family:var(--micro);font-size:9px;letter-spacing:.16em;text-transform:uppercase;transition:.4s var(--ease);pointer-events:none}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-  .world[data-age="1"]{--bg:#090806;--bg2:#17120d;--accent:#b49a6a;--accent-rgb:180,154,106;--headline:Palatino Linotype,Book Antiqua,Palatino,serif}
-  .world[data-age="2"]{--bg:#100a07;--bg2:#21120c;--accent:#a9643d;--accent-rgb:169,100,61;--headline:Georgia,'Times New Roman',serif}
-  .world[data-age="3"]{--bg:#071015;--bg2:#11232a;--accent:#6f8791;--accent-rgb:111,135,145;--headline:Baskerville,Georgia,serif}
-  .world[data-age="4"]{--bg:#07090d;--bg2:#10161d;--accent:#8d7446;--accent-rgb:141,116,70;--headline:Georgia,'Times New Roman',serif}
-  .world[data-age="5"]{--bg:#0d0d09;--bg2:#1a1b10;--accent:#818d58;--accent-rgb:129,141,88;--headline:'Courier New',monospace}
-  .world[data-age="6"]{--bg:#090b0e;--bg2:#1a1d21;--accent:#9a8668;--accent-rgb:154,134,104;--headline:'Arial Narrow','Helvetica Neue',Arial,sans-serif}
-  .world[data-age="7"]{--bg:#05080d;--bg2:#071722;--accent:#7194a5;--accent-rgb:113,148,165;--headline:Consolas,'Courier New',monospace}
-  .world[data-age="8"]{--bg:#0a100d;--bg2:#16231a;--accent:#9ea86f;--accent-rgb:158,168,111;--headline:Trebuchet MS,Segoe UI,sans-serif}
-  .world[data-age="5"] .headline{letter-spacing:-.09em}
-  .world[data-age="6"] .headline{letter-spacing:-.075em;font-weight:700}
-  .world[data-age="7"] .headline{letter-spacing:-.08em;font-weight:700}
-  .world[data-age="8"] .headline{letter-spacing:-.085em;font-weight:300}
-
-  @media (max-width:1100px){
-    .headline-wrap{left:22vw;width:68vw;top:25vh}
-    .phrase-field{left:20vw;width:60vw}
-    .identity-panel{display:none}
-    .age-note{width:16vw;min-width:150px}.age-note p{font-size:11px}
-    .role:nth-child(n+11){display:none}
-    .age-rail{left:20vw}
-  }
-  @media (max-width:760px){
-    html,body{overflow:auto;min-height:100%}.world{min-height:100svh;height:auto;overflow:hidden}
-    .topbar{height:64px;padding:0 20px}.nav{gap:16px}.nav button:nth-child(-n+3){display:none}
-    .mark-logo{max-width:220px;height:auto}.age-note{left:20px;top:98px;width:calc(100% - 40px)}.age-note p{max-width:44ch}.age-note .line{display:none}
-    .headline-wrap{position:relative;left:auto;top:auto;width:auto;padding:260px 18px 0;margin:0;min-height:62svh}
-    .phrase-field{left:0;top:170px;width:100%;height:34svh}
-    .headline{font-size:clamp(68px,19vw,132px);line-height:.8}.headline .line:nth-child(2),.headline .line:last-child{margin-left:0}
-    .role{font-size:9px}.role:nth-child(n+8){display:none}.phrase:nth-child(n+4){display:none}.micro{display:none}.pulse{display:none}
-    .search-dock{position:relative;left:auto;bottom:auto;margin:0 20px 92px;width:auto;min-width:0}
-    .age-rail{position:fixed;left:0;right:0;bottom:0;height:72px;padding:0 14px;background:linear-gradient(180deg,transparent,rgba(4,5,7,.95) 34%);backdrop-filter:blur(8px);overflow-x:auto}.age-btn{min-width:92px}
+  @media (max-width:520px){
+    .surface{min-height:88svh;padding-bottom:6rem}
+    .nav__home{font-size:1.15rem}
+    .nav__links{font-size:.84rem;gap:.8rem}
+    .post{margin-inline:auto}
   }
   @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none !important;transition:none !important}
+    .surface h1,.surface__sub,.surface__dig{opacity:1}
   }
 </style>
 </head>
 <body>
-<main class="world" data-age="4" aria-live="polite">
-  <div class="constructs" aria-hidden="true">
-    <i class="c1"></i><i class="c2"></i><i class="c3"></i><i class="c4"></i><i class="c5"></i><i class="c6"></i><i class="c7"></i><i class="c8"></i><i class="c9"></i><i class="c10"></i>
-  </div>
+<a class="skip" href="#age-8">Skip to the dig</a>
 
-  <header class="topbar">
-    <a class="mark" href="#" aria-label="Ævyndal home"><img class="mark-logo" src={wordmark.src} alt="ÆVYNDAL" /></a>
-    <nav class="nav" aria-label="Primary navigation">
-      <button data-nav="ages">Ages</button><button data-nav="places">Places</button><button data-nav="people">People</button><button data-nav="stories">Stories</button><button data-nav="search">Search</button>
-    </nav>
-  </header>
-
-  <section class="age-note" aria-label="Current age">
-    <div class="index" id="ageIndex">04 / 08</div>
-    <h2 id="ageName"><span class="age-line"><span class="age-ordinal">4<span class="age-suffix">th</span></span> Age:</span>The Harrow</h2>
-    <p id="agePrompt">Great empires mature, trade flourishes, and civilization spreads across the landscape. Beneath that prosperity, cults rise, demons endure, surviving Italti stir, and old conspiracies move in the shadows. This is an age of dark exploration called the Harrow, politics, epic quests, and impossible things buried beneath ordinary life.</p>
-    <div class="line" aria-hidden="true"></div>
-  </section>
-
-  <div class="role-field" id="roleField" aria-hidden="true"></div>
-  <div class="phrase-field" id="phraseField" aria-hidden="true"></div>
-
-  <section class="headline-wrap" aria-labelledby="heroTitle">
-    <div class="kicker">The Living World Archive</div>
-    <h1 class="headline" id="heroTitle">
-      <span class="line">Who</span>
-      <span class="line">are</span>
-      <span class="line">you?</span>
-    </h1>
-  </section>
-
-  <aside class="identity-panel" id="identityPanel">
-    <div class="eyebrow">Current path</div>
-    <h3 id="pathTitle">Witch</h3>
-    <blockquote id="pathQuote">You know which doors should remain closed. You also know who will come knocking anyway.</blockquote>
-    <div class="paths">
-      <button class="path">Live among them</button>
-      <button class="path">Learn what they fear</button>
-      <button class="path">Find where you belong</button>
-    </div>
-    <div class="meta" id="pathMeta">4 ages · 13 regions · 42 stories</div>
-  </aside>
-
-  <div class="micro m1"><b>01 / Mütvia</b><span>The land remembers what you bury</span></div>
-  <div class="micro m2"><b>02 / Cultrek</b><span>Everything is legal somewhere</span></div>
-  <div class="micro m3"><b>03 / Archive</b><span>Some histories are looking back</span></div>
-  <i class="pulse" aria-hidden="true"></i>
-
-  <form class="search-dock" id="searchForm" role="search">
-    <label for="archiveSearch">Search the archive</label>
-    <div class="line"><input id="archiveSearch" type="search" placeholder="Try “Mütvia”, “witch”, or “7th Age”" autocomplete="off" /></div>
-  </form>
-
-  <nav class="age-rail" aria-label="Choose an age">
-    <button class="age-btn" data-age="1">01 Creation</button>
-    <button class="age-btn" data-age="2">02 God-Kings</button>
-    <button class="age-btn" data-age="3">03 Expansion</button>
-    <button class="age-btn active" data-age="4">04 Harrow</button>
-    <button class="age-btn" data-age="5">05 Collapse</button>
-    <button class="age-btn" data-age="6">06 Reason</button>
-    <button class="age-btn" data-age="7">07 Syndicate</button>
-    <button class="age-btn" data-age="8">08 Hope</button>
+<header class="nav">
+  <a class="nav__home" href="#top">Ævyndal</a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#age-8">Dig</a>
+    <a href="#watch">Watch &amp; Play</a>
+    <a href="#dispatches">Dispatches</a>
   </nav>
+</header>
 
-  <div class="toast" id="toast" role="status"></div>
+<nav class="gauge" aria-label="Depth">
+  {ages.map((a) => <a href={`#age-${a.n}`} data-gauge={a.n}><span>{a.name}</span>{a.n}</a>)}
+</nav>
+<p class="depth-mobile" aria-hidden="true" data-depth></p>
+
+<main>
+  <section class="surface" id="top" data-layer data-bg="#1d1b2b" data-tone="dark">
+    <img class="surface__mark" src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="Ævyndal" />
+    <h1>Everything here was buried by someone.</h1>
+    <p class="surface__sub">Eight Ages, one on top of the next. Start at the top and dig down.</p>
+    <a class="surface__dig" href="#age-8">Dig
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg>
+    </a>
+  </section>
+
+  {/* 8th Age */}
+  <section class="layer" id="age-8" data-age="8" data-layer data-bg="#c9cab4" data-tone="light" aria-labelledby="h-8">
+    <div class="layer__inner">
+      <header class="layer__head">
+        <h2 id="h-8">The {byN(8).ordinal} Age</h2>
+        <p class="layer__name">{byN(8).name}</p>
+        <p class="layer__began">From {byN(8).began}</p>
+      </header>
+      <figure class="artifact order" aria-label="Recovered work order">
+        <div class="order__head"><span>Syndicate Facilities</span><span>Recurring</span></div>
+        <dl>
+          <dt>Site</dt><dd>Medical annex, sublevel four</dd>
+          <dt>Task</dt><dd>Refill suppressant line, bed one</dd>
+          <dt>Interval</dt><dd>Every 30 hours. Do not skip.</dd>
+        </dl>
+        <p class="order__warn">Do not open the chart.</p>
+        <p class="order__warn">Do not wake the patient.</p>
+        <p class="order__scrawl">Line ran dry three days ago. Nobody upstairs answers anymore. She's sitting up.</p>
+      </figure>
+      <p class="note">Recovered from a medical annex. The order stopped being filled.</p>
+    </div>
+  </section>
+
+  <section class="layer layer--sealed" id="age-7" data-age="7" data-layer data-bg="#a9a596" data-tone="light" aria-labelledby="h-7">
+    <div class="layer__inner">
+      <h2 id="h-7">The {byN(7).ordinal} Age</h2>
+      <p class="layer__name">{byN(7).name}, from {byN(7).began}</p>
+      <p class="sealed">Not yet excavated.</p>
+    </div>
+  </section>
+
+  {/* 6th Age */}
+  <section class="layer flip" id="age-6" data-age="6" data-layer data-bg="#5f5850" data-tone="dark" aria-labelledby="h-6">
+    <div class="layer__inner">
+      <header class="layer__head">
+        <h2 id="h-6">The {byN(6).ordinal} Age</h2>
+        <p class="layer__name">{byN(6).name}</p>
+        <p class="layer__began">From {byN(6).began}</p>
+      </header>
+      <figure class="artifact card" aria-label="Note found in a coat">
+        <p>Read this every morning.</p>
+        <p>Your name is stitched inside your collar. You live in Fallendrift.</p>
+        <p>Count the chairs at supper. If one is empty, someone sat there yesterday.</p>
+        <p>You will not remember them. Write their name here anyway.</p>
+        <span class="card__blank"></span>
+        <span class="card__blank"></span>
+      </figure>
+      <p class="note">Sewn into a coat lining. The owner was never identified.</p>
+    </div>
+  </section>
+
+  {/* 5th Age */}
+  <section class="layer" id="age-5" data-age="5" data-layer data-bg="#474330" data-tone="dark" aria-labelledby="h-5">
+    <div class="layer__inner">
+      <header class="layer__head">
+        <h2 id="h-5">The {byN(5).ordinal} Age</h2>
+        <p class="layer__name">{byN(5).name}</p>
+        <p class="layer__began">From {byN(5).began}</p>
+      </header>
+      <figure class="artifact post" aria-label="Waymarker with three carvings, each lower than the last">
+        <p class="post__cut1">Market<br />two days</p>
+        <p class="post__cut2">Road gone.<br />Keep the<br />river left.</p>
+        <p class="post__cut3">River<br />moved.</p>
+        <span class="post__soil" aria-hidden="true"></span>
+      </figure>
+      <p class="note">Three cuts on one post, each lower than the last. The ground was rising around it.</p>
+    </div>
+  </section>
+
+  {/* 4th Age */}
+  <section class="layer flip" id="age-4" data-age="4" data-layer data-bg="#382a22" data-tone="dark" aria-labelledby="h-4">
+    <div class="layer__inner">
+      <header class="layer__head">
+        <h2 id="h-4">The {byN(4).ordinal} Age</h2>
+        <p class="layer__name">{byN(4).name}</p>
+        <p class="layer__began">From {byN(4).began}</p>
+      </header>
+      <figure class="artifact ledger" aria-label="Page from a contractor's ledger">
+        <h3>Ledger of Ossian Thale, contractor</h3>
+        <h4>Owed to me</h4>
+        <ul>
+          <li>Miller at the ford. Wolves, three. Half paid.</li>
+          <li>Escort to the coast. Paid in full. <span class="ledger__strike">Arrived.</span> Never arrived.</li>
+        </ul>
+        <h4>Owed by me</h4>
+        <ul><li>See the next page. And the one after.</li></ul>
+        <h4>Unfinished</h4>
+        <ul>
+          <li>Every job on the back pages.</li>
+          <li>The last one is sealed. Not to be opened while I live.</li>
+        </ul>
+        <p class="ledger__hand">He doesn't. The debts are yours now.</p>
+      </figure>
+      <p class="note">Recovered in Torskal, a kingdom in name only.</p>
+    </div>
+  </section>
+
+  {ages.filter((a) => a.n <= 3).map((a) => (
+    <section class="layer layer--sealed" id={`age-${a.n}`} data-age={a.n} data-layer data-bg={a.n === 3 ? "#2c2320" : a.n === 2 ? "#231b19" : "#1b1514"} data-tone="dark" aria-labelledby={`h-${a.n}`}>
+      <div class="layer__inner">
+        <h2 id={`h-${a.n}`}>The {a.ordinal} Age</h2>
+        <p class="layer__name">{a.name}, from {a.began}</p>
+        <p class="sealed">Not yet excavated.</p>
+      </div>
+    </section>
+  ))}
+
+  <section class="bedrock" id="dispatches" data-layer data-bg="#151112" data-tone="dark" aria-labelledby="h-dispatches">
+    <img class="bedrock__mark" src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="" loading="lazy" />
+    <div class="dispatches">
+      <h2 id="h-dispatches">Dispatches</h2>
+      <p>Letters keep surfacing from the dig. Leave an address and we'll forward them as they come up.</p>
+      <form class="signup" data-signup novalidate>
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
+        <button type="submit">Send me dispatches</button>
+        <p class="signup__status" role="status" data-status></p>
+      </form>
+      <p class="signup__fine">One letter at a time. Your address is never sold. Leave whenever you like.</p>
+    </div>
+
+    <div class="works" id="watch">
+      <h2>Watch &amp; Play</h2>
+      <p class="works__intro">Stories being told in the Ages right now.</p>
+      <ol>
+        {works.map((w) => (
+          <li>
+            <span class="works__age" aria-label={w.age === "?" ? "Age not yet revealed" : w.age === "All" ? "Every Age" : `${w.age}th Age`}>
+              {w.age === "?" ? "?" : w.age === "All" ? "∞" : w.age}
+              <small>{w.age === "?" ? "sealed" : w.age === "All" ? "every Age" : "Age"}</small>
+            </span>
+            <div>
+              <h3>{w.title}</h3>
+              <p class="works__kind">{w.kind}</p>
+              <p class="works__line">{w.line}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="works__stream">Shows stream on <a href="https://grimwell.studio">Grimwell Studio</a>.</p>
+    </div>
+
+    <footer class="foot">
+      <p>Made by human hands. Published by <a href="https://grimwell.studio">Grimwell Studio</a>.</p>
+      <nav aria-label="More"><a href="/atlas">Atlas</a><a href="https://grimwell.studio">Grimwell Studio</a></nav>
+    </footer>
+  </section>
 </main>
+
 <script>
-const ages = {
-  1:{name:'Creation',prompt:'Sythlia creates the worlds through the Eight Elements, raising mountains, seas, spirits, and the first peoples before ending her work with Ævyn, the Great Consort. Life is eternal, death does not yet exist, and creation still feels close enough to touch.',roles:['first witness','shape-singer','elemental keeper','pathfinder','maker','memory bearer','consort','river speaker','wild child','threshold walker','stone tender','sky listener','oath giver','name keeper'],phrases:['Find yourself here','What will you become','Begin somewhere','Choose your beginning','Step into the first stories','Become part of the making'],path:['First Witness','The universe is unfinished. Life is eternal, death is yet to come.','1 age · 8 elements · countless beginnings']},
-  2:{name:'God-Kings',prompt:'Ævyn dies and the divine order fractures. The Italti rise as god-kings, tyrants, prophets, monsters, and living miracles. Mortals survive beneath powers they cannot openly challenge in an age of tribes, cults, ancient belief, rebellion, and unknowable high magic.',roles:['oath-breaker','temple slave','rebel','oracle','bronze captain','monster hunter','idol keeper','tribute runner','god-killer','deserter','healer','charioteer','hostage prince','grave singer'],phrases:['Refuse the throne','Who survives power','What will you become','Choose your defiance','Find yourself in the revolt','Step into legend'],path:['Rebel','You know what kneeling costs and brings. Will you suffer it further or decide your own fate?','22 fallen italti · 9 rebellions · no safe loyalties']},
-  3:{name:'Expansion',prompt:'The Ride of the Hunt breaks Italti rule and the surviving god-kings flee into remote places. Mortals claim the world for themselves: kingdoms expand, roads connect distant lands, ruins open, monsters are pushed back, and exploration becomes the promise and danger of the age.',roles:['cartographer','ruin delver','envoy','road warden','monster hunter','settler','relic thief','river guide','court mage','frontier healer','scribe','scout','merchant','exile'],phrases:['Go farther in','Find yourself here','What will you discover','Who claims the horizon','Choose the next road','Become the mapmaker'],path:['Map Maker','Empires expand and fall. Those pushed to the edges will not forget a friendly face.','31 routes · 17 frontiers · 6 lost cities']},
-  4:{name:'The Harrow',prompt:'Great empires mature, trade flourishes, and civilization spreads across the landscape. Beneath that prosperity, cults rise, demons endure, surviving Italti stir, and old conspiracies move in the shadows. This is an age of dark exploration, politics, epic quests, and impossible things buried beneath ordinary life.',roles:['witch','pilgrim','hunter','scholar','merchant','noble','smuggler','drósti','grave tender','mercenary','inquisitor','courier','heir','heretic'],phrases:['Find yourself here','What will you become','Choose your shadow','Who belongs in the dark','Step into the hidden world','Become the one who knows'],path:['Vyer','The gods are silent, still you serve them. Better than those who serve only themselves.','4 ages · 13 regions · 42 stories']},
-  5:{name:'Collapse',prompt:'Mortals reconfigure the Caldra\'fa Helix and Nor\'dagha rises as the predominant power. Nature reclaims authority over civilization: cities fall, roads vanish, and old systems collapse. Stories turn toward survival, ancient tombs, lost knowledge, settlement defense, and carving new paths through a world that refuses to remain conquered.',roles:['path cutter','seed keeper','ruin doctor','bridge guard','storm refugee','tomb reader','water finder','village speaker','beast guide','salvager','midwife','scout','fire watcher','memory carrier'],phrases:['Save what remains','What will endure','Find yourself here','Choose what survives','Become a keeper','Carry the future forward'],path:['Seed Keeper','Nature has reclaimed the land, and you serve its purpose.','5 enclaves · 63 reclaimed paths · 1 long winter']},
-  6:{name:'Reason',prompt:'The last ancient temple of Sythlia is plundered and razed, marking the decline of old faith and the rise of science. Industry, experimentation, occult research, and invention reshape daily life. Magic becomes something to study as much as practice, while secret societies and new technologies challenge inherited truths.',roles:['investigator','inventor','occultist','factory medic','archivist','strike organizer','engineer','medium','photographer','anatomist','smuggler','reporter','astronomer','saboteur'],phrases:['Question everything','What will you become','Find yourself here','Choose what you prove','Become the witness','Step inside the inquiry'],path:['Investigator','The machine works. The ghost is real. Your employer insists only one of those statements can be true.','26 societies · 9 districts · 117 unsolved cases']},
-  7:{name:'Syndicate',prompt:'The successful Ion-X Drive opens intergalactic travel within a mortal lifetime, and the Syndicate rises with it. Civilization expands across worlds and galaxies under corporate rule. Power becomes systemic: surveillance, engineered belief, military enforcement, psychological control, black operations, and resistance all exist inside a civilization optimized until people become its raw material.',roles:['runner','simulant','smuggler','defector','memory thief','cell leader','corporate priest','void pilot','data ghost','terraformer','bounty hunter','black-ops asset','engineer','agitator'],phrases:['Break the system','Find yourself here','What will you become','Choose your signal','Become ungovernable','Step beyond the gate'],path:['Defector','Your old clearance still opens doors, except those that lead to your safety.','3 galaxies · 117.8 billion people · 1 system']},
-  8:{name:'Hope',prompt:'The Syndicate collapses and communities inherit the ruins of an interstellar civilization. Faith, science, and magic begin to converge again as people rebuild deliberately rather than simply restoring what failed. Hope is practical work: teaching, repairing, growing, organizing, exploring, and defending fragile futures from the systems that still want to return.',roles:['teacher','engineer','gardener','mystic','organizer','artist','navigator','repairer','healer','historian','builder','mediator','farmer','signal keeper'],phrases:['Find yourself here','What will you become','Build what comes next','Choose your becoming','Become part of the future','Who will you help'],path:['Builder','The future is not waiting to be discovered, waiting for someone to show up with tools.','8 regions · 34 communes · 109 unfinished plans']}
-};
+  const layers = [...document.querySelectorAll<HTMLElement>("[data-layer]")];
+  const root = document.documentElement;
+  const gaugeLinks = [...document.querySelectorAll<HTMLAnchorElement>("[data-gauge]")];
+  const depth = document.querySelector<HTMLElement>("[data-depth]");
 
-const world = document.querySelector('.world');
-const roleField = document.getElementById('roleField');
-const phraseField = document.getElementById('phraseField');
-const headline = document.getElementById('heroTitle');
-const ageIndex = document.getElementById('ageIndex');
-const ageName = document.getElementById('ageName');
-const agePrompt = document.getElementById('agePrompt');
-const pathTitle = document.getElementById('pathTitle');
-const pathQuote = document.getElementById('pathQuote');
-const pathMeta = document.getElementById('pathMeta');
-const buttons = [...document.querySelectorAll('.age-btn')];
-const toast = document.getElementById('toast');
-let currentAge = 4;
-let cycle;
-let phraseCycle;
-
-const ordinals = [
-  null,
-  ['1','st'],
-  ['2','nd'],
-  ['3','rd'],
-  ['4','th'],
-  ['5','th'],
-  ['6','th'],
-  ['7','th'],
-  ['8','th']
-];
-function setAgeHeading(age){
-  const [number, suffix] = ordinals[age];
-  ageName.innerHTML = `<span class="age-line"><span class="age-ordinal">${number}<span class="age-suffix">${suffix}</span></span> Age:</span>${ages[age].name}`;
-}
-const positions = [
-  [19,16,-1,.82],[40,10,1,.50],[63,13,0,.70],[87,16,1,.45],[24,31,-1,.78],[82,32,0,.78],[91,48,1,.65],[19,56,0,.75],[36,61,-1,.58],[74,59,1,.48],[24,68,0,.72],[56,72,1,.42],[80,76,-1,.52],[40,82,0,.64]
-];
-const phrasePositions = [
-  [28,24,-8,12,-4],[72,25,7,-10,6],[39,48,-5,8,4],[66,54,5,-8,-3],[31,70,-3,12,-5],[74,73,4,-10,4]
-];
-
-function buildRoles(age, immediate=false){
-  const words = ages[age].roles;
-  const old = [...roleField.children];
-  old.forEach(el=>el.classList.remove('visible'));
-  const change = ()=>{
-    roleField.innerHTML='';
-    words.forEach((word,i)=>{
-      const p=positions[i%positions.length];
-      const el=document.createElement('span');
-      el.className='role';el.textContent=word;
-      el.style.setProperty('--x',p[0]+'%');el.style.setProperty('--y',p[1]+'%');
-      el.style.setProperty('--r',p[2]+'deg');el.style.setProperty('--o',p[3]);
-      el.style.setProperty('--dx',((i%3)-1)*6+'px');el.style.setProperty('--dy',((i%4)-1.5)*4+'px');
-      roleField.appendChild(el);
-      requestAnimationFrame(()=>setTimeout(()=>el.classList.add('visible'), immediate?0:60+i*42));
-    });
+  const setLayer = (el: HTMLElement) => {
+    const light = el.dataset.tone === "light";
+    root.style.setProperty("--nav-bg", el.dataset.bg ?? "#1d1b2b");
+    root.style.setProperty("--nav-ink", light ? "#22251c" : "#ebe6dc");
+    const age = el.dataset.age;
+    gaugeLinks.forEach((a) => a.classList.toggle("is-here", a.dataset.gauge === age));
+    if (depth) {
+      const name = el.querySelector(".layer__name")?.textContent?.split(",")[0];
+      depth.textContent = age ? `The ${el.querySelector("h2")?.textContent?.replace("The ", "")}, ${name}` : "";
+      depth.classList.toggle("is-on", Boolean(age));
+    }
   };
-  if(immediate) change(); else setTimeout(change,520);
-}
 
-function buildPhrases(age, immediate=false){
-  const phrases = ages[age].phrases;
-  [...phraseField.children].forEach(el=>el.classList.remove('visible'));
-  const change = ()=>{
-    phraseField.innerHTML='';
-    const used = [...phrases].sort(()=>Math.random()-.5);
-    phrasePositions.forEach((p,i)=>{
-      const el=document.createElement('span');
-      el.className='phrase';
-      el.dataset.ghost = i > 3 ? '1' : '0';
-      el.textContent = used[i % used.length];
-      el.style.setProperty('--px',p[0]+'%');
-      el.style.setProperty('--py',p[1]+'%');
-      el.style.setProperty('--pr',p[2]+'deg');
-      el.style.setProperty('--pdx',p[3]+'px');
-      el.style.setProperty('--pdy',p[4]+'px');
-      phraseField.appendChild(el);
-      requestAnimationFrame(()=>setTimeout(()=>el.classList.add('visible'), immediate?0:90+i*55));
-    });
-  };
-  if(immediate) change(); else setTimeout(change,260);
-}
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => e.isIntersecting && setLayer(e.target as HTMLElement)),
+    { rootMargin: "-48% 0px -50% 0px" },
+  );
+  layers.forEach((l) => io.observe(l));
 
-function startPhraseCycle(){
-  clearInterval(phraseCycle);
-  phraseCycle = setInterval(()=>buildPhrases(currentAge), 3200);
-}
-
-function setAge(age,userInitiated=false){
-  if(age===currentAge && userInitiated) return;
-  currentAge=age;
-  headline.classList.add('age-shift');
-  buildRoles(age);
-  buildPhrases(age);
-  setTimeout(()=>{
-    world.dataset.age=String(age);
-    ageIndex.textContent=String(age).padStart(2,'0')+' / 08';
-    setAgeHeading(age);
-    agePrompt.textContent=ages[age].prompt;
-    pathTitle.textContent=ages[age].path[0];
-    pathQuote.textContent=ages[age].path[1];
-    pathMeta.textContent=ages[age].path[2];
-    buttons.forEach(b=>b.classList.toggle('active',Number(b.dataset.age)===age));
-    headline.classList.remove('age-shift');
-  },650);
-  if(userInitiated) restartCycle();
-}
-
-function nextAge(){setAge(currentAge===8?1:currentAge+1)}
-function restartCycle(){clearInterval(cycle);cycle=setInterval(nextAge,9000);startPhraseCycle()}
-buttons.forEach(b=>b.addEventListener('click',()=>setAge(Number(b.dataset.age),true)));
-
-buildRoles(4,true);
-buildPhrases(4,true);
-setAgeHeading(4);
-restartCycle();
-startPhraseCycle();
-
-document.querySelectorAll('.path').forEach(btn=>btn.addEventListener('click',()=>showToast(btn.textContent+' — route preview opened')));
-document.querySelectorAll('[data-nav]').forEach(btn=>btn.addEventListener('click',()=>{
-  const target=btn.dataset.nav;
-  if(target==='search') document.getElementById('archiveSearch').focus();
-  else showToast(target+' index opened');
-}));
-
-document.getElementById('searchForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const q=document.getElementById('archiveSearch').value.trim();
-  showToast(q?`Searching the archive for “${q}”`:'Enter a name, place, role, or age');
-});
-
-function showToast(msg){
-  toast.textContent=msg;
-  toast.classList.add('show');
-  clearTimeout(showToast.t);
-  showToast.t=setTimeout(()=>toast.classList.remove('show'),2200)
-}
-
-let raf;
-window.addEventListener('pointermove',e=>{
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  cancelAnimationFrame(raf);
-  raf=requestAnimationFrame(()=>{
-    const nx=(e.clientX/innerWidth-.5), ny=(e.clientY/innerHeight-.5);
-    [...roleField.children].forEach((el,i)=>{
-      const depth=(i%5+1)*.7;
-      el.style.marginLeft=(nx*depth*5)+'px';
-      el.style.marginTop=(ny*depth*4)+'px';
-    });
-    [...phraseField.children].forEach((el,i)=>{
-      const depth=(i%4+1)*.55;
-      el.style.marginLeft=(nx*depth*8)+'px';
-      el.style.marginTop=(ny*depth*6)+'px';
-    });
+  const form = document.querySelector<HTMLFormElement>("[data-signup]");
+  const status = document.querySelector<HTMLElement>("[data-status]");
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!status) return;
+    const input = form.querySelector<HTMLInputElement>("input[type=email]")!;
+    const button = form.querySelector<HTMLButtonElement>("button")!;
+    if (!input.checkValidity()) {
+      status.textContent = "That address is missing something. Check it and try again.";
+      input.focus();
+      return;
+    }
+    button.disabled = true;
+    status.textContent = "Sending…";
+    try {
+      const res = await fetch("/api/dispatch-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: input.value.trim() }),
+      });
+      if (res.ok) {
+        form.reset();
+        status.textContent = "You're on the list. Watch for the first dispatch.";
+      } else if (res.status === 503) {
+        status.textContent = "Dispatches isn't taking addresses yet. Try again soon.";
+      } else {
+        status.textContent = "That address didn't go through. Check it and try again.";
+      }
+    } catch {
+      status.textContent = "No connection to the dig right now. Try again in a moment.";
+    } finally {
+      button.disabled = false;
+    }
   });
-});
 </script>
 </body>
 </html>
