@@ -49,6 +49,19 @@ const unfold = [
   "A terrible sensation, as though I were drowning and flying, dying and being reborn.",
   "Time itself fractured, my thoughts splintered into myriad realities.",
 ];
+// Final entry: line, class, rotation (deg), indent (vw), size (em)
+const rave: [string, string, number, number, number][] = [
+  ["The lamp is out. The light remains. It is HIS light, the lightless light, and it reads over my shoulder.", "", -1, 0, 1],
+  ["Eleven corners. Eleven. I counted eleven. There are thirteen now and none of them meet.", "", 1.5, 4, 1],
+  ["she weaves she weaves the Witch weaves and I am the thread I am pulled I am pulled through", "low", -2, 1, 0.92],
+  ["N'zaatho-kre &nbsp; N'zaatho-kre", "leak", 3, 16, 1.5],
+  ["<s>I am Ilyas Ja-Mahdawi</s> &nbsp; <s>I was Ilyas</s> &nbsp; <s>I</s>", "struck", -2, 6, 1],
+  ["The River runs through the ink. My hand is wet with eons.", "", 2, 2, 1],
+  ["do not say it do not say it do not say it do not say it do not", "low", -1, 10, 0.85],
+  ["LO! THE RAM! The Ram has opened its mouth and the mouth is the room", "shout", -3, 0, 1.35],
+  ["Zoth'Omoth il-xa &nbsp; il-xa &nbsp; il-xa", "leak", 3, 22, 1.2],
+];
+const raveDelay = (i: number) => (1 + 1.4 * (1 - Math.pow(0.82, i)) / (1 - 0.82)).toFixed(2);
 const drift = (i: number) => (((i * 7) % 5) - 2) * 0.8;
 
 const hymn = [
@@ -207,6 +220,17 @@ const hymn = [
 
   /* Final */
   #final{background:#070509}
+  .rave{margin-top:1rem;max-width:64rem;font-family:var(--headline);font-size:clamp(19px,1.7vw,27px);line-height:1.35}
+  .rave .l{margin:0 0 1.7rem;font-size:calc(var(--sz) * 1em);margin-left:var(--x);rotate:var(--r);
+    opacity:0;filter:blur(6px);transition:opacity .9s var(--ease),filter .9s var(--ease);
+    text-shadow:5px 0 rgba(122,106,154,.5),-4px 1px rgba(138,154,114,.4)}
+  #final.in .rave .l,#final.in .here,#final.in .cut,#final.in .note,#final.in > .deeper{opacity:1;filter:blur(0)}
+  #final .here,#final .cut,#final .note,#final > .deeper{opacity:0;filter:blur(6px);transition:opacity 1.2s var(--ease),filter 1.2s var(--ease)}
+  .rave .low{font-style:italic;letter-spacing:.04em;color:rgba(212,210,200,.62)}
+  .rave .leak{font-style:italic;background:var(--prism);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:prism 8s linear infinite;text-shadow:none}
+  .rave .struck s{text-decoration-color:var(--blood);text-decoration-thickness:2px;color:rgba(212,210,200,.5)}
+  .rave .shout{text-transform:uppercase;letter-spacing:-.01em;color:var(--blood);animation:shake .18s steps(2) infinite}
+  @keyframes shake{50%{translate:1px -1px}}
   #final .here{margin:4rem 0 0;font-family:var(--headline);font-size:clamp(34px,4.2vw,68px);line-height:1;color:var(--blood);letter-spacing:.01em}
   #final .cut{margin:1.2rem 0 0;font-family:var(--headline);font-size:clamp(34px,4.2vw,68px);line-height:1;color:#c9b8b0;
     -webkit-mask-image:linear-gradient(90deg,#000 80%,rgba(0,0,0,.35) 100%);mask-image:linear-gradient(90deg,#000 80%,rgba(0,0,0,.35) 100%);max-width:max-content}
@@ -392,13 +416,15 @@ const hymn = [
   <section class="ch" id="final" style={`--d:${d("final")}`} aria-labelledby="t65">
     <div class="stain" aria-hidden="true"></div>
     <p class="chap micro r" id="t65">Final Entry · The Impossible End</p>
-    <div class="entries">
-      <div class="entry r"><p>Alas! My mortal form, torn asunder by my reckless pursuit! The Unspoken took notice of me. I am but a moth consumed by the flame I sought to understand. Fear grips me as I pen these final words, my body being claimed by an impossible geometry.</p></div>
+    <div class="rave">
+      {rave.map(([t, cls, r, x, sz], i) => (
+        <p class={`l ${cls}`} style={`--r:${r}deg;--x:${x}vw;--sz:${sz};transition-delay:${raveDelay(i)}s`} set:html={t} />
+      ))}
     </div>
-    <p class="here r">They are here.</p>
-    <p class="cut r">They are unspok-</p>
-    <p class="note r">Here the journal ends abruptly, cut off in the middle of a word. The following pages are stained with a strange substance that seems to shift and shimmer, an unsettling spectrum of indescribable hues, forever a testament to Ilyas Ja-Mahdawi's impossible end.</p>
-    <a class="deeper micro r" href="#square">Close the journal <span class="arr">↓</span></a>
+    <p class="here" style={`transition-delay:${(Number(raveDelay(rave.length)) + 0.8).toFixed(2)}s`}>They are here.</p>
+    <p class="cut" style={`transition-delay:${(Number(raveDelay(rave.length)) + 2.2).toFixed(2)}s`}>They are unspok-</p>
+    <p class="note" style="transition-delay:13s">Here the journal ends abruptly, cut off in the middle of a word. The following pages are stained with a strange substance that seems to shift and shimmer, an unsettling spectrum of indescribable hues, forever a testament to Ilyas Ja-Mahdawi's impossible end.</p>
+    <a class="deeper micro" style="transition-delay:14s" href="#square">Close the journal <span class="arr">↓</span></a>
   </section>
 
   <section class="ch" id="square" style={`--d:${d("square")}`} aria-labelledby="t7">
