@@ -1,0 +1,266 @@
+---
+import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
+
+// Ja-Mahdawi's descent. m = madness (0 to 1), drives visual decay.
+const descent = [
+  { year: "850 IC", text: "Born in Thul-Karun to a family of scholars." },
+  { year: "861 IC", text: "Begins his training at the Great Library of Thul-Karun. He is eleven." },
+  { year: "867 IC", text: "His parents die in a fire no one can explain. He studies harder." },
+  { year: "875 IC", text: "Finds The Silent Canticle in the library's hidden vaults. His first contact with the Unspoken." },
+  { year: "877 IC", text: "Leaves to study under the mystics of the Veiled Peaks." },
+  { year: "885 IC", text: "Begins the rituals." },
+  { year: "890 IC", text: "Records his first successful contact." },
+  { year: "900 IC", text: "His writing becomes erratic. He stops seeing his peers." },
+  { year: "910 IC", text: "Expelled from the Great Library. The rituals have become dangerous." },
+  { year: "920 IC", text: "Retreats to a tower outside the city, alone." },
+  { year: "930 IC", text: "Sustained communion." },
+  { year: "938 IC", text: "The writing stops. The tower is empty except for this journal." },
+].map((e, i, a) => ({ ...e, m: i / (a.length - 1) }));
+
+const named = [
+  { name: "Noghtligoth", title: "Lightless Sun of N'garset", quote: "His resplendence is the gloaming that consumes all — a paradox most dire. His dread responsibility: to deny the existence of light within his realm of N'garset, maintaining an equilibrium where reality ceases to exist as mortals know it." },
+  { name: "N'saatathat", title: "Sunless Witch of Saathot", quote: "She reigns where light dare not shine. Her function is to weave the threads of cosmic obscurity — a loomstress of void-spun mysteries." },
+  { name: "Ot'Acth", title: "Black Ram of the Eternal Void", quote: "His dominion sprawls across the formless emptiness. His power: the terrifying ability to birth and devour reality, an eternal cycle of creation and annihilation." },
+  { name: "Shognotet", title: "Eternal River of N'gahth", quote: "The cosmic stream that carves its path across the fabric of dimensions. Her purpose: to transcribe the passage of timeless eons in the cosmic currents." },
+];
+
+const unnamed = [
+  ["Ath'Shagoth", "Darkened Serpent of Noghtlig"],
+  ["M'narcthul", "Abyssal Sphinx of N'lyxanar"],
+  ["N'thulanix", "Void Whale of Og'morat"],
+  ["Qua'Goloth", "Silver Moon of Y'ha'nthlei"],
+  ["Qu'thalic", "Iridescent Spider of N'zaathoth"],
+  ["R'lythraac", "Shadowed Tower of P'thagon"],
+  ["Sha'Zuuleth", "Endless Labyrinth of T'saathe"],
+  ["Xa'Ngoroct", "Crystal Skull of Ulthartog"],
+  ["Xoth'Omoth", "Prismatic Eye of R'ly'noght"],
+  ["Zoth-Ommok", "Timeless Leviathan of the Starless Depths"],
+];
+
+const hymn = [
+  "N'zaatho-kre, Zoth'Omoth il-xa, Y'gath-Sha sathat.",
+  "Ath'Shagoth, Noght-Zuuleth, Shognotet nix, Qua'Goloth no'gol.",
+  "R'lythraac, M'narcthul, Qu'thalic tha'lok.",
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>The Unspoken | Ævyndal</title>
+<meta name="description" content="What the dreaming left behind. From the recovered journal of Ilyas Ja-Mahdawi." />
+<style is:global>
+  :root{
+    --bg:#040506; --ink:#cfd0cc; --muted:#7b8086; --line:rgba(207,208,204,.12);
+    --sick:#7e8f6a; --bruise:#5d4a6e;
+    --headline: Georgia, 'Times New Roman', serif;
+    --ui: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --micro: 'Courier New', ui-monospace, monospace;
+    --ease:cubic-bezier(.22,.8,.22,1);
+    --prism:linear-gradient(100deg,#6d8a7e,#7a6a9a,#a07a5e,#5f8aa0,#8a9a5e,#6d8a7e);
+  }
+  *{box-sizing:border-box}
+  html{background:var(--bg);scroll-behavior:smooth}
+  body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--ui);line-height:1.6;background:
+    radial-gradient(70vw 60vh at 50% 0%, rgba(93,74,110,.18), transparent 70%),
+    radial-gradient(60vw 80vh at 0% 100%, rgba(126,143,106,.08), transparent 70%),
+    var(--bg);background-attachment:fixed;overflow-x:hidden;transition:background-color 2s var(--ease)}
+  body::after{content:"";position:fixed;inset:-20%;pointer-events:none;z-index:50;opacity:.07;
+    background:repeating-radial-gradient(circle at 30% 40%,#fff 0 1px,transparent 1px 4px);animation:grain .9s steps(2) infinite}
+  @keyframes grain{50%{transform:translate(1%,-1%)}}
+  a{color:inherit;text-decoration:none}
+  .micro{font-family:var(--micro);font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+  .prism{background:var(--prism);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:prism 14s linear infinite}
+  @keyframes prism{to{background-position:300% 0}}
+
+  .topbar{position:fixed;inset:0 0 auto 0;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;z-index:20;background:linear-gradient(180deg,rgba(4,5,6,.94),rgba(4,5,6,0))}
+  .mark-logo{display:block;width:170px;height:auto;opacity:.8}
+  .topbar .back{opacity:.7}.topbar .back:hover{opacity:1}
+
+  section{position:relative;padding:0 4vw}
+
+  /* Hero */
+  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:90px;padding-bottom:8vh}
+  .hero .kicker{color:var(--sick);margin:0 0 2rem}
+  .hero h1{margin:0;font-family:var(--headline);font-weight:500;text-transform:uppercase;line-height:.82;letter-spacing:-.05em;font-size:clamp(64px,12vw,220px)}
+  .hero h1 span{display:block}
+  .hero h1 span:last-child{margin-left:9vw}
+  .hero h1 .ghost{position:absolute;inset:0;color:transparent;-webkit-text-stroke:1px rgba(207,208,204,.12);transform:translate(10px,6px) skewX(-4deg);pointer-events:none}
+  .hero .h1wrap{position:relative;display:inline-block}
+  .hero .pitch{max-width:33rem;margin:3rem 0 0 9vw;font-family:var(--headline);font-size:clamp(19px,1.55vw,24px);line-height:1.5;color:rgba(225,226,222,.86)}
+  .warning{margin:2.2rem 0 0 9vw;color:#a35a4a}
+
+  /* The man */
+  .man{padding-top:14vh;padding-bottom:10vh;border-top:1px solid var(--line)}
+  .label{color:var(--sick);margin:0 0 2.4rem}
+  .man .intro{max-width:36rem;font-family:var(--headline);font-size:clamp(18px,1.4vw,22px);line-height:1.55;margin:0 0 5rem}
+  .descent{list-style:none;margin:0;padding:0;max-width:900px}
+  .descent li{display:grid;grid-template-columns:7rem 1fr;gap:1.5rem;padding:1.1rem 0;border-top:1px solid var(--line);
+    transform:rotate(calc(var(--m) * var(--tilt) * 1deg)) translateX(calc(var(--m) * var(--drift) * 1px));
+    letter-spacing:calc(var(--m) * .06em)}
+  .descent .yr{color:var(--muted);font-family:var(--micro);font-size:12px;letter-spacing:.18em;padding-top:.25rem}
+  .descent .tx{font-family:var(--headline);font-size:clamp(17px,1.3vw,21px);
+    text-shadow:calc(var(--m) * 6px) 0 rgba(122,106,154,calc(var(--m) * .55)),calc(var(--m) * -5px) calc(var(--m) * 2px) rgba(126,143,106,calc(var(--m) * .45));
+    filter:blur(calc(var(--m) * var(--m) * .6px))}
+  .descent li.late .tx{font-style:italic}
+  .descent li.last .tx{animation:waver 5s ease-in-out infinite}
+  @keyframes waver{50%{transform:translateX(4px) skewX(-3deg);opacity:.75}}
+
+  .scrawl{display:block;margin:1.6rem 0 0;font-family:var(--headline);font-style:italic;color:#9c6b5b;font-size:clamp(15px,1.1vw,18px);transform:rotate(var(--r,-2deg));opacity:.85}
+
+  /* Realm */
+  .realm{padding-top:16vh;padding-bottom:16vh;border-top:1px solid var(--line);overflow:hidden}
+  .realm blockquote{margin:0;max-width:62rem;font-family:var(--headline);font-size:clamp(26px,3.6vw,58px);line-height:1.12;letter-spacing:-.02em}
+  .realm blockquote span{display:inline}
+  .realm blockquote .warp{display:inline-block;transform:skewY(-2deg) translateY(.06em);font-style:italic}
+  .realm .attr{margin-top:2.4rem;color:var(--muted)}
+  .realm .fractal{position:absolute;right:-10vw;top:10%;width:60vw;height:80%;pointer-events:none;opacity:.22;z-index:-1;
+    background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(122,106,154,.4) 0 3deg,transparent 3deg 17deg),
+      repeating-radial-gradient(circle at 50% 50%,transparent 0 22px,rgba(126,143,106,.3) 22px 23px);
+    mask-image:radial-gradient(circle,#000 10%,transparent 65%);animation:turn 120s linear infinite}
+  @keyframes turn{to{transform:rotate(360deg)}}
+
+  /* Named */
+  .named{padding-top:14vh;padding-bottom:12vh;border-top:1px solid var(--line)}
+  .named h2,.hymn h2{margin:0 0 1rem;font-family:var(--headline);font-weight:500;text-transform:uppercase;letter-spacing:-.03em;font-size:clamp(36px,4.6vw,76px);line-height:.95}
+  .named .sub{color:var(--muted);max-width:30rem;margin:0 0 5rem}
+  .entity{max-width:44rem;margin:0 0 5.5rem}
+  .entity:nth-child(2){margin-left:min(22vw,320px)}
+  .entity:nth-child(3){margin-left:min(8vw,120px)}
+  .entity:nth-child(4){margin-left:min(30vw,440px)}
+  .entity .nm{font-family:var(--headline);font-size:clamp(34px,3.4vw,56px);line-height:1;letter-spacing:-.01em}
+  .entity .ti{display:block;margin:.6rem 0 1.2rem;color:var(--sick)}
+  .entity p{margin:0;font-family:var(--headline);font-style:italic;font-size:clamp(17px,1.25vw,20px);line-height:1.6;color:rgba(215,216,212,.8)}
+  .rest{list-style:none;margin:7rem 0 0;padding:0;max-width:1100px;columns:2 22rem;column-gap:4rem}
+  .rest li{break-inside:avoid;padding:.9rem 0;border-top:1px solid var(--line);transition:transform .6s var(--ease),filter .6s var(--ease)}
+  .rest li:hover{transform:translateX(6px) skewX(-6deg);filter:blur(.4px)}
+  .rest .nm{font-family:var(--headline);font-size:clamp(20px,1.6vw,26px)}
+  .rest .ti{display:block;color:var(--muted);font-size:14px}
+  .rest-note{margin-top:2rem;color:var(--muted);max-width:32rem}
+
+  /* Hymn */
+  .hymn{padding-top:16vh;padding-bottom:18vh;border-top:1px solid var(--line)}
+  .hymn .sub{color:var(--muted);max-width:30rem;margin:0 0 3rem}
+  .reveal{padding:14px 22px;border:1px solid #6e3a30;background:none;color:#c88d7c;cursor:pointer;transition:background .4s var(--ease)}
+  .reveal:hover,.reveal:focus-visible{background:rgba(163,90,74,.14)}
+  .verses{margin-top:4rem;max-width:62rem}
+  .verses[hidden]{display:none}
+  .verses p{margin:0 0 1.6rem;font-family:var(--headline);font-size:clamp(24px,3.2vw,52px);line-height:1.15;letter-spacing:.01em}
+  .verses .w{display:inline-block;opacity:0;filter:blur(8px);transform:translateY(8px) scale(1.04);transition:opacity 1.4s var(--ease),filter 1.4s var(--ease),transform 1.4s var(--ease);margin-right:.32em}
+  .verses.open .w{opacity:1;filter:blur(0);transform:none}
+  .verses.open .w:nth-child(3n){animation:flick 7s infinite}
+  @keyframes flick{0%,92%,100%{opacity:1}93%{opacity:.2}95%{opacity:.9}96%{opacity:.1}}
+  body.spoken{background-color:#0b0710}
+
+  .end{padding:14vh 4vw 12vh;border-top:1px solid var(--line)}
+  .end p{margin:0;max-width:34rem;font-family:var(--headline);font-size:clamp(20px,1.7vw,27px);line-height:1.5}
+  .end .yr{display:block;color:var(--muted);margin-bottom:1.2rem}
+  .end .home{display:inline-block;margin-top:4rem;border-bottom:1px solid var(--line);padding-bottom:4px}
+  .end .home:hover{border-color:var(--sick)}
+
+  @media (max-width:760px){
+    .topbar{height:58px;padding:0 20px}.mark-logo{width:130px}
+    section,.end{padding-left:20px;padding-right:20px}
+    .hero h1 span:last-child,.hero .pitch,.warning{margin-left:0}
+    .descent li{grid-template-columns:5.2rem 1fr;gap:1rem}
+    .entity:nth-child(n){margin-left:0}
+  }
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a href="/" aria-label="Ævyndal home"><img class="mark-logo" src={wordmark.src} alt="ÆVYNDAL" /></a>
+  <a class="back micro" href="/">Back to the world</a>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="t">
+    <p class="kicker micro">From the journal of Ilyas Ja-Mahdawi · recovered 938 IC</p>
+    <div class="h1wrap">
+      <h1 id="t"><span>The</span><span class="prism">Unspoken</span></h1>
+    </div>
+    <p class="pitch">Before the gods, the universe was a dream. Most of that dream became the world. Some of it was never claimed by anything. It is still out there, and it whispers.</p>
+    <p class="warning micro">Do not read the names aloud.</p>
+  </section>
+
+  <section class="man" aria-labelledby="man-t">
+    <p class="label micro" id="man-t">The man who listened</p>
+    <p class="intro">Almost everything known about the Unspoken comes from one scholar of Thul-Karun. He spent sixty years looking for them. They answered.</p>
+    <ol class="descent">
+      {descent.map((e, i) => (
+        <li
+          class={[i >= 7 && "late", i === descent.length - 1 && "last"].filter(Boolean).join(" ") || undefined}
+          style={`--m:${e.m.toFixed(3)};--tilt:${i % 2 ? 1.6 : -1.2};--drift:${(i % 3) * 14 - 8}`}
+        >
+          <span class="yr">{e.year}</span>
+          <span class="tx">{e.text}</span>
+        </li>
+      ))}
+    </ol>
+    <span class="scrawl" style="--r:-3deg">they are not far. they were never anywhere else.</span>
+  </section>
+
+  <section class="realm" aria-labelledby="realm-t">
+    <div class="fractal" aria-hidden="true"></div>
+    <p class="label micro" id="realm-t">What he saw</p>
+    <blockquote>
+      <span>“The realm of the Unspoken is a blasphemous distortion of all natural law — a </span><span class="warp prism">fourth-dimensional canvas</span><span> where the macabre paints itself. Cyclopean structures, fractal landscapes, and tenebrous horizons that extend into unending darkness. </span><span class="warp prism">Spectral hues of unimaginable shades</span><span> pulsate with alien life.”</span>
+    </blockquote>
+    <p class="attr micro">Ilyas Ja-Mahdawi, on the Unseen Realm</p>
+  </section>
+
+  <section class="named" aria-labelledby="named-t">
+    <h2 id="named-t">What he named</h2>
+    <p class="sub">Four of them he described. The rest he only listed, as though writing more would cost him something.</p>
+    <div class="entities">
+      {named.map((u) => (
+        <article class="entity">
+          <div class="nm">{u.name}</div>
+          <span class="ti micro">{u.title}</span>
+          <p>“{u.quote}”</p>
+        </article>
+      ))}
+    </div>
+    <ul class="rest">
+      {unnamed.map(([n, t]) => (
+        <li><span class="nm">{n}</span><span class="ti">{t}</span></li>
+      ))}
+    </ul>
+    <span class="scrawl" style="--r:2deg">I counted them again. The list was longer.</span>
+  </section>
+
+  <section class="hymn" aria-labelledby="hymn-t">
+    <h2 id="hymn-t">The Hymn</h2>
+    <p class="sub">Found on the last written page. It is not meant to be spoken. Reading it is your choice.</p>
+    <button class="reveal micro" id="reveal" aria-controls="verses" aria-expanded="false">I understand. Show me.</button>
+    <div class="verses" id="verses" hidden>
+      {hymn.map((line) => (
+        <p>{line.split(" ").map((w) => <span class="w prism">{w}</span>)}</p>
+      ))}
+    </div>
+  </section>
+
+  <section class="end" aria-label="Epilogue">
+    <p><span class="yr micro">939 IC</span>His body was found in the central square of Thul-Karun, folded into geometries a body cannot hold.</p>
+    <a class="home micro" href="/">Back to the world</a>
+  </section>
+</main>
+
+<script>
+  const btn = document.getElementById("reveal") as HTMLButtonElement;
+  const verses = document.getElementById("verses") as HTMLElement;
+  btn.addEventListener("click", () => {
+    verses.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+    btn.hidden = true;
+    document.body.classList.add("spoken");
+    const words = [...verses.querySelectorAll<HTMLElement>(".w")];
+    words.forEach((w, i) => (w.style.transitionDelay = `${i * 140}ms`));
+    requestAnimationFrame(() => requestAnimationFrame(() => verses.classList.add("open")));
+  });
+</script>
+</body>
+</html>
