@@ -16,10 +16,10 @@ const chapters = [
 const d = (id: string) => String(chapters.find((c) => c.id === id)!.d);
 
 const named = [
-  { name: "N'saatathat", title: "Sunless Witch of Saathot", text: "She reigns where light dare not shine, a beldam of the interminable dark. N'saatathat, the Sunless Witch of Saathot, is she who dances in the shadow of blackened stars. Her function? 'Tis to weave the threads of cosmic obscurity, a loomstress of void-spun mysteries. In the chaotic theatre of her mind, she dreams reality into existence and lulls galaxies to eternal slumber." },
-  { name: "Ot'Acth", title: "Black Ram of the Eternal Void", text: "Lo! The sublime terror, Ot'Acth, the Black Ram of the Eternal Void. His dominion sprawls across the formless emptiness, a realm of celestial oblivion. His power: the terrifying ability to birth and devour reality, an eternal cycle of creation and annihilation. The path of his celestial traversal, the cosmos trembles." },
-  { name: "Noghtligoth", title: "Lightless Sun of N'garset", text: "From the paradoxical light of the Lightless Sun Noghtligoth, emanates not illumination but endless darkness. His resplendence is the gloaming that consumes all; a paradox most dire. His dread responsibility, to deny the existence of light within his realm of N'garset, maintaining an equilibrium where reality ceases to exist as we know it." },
-  { name: "Shognotet", title: "Eternal River of N'gahth", text: "Shognotet, the Eternal River of N'gahth, is the cosmic stream that carves its path across the fabric of dimensions. Her purpose: to transcribe the passage of timeless eons in the cosmic currents, a spectral cartographer charting the shapeless territories of time." },
+  { name: "N'saatathat", sigil: "nsaatathat", title: "Sunless Witch of Saathot", text: "She reigns where light dare not shine, a beldam of the interminable dark. N'saatathat, the Sunless Witch of Saathot, is she who dances in the shadow of blackened stars. Her function? 'Tis to weave the threads of cosmic obscurity, a loomstress of void-spun mysteries. In the chaotic theatre of her mind, she dreams reality into existence and lulls galaxies to eternal slumber." },
+  { name: "Ot'Acth", sigil: "otacth", title: "Black Ram of the Eternal Void", text: "Lo! The sublime terror, Ot'Acth, the Black Ram of the Eternal Void. His dominion sprawls across the formless emptiness, a realm of celestial oblivion. His power: the terrifying ability to birth and devour reality, an eternal cycle of creation and annihilation. The path of his celestial traversal, the cosmos trembles." },
+  { name: "Noghtligoth", sigil: "noghtligoth", title: "Lightless Sun of N'garset", text: "From the paradoxical light of the Lightless Sun Noghtligoth, emanates not illumination but endless darkness. His resplendence is the gloaming that consumes all; a paradox most dire. His dread responsibility, to deny the existence of light within his realm of N'garset, maintaining an equilibrium where reality ceases to exist as we know it." },
+  { name: "Shognotet", sigil: "shognotet", title: "Eternal River of N'gahth", text: "Shognotet, the Eternal River of N'gahth, is the cosmic stream that carves its path across the fabric of dimensions. Her purpose: to transcribe the passage of timeless eons in the cosmic currents, a spectral cartographer charting the shapeless territories of time." },
 ];
 
 // name, title, x%, y%, rotation
@@ -178,7 +178,13 @@ const hymn = [
   #names{padding-top:14vh;background:radial-gradient(80vw 70vh at 30% 30%,rgba(93,74,110,.16),transparent 70%)}
   #names h2{margin:0;font-family:var(--headline);font-weight:500;text-transform:uppercase;font-size:clamp(34px,4.4vw,72px);letter-spacing:-.03em;line-height:.98;max-width:16ch}
   .entities{display:grid;gap:4rem;margin-top:2rem;max-width:62rem}
-  .entity{max-width:36rem}
+  .entity{max-width:48rem;display:grid;grid-template-columns:clamp(84px,10vw,150px) 1fr;gap:clamp(1.2rem,2.4vw,2.6rem);align-items:start}
+  .sigil-wrap{filter:drop-shadow(3px 0 rgba(122,106,154,.55)) drop-shadow(-3px 1px rgba(138,154,114,.45));
+    clip-path:inset(0 100% 0 0);transition:clip-path 2.6s var(--ease) .6s;animation:breathe 9s ease-in-out infinite}
+  #names.in .sigil-wrap{clip-path:inset(0 0 0 0)}
+  .sigil{aspect-ratio:1;background:var(--ink-warm);-webkit-mask:var(--src) center/contain no-repeat;mask:var(--src) center/contain no-repeat;opacity:.88;transition:opacity .6s}
+  .entity:hover .sigil{background:var(--prism);background-size:300% 100%;animation:prism 6s linear infinite;opacity:1}
+  @keyframes breathe{50%{transform:rotate(-2deg) scale(1.03)}}
   .entity:nth-child(2){margin-left:18vw}.entity:nth-child(3){margin-left:6vw}.entity:nth-child(4){margin-left:24vw}
   .entity .nm{font-family:var(--headline);font-size:clamp(32px,3.2vw,54px);line-height:1;transition:letter-spacing 1.2s var(--ease),filter 1.2s var(--ease)}
   .entity:hover .nm{letter-spacing:.08em;filter:blur(.6px)}
@@ -288,6 +294,7 @@ const hymn = [
     #threshold h1 span:last-child,#threshold .intro,#threshold .warn,#threshold .deeper{margin-left:0}
     .entry:nth-child(even){margin-left:0}
     .entity:nth-child(n){margin-left:0}
+    .entity{grid-template-columns:64px 1fr;gap:1rem}
     .cloud{height:auto;min-height:0;display:grid;gap:1.2rem}
     .cloud .u{position:static;rotate:calc(var(--rot) * .4)}
     .mark-logo{width:120px}
@@ -367,9 +374,12 @@ const hymn = [
     <div class="entities">
       {named.map((u) => (
         <article class="entity r">
-          <div class="nm">{u.name}</div>
-          <span class="ti micro">{u.title}</span>
-          <p>{u.text}</p>
+          <div class="sigil-wrap" aria-hidden="true"><div class="sigil" style={`--src:url(/sigils/${u.sigil}.png)`}></div></div>
+          <div class="ebody">
+            <div class="nm">{u.name}</div>
+            <span class="ti micro">{u.title}</span>
+            <p>{u.text}</p>
+          </div>
         </article>
       ))}
     </div>
