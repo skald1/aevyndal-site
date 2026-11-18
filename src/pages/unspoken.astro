@@ -37,6 +37,12 @@ const scattered = [
 const realm = "The realm of the Unspoken is a blasphemous distortion of all natural law — a fourth-dimensional canvas where the macabre paints itself. Cyclopean structures, fractal landscapes, and tenebrous horizons that extend into unending darkness. Spectral hues of unimaginable shades pulsate with alien life.";
 const prismWords = new Set(["fourth-dimensional", "canvas", "Spectral", "hues", "unimaginable", "shades", "fractal"]);
 
+const rickar = [
+  "From the Tirsar’rg they erupted like undesirable pustules of thought—diseased, expelled, and rejected notions of reality from time before R’shlidal.",
+  "Beyond the walls of reality they whispered in hushed tones of their own domains and creations, far beyond the dreams of the gods.",
+];
+const drift = (i: number) => (((i * 7) % 5) - 2) * 0.8;
+
 const hymn = [
   "N'zaatho-kre, Zoth'Omoth il-xa, Y'gath-Sha sathat.",
   "Ath'Shagoth, Noght-Zuuleth, Shognotet nix, Qua'Goloth no'gol.",
@@ -111,6 +117,7 @@ const hymn = [
   .entry:nth-child(even){margin-left:calc(var(--d) * 9vw);--t:1.4}
   .entry:nth-child(odd){--t:-1}
   .entry em{font-style:normal;color:var(--blood)}
+  .entry p.canticle{margin:1.4rem 0 0 2.2rem;padding-left:1.2rem;border-left:1px solid var(--blood);font-style:italic;color:#c99a86;font-size:clamp(20px,1.75vw,28px);line-height:1.55}
   .scrawl{margin:3rem 0 0;font-family:var(--headline);font-style:italic;color:var(--blood);font-size:clamp(15px,1.15vw,19px);max-width:22rem;rotate:var(--r,-3deg)}
 
   .deeper{align-self:flex-start;margin-top:4.5rem;display:inline-flex;align-items:center;gap:.8rem;color:var(--muted);transition:color .4s,gap .4s var(--ease)}
@@ -136,7 +143,9 @@ const hymn = [
 
   /* 3 What they are */
   #leftovers{background:radial-gradient(60vw 70vh at 50% 60%,rgba(122,106,154,.12),transparent 70%)}
-  #leftovers .big{margin:0 0 3.5rem;max-width:22ch;font-family:var(--headline);font-weight:500;font-size:clamp(34px,4.4vw,72px);line-height:1.02;letter-spacing:-.02em}
+  #leftovers .big{margin:0 0 4rem;max-width:34ch;font-family:var(--headline);font-weight:500;font-size:clamp(24px,2.6vw,42px);line-height:1.22;letter-spacing:-.01em}
+  #leftovers .big p{margin:0 0 1.2rem}
+  #leftovers .big .src{display:block;margin-top:1.6rem;font-size:11px;color:var(--muted);letter-spacing:.22em}
   #leftovers .big span{display:inline-block;transform:translate(calc(var(--mx) * var(--k) * 1px),calc(var(--my) * var(--k) * 1px));transition:transform .5s ease-out}
   #leftovers s{text-decoration-color:var(--blood);opacity:.55}
 
@@ -241,7 +250,7 @@ const hymn = [
     <div class="entries">
       <div class="entry r"><span class="date">861 IC</span><p>This day I was received into the Great Library of Thul-Karun, eleven years of age and wholly unworthy of its halls. The masters teach that before all things the gods dreamed, and that from their dreaming the world was wrought.</p></div>
       <div class="entry r"><span class="date">867 IC</span><p>Mother and Father are taken. The fire consumed them and spared all else beneath our roof, which no master here can explain. I shall bury myself in the stacks, as they are the only ground left to me.</p></div>
-      <div class="entry r"><span class="date">875 IC</span><p>Beneath the sealed vaults lies another vault, and within it a volume bearing no title upon its spine. Its first leaf names it <em>The Silent Canticle</em>. Its first line I have read a hundred times by candle: <em>not all of the dream was used.</em></p></div>
+      <div class="entry r"><span class="date">875 IC</span><p>Beneath the sealed vaults lies another vault, and within it a volume bearing no title upon its spine. Its first leaf names it <em>The Silent Canticle</em>. Its opening lines I have read a hundred times by candle:</p><p class="canticle">From the dreaming the gods took what pleased them.<br />The rest they cast into the dark,<br />and the dark kept it.</p></div>
     </div>
     <a class="deeper micro r" href="#peaks">Go deeper <span class="arr">↓</span></a>
   </section>
@@ -259,9 +268,12 @@ const hymn = [
 
   <section class="ch" id="leftovers" style={`--d:${d("leftovers")}`} aria-labelledby="t3">
     <p class="chap micro r">III · What they are</p>
-    <p class="big r" id="t3">
-      <span style="--k:-6">They</span> <span style="--k:4">are</span> <span style="--k:-3">what</span> <span style="--k:7">the</span> <span style="--k:-8">dreaming</span> <span style="--k:5">left</span> <span style="--k:-4">behind.</span>
-    </p>
+    <blockquote class="big r" id="t3">
+      {rickar.map((para, pi) => (
+        <p>{para.split(" ").map((w, i) => <><span style={`--k:${drift(i + pi * 31)}`}>{w}</span>{" "}</>)}</p>
+      ))}
+      <footer class="src micro">“Dreams of the Tirsar” · Rickar the Younger · Grandastium</footer>
+    </blockquote>
     <div class="entries">
       <div class="entry r"><span class="date">890 IC</span><p>No god dreamed them by design, and no god keeps them. All law in this world is the bond of some god to its creation, and to these things no bond was ever given.</p></div>
       <div class="entry r"><span class="date">894 IC</span><p>Time does not <s>contain</s> them. Distance does not <s>separate</s> them. I have tried to write where they dwell, and the ink will settle on no answer but <em>everywhere</em>.</p></div>
