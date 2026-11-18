@@ -55,7 +55,7 @@ const rave: [string, string, number, number, number][] = [
   ["Fifteen corners. The room is the correct size. The correct sigh. The correct <span class=\"lw\">sathat</span>.", "", 1.5, 4, 1],
   ["Mother brought the thread. Thread the loom. Loom the room. The room has Mother in the wall.", "low", -2, 1, 0.92],
   ["They say the ink is ready. They say. They are saying it now, in the ink.", "", 2, 8, 1],
-  ["N'zaatho-kre &nbsp; N'zaatho-kre", "leak", 3, 16, 1.5],
+  ["<span class=\"tl\" style=\"--fs:2.0;--tr:-1deg;transition-delay:5.3s\">N'zaatho-kre, N'zaatho-kre il-xa sathat no'gol, Y'gath-Sha ul'thaan kre vhaeloth nix.</span><span class=\"tl\" style=\"--fs:1.55;--tr:1.5deg;transition-delay:5.9s\">Ath'nix sathat-kre tha'lok, Noght-ul ry'leth il-xa il-xa, Qua'thoth no'gol zuuleth-kre.</span><span class=\"tl\" style=\"--fs:1.18;--tr:-2deg;transition-delay:6.5s\">Shognotet ka'ath vhael n'gahth, sathat sathat ur'xa kre, M'narc-il tha'lok yr no'gol.</span><span class=\"tl\" style=\"--fs:0.88;--tr:2.5deg;transition-delay:7.1s\">Zoth-kre il-xa ngh'aath R'ly-noght sathat, ul ul ul'thaan nix kre.</span><span class=\"tl\" style=\"--fs:0.62;--tr:-3deg;transition-delay:7.7s\">n'zaatho kre il xa sa that no gol kre kre kre</span>", "tongue", 0, 8, 1],
   ["Ilyas Ja-Mahdawi. Ilyas Ja-Mahdawi. Ilyas Ja-<span class=\"lw\">il-xa</span>. <span class=\"lw\">Il-xa</span>-Mahdawi.", "", -2, 6, 1],
   ["Dip. Write. Dip. Write. The river writes <span class=\"lw\">no'gol</span>. Dip <span class=\"lw\">no'gol</span>. Write <span class=\"lw\">no'gol</span>.", "", 2, 2, 1],
   ["The window is", "", 0, 3, 1],
@@ -78,6 +78,9 @@ const hymn = [
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>The Unspoken | Ævyndal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@300;500&display=swap" rel="stylesheet" />
 <meta name="description" content="Walk through the mind of Ilyas Ja-Mahdawi, the scholar who found the Unspoken, and learn what the dreaming left behind." />
 <style is:global>
   :root{
@@ -234,6 +237,11 @@ const hymn = [
   #final.in .rave .l,#final.in .here,#final.in .cut,#final.in .note,#final.in > .deeper{opacity:1;filter:blur(0)}
   #final .here,#final .cut,#final .note,#final > .deeper{opacity:0;filter:blur(6px);transition:opacity 1.2s var(--ease),filter 1.2s var(--ease)}
   .rave .lw{text-shadow:none;font-style:italic;background:var(--prism);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:prism 8s linear infinite}
+  .rave .tongue{font-family:'Grenze Gotisch',fantasy;font-weight:500;text-shadow:none;line-height:1.15;margin:1rem 0 2.6rem}
+  .rave .tongue .tl{display:block;font-size:calc(var(--fs) * 1em);rotate:var(--tr);margin:0 0 .35em;letter-spacing:calc((2 - var(--fs)) * .06em);
+    background:var(--prism);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:prism 8s linear infinite;
+    opacity:0;transition:opacity 1.4s var(--ease)}
+  #final.in .rave .tongue .tl{opacity:calc(.35 + var(--fs) * .32)}
   .rave .low{font-style:italic;letter-spacing:.04em;color:rgba(212,210,200,.62)}
   .rave .leak{font-style:italic;background:var(--prism);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:prism 8s linear infinite;text-shadow:none}
   .rave .struck s{text-decoration-color:var(--blood);text-decoration-thickness:2px;color:rgba(212,210,200,.5)}
