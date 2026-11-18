@@ -51,14 +51,15 @@ const unfold = [
 ];
 // Final entry: line, class, rotation (deg), indent (vw), size (em)
 const rave: [string, string, number, number, number][] = [
-  ["The lamp is out. The light remains. It is HIS light, the lightless light, and it reads over my shoulder.", "", -1, 0, 1],
-  ["Eleven corners. Eleven. I counted eleven. There are thirteen now and none of them meet.", "", 1.5, 4, 1],
-  ["she weaves she weaves the Witch weaves and I am the thread I am pulled I am pulled through", "low", -2, 1, 0.92],
+  ["Lamp lit. Lamp lit. Lit the light, the light reads, reads the lightless, lit.", "", -1, 0, 1],
+  ["Fifteen corners. The room is the correct size. The correct sigh. The correct <span class=\"lw\">sathat</span>.", "", 1.5, 4, 1],
+  ["Mother brought the thread. Thread the loom. Loom the room. The room has Mother in the wall.", "low", -2, 1, 0.92],
+  ["They say the ink is ready. They say. They are saying it now, in the ink.", "", 2, 8, 1],
   ["N'zaatho-kre &nbsp; N'zaatho-kre", "leak", 3, 16, 1.5],
-  ["<s>I am Ilyas Ja-Mahdawi</s> &nbsp; <s>I was Ilyas</s> &nbsp; <s>I</s>", "struck", -2, 6, 1],
-  ["The River runs through the ink. My hand is wet with eons.", "", 2, 2, 1],
-  ["do not say it do not say it do not say it do not say it do not", "low", -1, 10, 0.85],
-  ["LO! THE RAM! The Ram has opened its mouth and the mouth is the room", "shout", -3, 0, 1.35],
+  ["Ilyas Ja-Mahdawi. Ilyas Ja-Mahdawi. Ilyas Ja-<span class=\"lw\">il-xa</span>. <span class=\"lw\">Il-xa</span>-Mahdawi.", "", -2, 6, 1],
+  ["Dip. Write. Dip. Write. The river writes <span class=\"lw\">no'gol</span>. Dip <span class=\"lw\">no'gol</span>. Write <span class=\"lw\">no'gol</span>.", "", 2, 2, 1],
+  ["The window is", "", 0, 3, 1],
+  ["THE RAM IS AT THE DOOR. LET HIM IN. HE IS IN. HE WAS ALWAYS IN.", "shout", -3, 0, 1.35],
   ["Zoth'Omoth il-xa &nbsp; il-xa &nbsp; il-xa", "leak", 3, 22, 1.2],
 ];
 const raveDelay = (i: number) => (1 + 1.4 * (1 - Math.pow(0.82, i)) / (1 - 0.82)).toFixed(2);
@@ -207,17 +208,23 @@ const hymn = [
 
   /* Consummation */
   #consummation{background:radial-gradient(70vw 70vh at 60% 70%,rgba(122,106,154,.16),transparent 70%),#06050a}
-  .unfold{margin-top:4.5rem;max-width:58rem;font-family:var(--headline);font-size:clamp(24px,2.7vw,44px);line-height:1.25}
-  .unfold .s{position:relative;display:block;margin:0 0 1.1rem;opacity:0;filter:blur(8px);
-    transform:translateX(calc(var(--i) * 3vw)) rotate(calc(var(--i) * -1.4deg)) skewX(calc(var(--i) * -2deg));
-    transition:opacity 1.6s var(--ease),filter 1.6s var(--ease);transition-delay:calc(1s + var(--i) * .9s)}
-  #consummation.in .unfold .s{opacity:1;filter:blur(calc(var(--i) * .25px))}
-  .unfold .s::before,.unfold .s::after{content:attr(data-t);position:absolute;inset:0;pointer-events:none}
-  .unfold .s::before{color:rgba(122,106,154,.55);animation:splitA 6s ease-in-out infinite;--o:calc(var(--i) * 3px + 2px)}
-  .unfold .s::after{color:rgba(138,154,114,.45);animation:splitB 7s ease-in-out infinite;--o:calc(var(--i) * 3px + 2px)}
-  @keyframes splitA{0%,100%{transform:translate(var(--o),0)}50%{transform:translate(calc(var(--o) * -1),calc(var(--o) * .5))}}
-  @keyframes splitB{0%,100%{transform:translate(calc(var(--o) * -1),0)}50%{transform:translate(var(--o),calc(var(--o) * -.5))}}
-
+  .splinter{margin-top:4rem;max-width:64rem;font-family:var(--headline);font-size:clamp(22px,2.4vw,38px);line-height:1.2}
+  .splinter > *{margin:0 0 2.6rem;opacity:0;filter:blur(6px);transition:opacity 1.2s var(--ease),filter 1.2s var(--ease)}
+  #consummation.in .splinter > *,#consummation.in > .deeper{opacity:1;filter:blur(0)}
+  #consummation > .deeper{opacity:0;transition:opacity 1.2s var(--ease)}
+  .trail{color:rgba(212,210,200,.82)}
+  .fork{display:flex;align-items:center;gap:.45em}
+  .fork .base{flex:none}
+  .fork .br{display:grid;gap:.1em}
+  .fork .br span{display:block;transform-origin:0 50%;rotate:0deg;translate:0 0;opacity:.0;transition:rotate 2.6s var(--ease),translate 2.6s var(--ease),opacity 1.4s var(--ease)}
+  #consummation.in .fork .br span{rotate:var(--a);translate:0 var(--y);opacity:1}
+  .fork .br span:nth-child(1){color:#9a8ac0}.fork .br span:nth-child(2){color:#7aa6bc}.fork .br span:nth-child(3){color:#a6b47a}.fork .br span:nth-child(4){color:#c0957a}
+  .fork.wide{font-size:1.35em}
+  .dates{display:flex;flex-wrap:wrap;gap:1.2em 2.2em;font-family:var(--micro);font-size:clamp(13px,1.15vw,17px);letter-spacing:.3em;color:var(--muted)}
+  .dates span:nth-child(2){animation:flick 5s infinite}.dates span:nth-child(5){animation:flick 3.7s infinite}.dates span:nth-child(n+6){color:var(--blood)}
+  .mirror span{display:inline-block;transform:scaleX(-1);color:#b9a59c;font-style:italic}
+  .stretch{font-style:italic;font-size:1.5em;letter-spacing:0;transition:opacity 1.2s var(--ease),filter 1.2s var(--ease),letter-spacing 5s var(--ease) !important}
+  #consummation.in .stretch{letter-spacing:.9em}
   /* Final */
   #final{background:#070509}
   .rave{margin-top:1rem;max-width:64rem;font-family:var(--headline);font-size:clamp(19px,1.7vw,27px);line-height:1.35}
@@ -226,6 +233,7 @@ const hymn = [
     text-shadow:5px 0 rgba(122,106,154,.5),-4px 1px rgba(138,154,114,.4)}
   #final.in .rave .l,#final.in .here,#final.in .cut,#final.in .note,#final.in > .deeper{opacity:1;filter:blur(0)}
   #final .here,#final .cut,#final .note,#final > .deeper{opacity:0;filter:blur(6px);transition:opacity 1.2s var(--ease),filter 1.2s var(--ease)}
+  .rave .lw{text-shadow:none;font-style:italic;background:var(--prism);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:prism 8s linear infinite}
   .rave .low{font-style:italic;letter-spacing:.04em;color:rgba(212,210,200,.62)}
   .rave .leak{font-style:italic;background:var(--prism);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:prism 8s linear infinite;text-shadow:none}
   .rave .struck s{text-decoration-color:var(--blood);text-decoration-thickness:2px;color:rgba(212,210,200,.5)}
@@ -393,10 +401,31 @@ const hymn = [
     <div class="entries">
       <div class="entry r"><span class="date">Entry XXX · The Horrid Consummation</span><p>I sought further, by means of ritual, incense, and potion, to traverse the spectral veil between their world and mine. The diagrams were drawn, the incantations spoken. I inhaled the vapors of the Z'arkoth flower and drunk the silvery ichor of a moon-harvested G'wanth vine.</p></div>
     </div>
-    <div class="unfold" aria-label={unfold.join(" ")}>
-      {unfold.map((t, i) => <span class="s" style={`--i:${i}`} data-t={t} aria-hidden="true">{t}</span>)}
+    <div class="splinter">
+      <p class="trail" style="transition-delay:1s">Third diagram drawn. Third diagram drawn. Fourth diagram drawn. Third diagram drown.</p>
+      <div class="fork" style="transition-delay:2.2s">
+        <span class="base">The candle is</span>
+        <span class="br">
+          <span style="--a:-7deg;--y:-.2em;transition-delay:3s">lit</span>
+          <span style="--a:-2deg;--y:0em;transition-delay:3.15s">unlit</span>
+          <span style="--a:3deg;--y:.15em;transition-delay:3.3s">a door</span>
+          <span style="--a:8deg;--y:.35em;transition-delay:3.45s">Mother</span>
+        </span>
+      </div>
+      <p class="dates" style="transition-delay:4.6s"><span>930 IC</span><span>931 IC</span><span>929 IC</span><span>930 IC</span><span>930 IC</span><span>93</span><span>9</span></p>
+      <p class="mirror" style="transition-delay:5.6s" aria-label="Mother says the vine is not ripe. Ripe, rite, write. Mother says write."><span aria-hidden="true">Mother says the vine is not ripe. Ripe, rite, write. Mother says write.</span></p>
+      <p class="stretch prism" style="transition-delay:6.6s">N'zaatho-kre</p>
+      <div class="fork wide" style="transition-delay:8s">
+        <span class="base">The window faces</span>
+        <span class="br">
+          <span style="--a:-9deg;--y:-.3em;transition-delay:8.8s">east</span>
+          <span style="--a:-3deg;--y:0em;transition-delay:8.95s">west</span>
+          <span style="--a:3deg;--y:.2em;transition-delay:9.1s">down</span>
+          <span style="--a:10deg;--y:.45em;transition-delay:9.25s">me</span>
+        </span>
+      </div>
     </div>
-    <a class="deeper micro r" href="#hymn">Go deeper <span class="arr">↓</span></a>
+    <a class="deeper micro" style="transition-delay:10.5s" href="#hymn">Go deeper <span class="arr">↓</span></a>
   </section>
 
   <section class="ch" id="hymn" style={`--d:${d("hymn")}`} aria-labelledby="t6">
