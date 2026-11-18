@@ -7,17 +7,19 @@ const chapters = [
   { id: "peaks", label: "The Peaks", year: "877", d: 0.25 },
   { id: "leftovers", label: "What They Are", year: "890", d: 0.45 },
   { id: "names", label: "The Names", year: "900", d: 0.62 },
-  { id: "tower", label: "The Tower", year: "920", d: 0.82 },
-  { id: "hymn", label: "The Hymn", year: "938", d: 1 },
+  { id: "tower", label: "The Tower", year: "920", d: 0.74 },
+  { id: "consummation", label: "The Consummation", year: "930", d: 0.86 },
+  { id: "hymn", label: "The Hymn", year: "938", d: 0.94 },
+  { id: "final", label: "The Impossible End", year: "938", d: 1 },
   { id: "square", label: "The Square", year: "939", d: 0.15 },
 ];
 const d = (id: string) => String(chapters.find((c) => c.id === id)!.d);
 
 const named = [
-  { name: "Noghtligoth", title: "Lightless Sun of N'garset", quote: "His resplendence is the gloaming that consumes all — a paradox most dire. His dread responsibility: to deny the existence of light within his realm of N'garset, maintaining an equilibrium where reality ceases to exist as mortals know it." },
-  { name: "N'saatathat", title: "Sunless Witch of Saathot", quote: "She reigns where light dare not shine. Her function is to weave the threads of cosmic obscurity — a loomstress of void-spun mysteries." },
-  { name: "Ot'Acth", title: "Black Ram of the Eternal Void", quote: "His dominion sprawls across the formless emptiness. His power: the terrifying ability to birth and devour reality, an eternal cycle of creation and annihilation." },
-  { name: "Shognotet", title: "Eternal River of N'gahth", quote: "The cosmic stream that carves its path across the fabric of dimensions. Her purpose: to transcribe the passage of timeless eons in the cosmic currents." },
+  { name: "N'saatathat", title: "Sunless Witch of Saathot", text: "She reigns where light dare not shine, a beldam of the interminable dark. N'saatathat, the Sunless Witch of Saathot, is she who dances in the shadow of blackened stars. Her function? 'Tis to weave the threads of cosmic obscurity, a loomstress of void-spun mysteries. In the chaotic theatre of her mind, she dreams reality into existence and lulls galaxies to eternal slumber." },
+  { name: "Ot'Acth", title: "Black Ram of the Eternal Void", text: "Lo! The sublime terror, Ot'Acth, the Black Ram of the Eternal Void. His dominion sprawls across the formless emptiness, a realm of celestial oblivion. His power: the terrifying ability to birth and devour reality, an eternal cycle of creation and annihilation. The path of his celestial traversal, the cosmos trembles." },
+  { name: "Noghtligoth", title: "Lightless Sun of N'garset", text: "From the paradoxical light of the Lightless Sun Noghtligoth, emanates not illumination but endless darkness. His resplendence is the gloaming that consumes all; a paradox most dire. His dread responsibility, to deny the existence of light within his realm of N'garset, maintaining an equilibrium where reality ceases to exist as we know it." },
+  { name: "Shognotet", title: "Eternal River of N'gahth", text: "Shognotet, the Eternal River of N'gahth, is the cosmic stream that carves its path across the fabric of dimensions. Her purpose: to transcribe the passage of timeless eons in the cosmic currents, a spectral cartographer charting the shapeless territories of time." },
 ];
 
 // name, title, x%, y%, rotation
@@ -34,12 +36,18 @@ const scattered = [
   ["Zoth-Ommok", "Timeless Leviathan of the Starless Depths", 6, 86, -3],
 ] as const;
 
-const realm = "The realm of the Unspoken is a blasphemous distortion of all natural law — a fourth-dimensional canvas where the macabre paints itself. Cyclopean structures, fractal landscapes, and tenebrous horizons that extend into unending darkness. Spectral hues of unimaginable shades pulsate with alien life.";
+const realm = "The realm of the Unspoken, a blasphemous distortion of all natural law, a fourth-dimensional canvas where the macabre paints itself. 'Tis a place of cyclopean structures, fractal landscapes, and tenebrous horizons that extend into unending darkness. Spectral hues of unimaginable shades pulsate with alien life.";
 const prismWords = new Set(["fourth-dimensional", "canvas", "Spectral", "hues", "unimaginable", "shades", "fractal"]);
 
 const rickar = [
   "From the Tirsar’rg they erupted like undesirable pustules of thought—diseased, expelled, and rejected notions of reality from time before R’shlidal.",
   "Beyond the walls of reality they whispered in hushed tones of their own domains and creations, far beyond the dreams of the gods.",
+];
+const unfold = [
+  "Reality twisted.",
+  "I felt my body unfolding in unseen dimensions.",
+  "A terrible sensation, as though I were drowning and flying, dying and being reborn.",
+  "Time itself fractured, my thoughts splintered into myriad realities.",
 ];
 const drift = (i: number) => (((i * 7) % 5) - 2) * 0.8;
 
@@ -109,7 +117,7 @@ const hymn = [
 
   .chap{color:var(--sick);margin:0 0 3rem}
   .entries{display:grid;gap:2.6rem;max-width:40rem}
-  .entry .date{display:block;color:var(--muted);margin-bottom:.5rem;font-family:var(--micro);font-size:12px;letter-spacing:.2em}
+  .entry .date{display:block;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;font-family:var(--micro);font-size:12px;letter-spacing:.2em}
   .entry p{margin:0;font-family:var(--headline);font-size:clamp(19px,1.6vw,25px);line-height:1.5;
     transform:rotate(calc(var(--d) * var(--t,0) * 1deg));
     letter-spacing:calc(var(--d) * .03em);
@@ -152,7 +160,7 @@ const hymn = [
   /* 4 Names */
   #names{padding-top:14vh;background:radial-gradient(80vw 70vh at 30% 30%,rgba(93,74,110,.16),transparent 70%)}
   #names h2{margin:0;font-family:var(--headline);font-weight:500;text-transform:uppercase;font-size:clamp(34px,4.4vw,72px);letter-spacing:-.03em;line-height:.98;max-width:16ch}
-  .entities{display:grid;gap:4rem;margin-top:5rem;max-width:62rem}
+  .entities{display:grid;gap:4rem;margin-top:2rem;max-width:62rem}
   .entity{max-width:36rem}
   .entity:nth-child(2){margin-left:18vw}.entity:nth-child(3){margin-left:6vw}.entity:nth-child(4){margin-left:24vw}
   .entity .nm{font-family:var(--headline);font-size:clamp(32px,3.2vw,54px);line-height:1;transition:letter-spacing 1.2s var(--ease),filter 1.2s var(--ease)}
@@ -180,6 +188,35 @@ const hymn = [
   #tower.in .realm .w{opacity:1;filter:blur(0);transform:none}
   .realm .w.p{font-style:italic}
   .attr{margin-top:2.4rem;color:var(--muted)}
+
+  .elabel{display:block;color:var(--sick);margin:0 0 .8rem}
+  #threshold .intro p{margin:0;font-style:italic}
+
+  /* Consummation */
+  #consummation{background:radial-gradient(70vw 70vh at 60% 70%,rgba(122,106,154,.16),transparent 70%),#06050a}
+  .unfold{margin-top:4.5rem;max-width:58rem;font-family:var(--headline);font-size:clamp(24px,2.7vw,44px);line-height:1.25}
+  .unfold .s{position:relative;display:block;margin:0 0 1.1rem;opacity:0;filter:blur(8px);
+    transform:translateX(calc(var(--i) * 3vw)) rotate(calc(var(--i) * -1.4deg)) skewX(calc(var(--i) * -2deg));
+    transition:opacity 1.6s var(--ease),filter 1.6s var(--ease);transition-delay:calc(1s + var(--i) * .9s)}
+  #consummation.in .unfold .s{opacity:1;filter:blur(calc(var(--i) * .25px))}
+  .unfold .s::before,.unfold .s::after{content:attr(data-t);position:absolute;inset:0;pointer-events:none}
+  .unfold .s::before{color:rgba(122,106,154,.55);animation:splitA 6s ease-in-out infinite;--o:calc(var(--i) * 3px + 2px)}
+  .unfold .s::after{color:rgba(138,154,114,.45);animation:splitB 7s ease-in-out infinite;--o:calc(var(--i) * 3px + 2px)}
+  @keyframes splitA{0%,100%{transform:translate(var(--o),0)}50%{transform:translate(calc(var(--o) * -1),calc(var(--o) * .5))}}
+  @keyframes splitB{0%,100%{transform:translate(calc(var(--o) * -1),0)}50%{transform:translate(var(--o),calc(var(--o) * -.5))}}
+
+  /* Final */
+  #final{background:#070509}
+  #final .here{margin:4rem 0 0;font-family:var(--headline);font-size:clamp(34px,4.2vw,68px);line-height:1;color:var(--blood);letter-spacing:.01em}
+  #final .cut{margin:1.2rem 0 0;font-family:var(--headline);font-size:clamp(34px,4.2vw,68px);line-height:1;color:#c9b8b0;
+    -webkit-mask-image:linear-gradient(90deg,#000 80%,rgba(0,0,0,.35) 100%);mask-image:linear-gradient(90deg,#000 80%,rgba(0,0,0,.35) 100%);max-width:max-content}
+  #final .note{margin:5rem 0 0;max-width:34rem;font-family:var(--ui);font-size:15px;line-height:1.7;color:var(--muted)}
+  .stain{position:absolute;right:-8vw;top:30%;width:62vw;height:70vh;pointer-events:none;z-index:0;opacity:0;transform:scale(.6);filter:blur(40px) saturate(1.3);
+    background:radial-gradient(closest-side at 35% 45%,rgba(122,106,154,.55),transparent),radial-gradient(closest-side at 60% 60%,rgba(95,138,160,.45),transparent),radial-gradient(closest-side at 50% 30%,rgba(160,122,94,.4),transparent),radial-gradient(closest-side at 70% 40%,rgba(138,154,114,.4),transparent);
+    transition:opacity 4s var(--ease) 3s,transform 6s var(--ease) 3s;animation:shimmer 9s linear infinite}
+  #final.in .stain{opacity:.85;transform:scale(1)}
+  #final > *:not(.stain){position:relative;z-index:1}
+  @keyframes shimmer{to{filter:blur(40px) saturate(1.3) hue-rotate(360deg)}}
 
   /* 6 Hymn */
   #hymn{background:#07050b}
@@ -238,9 +275,9 @@ const hymn = [
 
 <main>
   <section class="ch" id="threshold" style={`--d:${d("threshold")}`} aria-labelledby="t0">
-    <p class="chap micro r">The recovered journal of Ilyas Ja-Mahdawi</p>
+    <p class="chap micro r">The Journal of Ilyas Ja-Mahdawi, Pursuer of the Unspoken</p>
     <h1 id="t0" class="r"><span>The</span><span class="prism">Unspoken</span></h1>
-    <p class="intro r">Ilyas Ja-Mahdawi was a scholar of Thul-Karun. He spent sixty years searching libraries, mountains, and finally the inside of his own skull for the Unspoken, and this journal is all he left behind.</p>
+    <div class="intro r"><span class="elabel micro">Entry I · The Calling</span><p>From the threshold of mortal ken, I, Ilyas Ja-Mahdawi, scribe these inscrutable revelations. Harken to the eldritch echoes, spawned from the dire pursuit of those we dare not name - The Unspoken.</p></div>
     <p class="warn micro r">Do not read the names aloud.</p>
     <a class="deeper micro r" href="#library">Open the journal <span class="arr">↓</span></a>
   </section>
@@ -286,12 +323,13 @@ const hymn = [
   <section class="ch" id="names" style={`--d:${d("names")}`} aria-labelledby="t4">
     <p class="chap micro r">IV · The Names</p>
     <h2 id="t4" class="r">Of their names I have set down <span class="prism">only what I could bear.</span></h2>
+    <p class="elabel micro r" style="margin-top:4rem">From Entry I · The Calling</p>
     <div class="entities">
       {named.map((u) => (
         <article class="entity r">
           <div class="nm">{u.name}</div>
           <span class="ti micro">{u.title}</span>
-          <p>“{u.quote}”</p>
+          <p>{u.text}</p>
         </article>
       ))}
     </div>
@@ -322,12 +360,23 @@ const hymn = [
         <span class={`w${prismWords.has(w.replace(/[^\w-]/g, "")) ? " p prism" : ""}`} style={`transition-delay:${(1.2 + i * 0.07).toFixed(2)}s`} aria-hidden="true">{w}</span>
       ))}
     </blockquote>
-    <p class="attr micro r">Ja-Mahdawi, on the Unseen Realm</p>
+    <p class="attr micro r">Entry X · The Unseen Realm</p>
+    <a class="deeper micro r" href="#consummation">Go deeper <span class="arr">↓</span></a>
+  </section>
+
+  <section class="ch" id="consummation" style={`--d:${d("consummation")}`} aria-labelledby="t55">
+    <p class="chap micro r" id="t55">VI · The Consummation</p>
+    <div class="entries">
+      <div class="entry r"><span class="date">Entry XXX · The Horrid Consummation</span><p>I sought further, by means of ritual, incense, and potion, to traverse the spectral veil between their world and mine. The diagrams were drawn, the incantations spoken. I inhaled the vapors of the Z'arkoth flower and drunk the silvery ichor of a moon-harvested G'wanth vine.</p></div>
+    </div>
+    <div class="unfold" aria-label={unfold.join(" ")}>
+      {unfold.map((t, i) => <span class="s" style={`--i:${i}`} data-t={t} aria-hidden="true">{t}</span>)}
+    </div>
     <a class="deeper micro r" href="#hymn">Go deeper <span class="arr">↓</span></a>
   </section>
 
   <section class="ch" id="hymn" style={`--d:${d("hymn")}`} aria-labelledby="t6">
-    <p class="chap micro r" id="t6">VI · The Hymn</p>
+    <p class="chap micro r" id="t6">VII · The Hymn</p>
     <div class="entries">
       <div class="entry r"><span class="date">938 IC</span><p>I have written the hymn here so that it might cease its singing in me. Whoever finds this journal: you are under no obligation to read it. <em>I beg you never to give it breath.</em></p></div>
     </div>
@@ -336,8 +385,19 @@ const hymn = [
       {hymn.map((line) => (
         <p>{line.split(" ").map((w) => <span class="w prism">{w}</span>)}</p>
       ))}
-      <p class="after">Here the journal ends.</p>
     </div>
+    <a class="deeper micro r" href="#final">Turn the page <span class="arr">↓</span></a>
+  </section>
+
+  <section class="ch" id="final" style={`--d:${d("final")}`} aria-labelledby="t65">
+    <div class="stain" aria-hidden="true"></div>
+    <p class="chap micro r" id="t65">Final Entry · The Impossible End</p>
+    <div class="entries">
+      <div class="entry r"><p>Alas! My mortal form, torn asunder by my reckless pursuit! The Unspoken took notice of me. I am but a moth consumed by the flame I sought to understand. Fear grips me as I pen these final words, my body being claimed by an impossible geometry.</p></div>
+    </div>
+    <p class="here r">They are here.</p>
+    <p class="cut r">They are unspok-</p>
+    <p class="note r">Here the journal ends abruptly, cut off in the middle of a word. The following pages are stained with a strange substance that seems to shift and shimmer, an unsettling spectrum of indescribable hues, forever a testament to Ilyas Ja-Mahdawi's impossible end.</p>
     <a class="deeper micro r" href="#square">Close the journal <span class="arr">↓</span></a>
   </section>
 
