@@ -23,6 +23,12 @@ export const draanan: CountryEntry = {
     { label: "In the night sky", value: "The Lich’s Crown, a jagged ring of stars named for its ruler. It brings ill omen." },
   ],
 
+  overview: [
+    "Dra’anan is a land of scorched earth, a nation known for its cruelty. With neighboring nations like the th’il lands of Wyth Tyr’il and the august kingdom of Ivari, Dra’anan has managed to stay within its boundaries, though rumors of the Dranir (those from Dra’anan) preparing for war in secret locations where scrying cannot penetrate have begun to circulate to the surrounding areas.",
+    "Given Dra’anan has the negative reputation of being the killers of the last dragons, their might precedes them. They have no qualms with eradicating anything. Truly, Dra’anan is a land of an oppressed people with dead earth under their feet. Others outside of Dra’anan cannot begin to fathom how they feed themselves, so stories of cannibalism and other horrors surround the land.",
+    "No fence nor wall prevents anyone from walking into the country, only border patrols that kill any they don’t recognize. Its citizens are all conscripted to the country’s military. Everyone serves for life and often ends their life in its service.",
+  ],
+
   growingUp: {
     intro: "Where you grew up shapes who you are. These are the ways to be from Dra’anan.",
     ways: [
@@ -137,7 +143,7 @@ export const draanan: CountryEntry = {
     { age: 1, text: "Lyr’ani, the Lands of Green. One of the first places the th’il claimed." },
     {
       age: 2,
-      text: "IC −1158: the Wiseate of Wyth Tyr’il is founded. IC −1104: Vaurain finds Al’raxis. IC −1067: Lyr’ani burns and Dra’anan begins.",
+      text: "IC −1158: the Wiseate of Wyth Tyr’il is founded. IC −1104: Vaurain finds Al’raxis. IC −1067: Inaralaal, now italti, turns the land against the invaders. Al’raxis burns Lyr’ani, and Dra’anan begins.",
     },
     {
       age: 3,

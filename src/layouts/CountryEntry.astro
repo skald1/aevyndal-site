@@ -17,6 +17,7 @@ for (let x = 100; x >= 0; x -= 1.25) { y = Math.min(100, Math.max(86, y + (rand(
 const edge = `polygon(${pts.join(",")})`;
 
 const sections = [
+  entry.overview && ["overview", "Overview"],
   entry.growingUp && ["growing-up", "Growing up here"],
   entry.trouble && ["trouble", "Trouble here"],
   entry.now && ["now", entry.now.title],
@@ -160,6 +161,13 @@ const title = `${entry.name} | Atlas of Erinnal`;
 
     <div class="grid">
       <div class="col">
+        {entry.overview && (
+          <section id="overview" aria-labelledby="h-overview">
+            <h2 id="h-overview">Overview</h2>
+            <div class="prose">{entry.overview.map((p) => <p>{p}</p>)}</div>
+          </section>
+        )}
+
         {entry.growingUp && (
           <section id="growing-up" aria-labelledby="h-growing-up">
             <h2 id="h-growing-up">Growing up here</h2>

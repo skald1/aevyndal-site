@@ -14,6 +14,7 @@ export interface CountryEntry {
   age: number; // the Age this entry describes
   lede: string; // the door: what makes this place unmistakable
   facts: Fact[]; // the ledger
+  overview?: string[];
   growingUp?: { intro: string; ways: Titled[]; note?: string };
   trouble?: { intro: string; items: Titled[] };
   now?: { title: string; paragraphs: string[] };
