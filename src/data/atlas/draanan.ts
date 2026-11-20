@@ -110,7 +110,7 @@ export const draanan: CountryEntry = {
     title: "How Dra’anan was made",
     teaser: [
       "Dra’anan wasn’t always so, of course. It was once the eastern half of the Wiseate of Wyth Tyr’il, the isolated th’il nation where magic floats in the air and the fantastic is an everyday occurrence.",
-      "It is said Inaralaal the Wise, an ancient th’il magus from Deleran, journeyed to its eastern borders into the lush landscape known then as Lyr’ani, or Lands of Green. He had done this for countless centuries as a retreat, and in this particular year (no one knows for sure, but loremasters believe it was when Sythlia walked the earth freely and publicly) he entered the mountains in the land’s north central region.",
+      "It is said Inaralaal the Wise, an ancient th’il magus of Wyth Tyr’il, journeyed to its eastern borders into the lush landscape known then as Lyr’ani, or Lands of Green. He had done this for countless centuries as a retreat, and in this particular year (no one knows for sure, but loremasters believe it was when Sythlia walked the earth freely and publicly) he entered the mountains in the land’s north central region.",
     ],
     rest: [
       "The mountains were rumored to be one of the last bastions of the ancient dragonkind, massive beings who could grow so large their wingspan stretched across the borders of multiple countries. Indeed, the Empire of the Spine is said to have been fashioned from the bones of but one dragon, while the Gelehinde Sea between Cultrek and Mütvia is where one dragon fell and made a great depression in the ground, allowing the ocean’s waters to pour in.",
@@ -134,17 +134,24 @@ export const draanan: CountryEntry = {
   },
 
   ages: [
-    { age: 1 },
+    { age: 1, text: "Lyr’ani, the Lands of Green. One of the first places the th’il claimed." },
     {
       age: 2,
       text: "IC −1158: the Wiseate of Wyth Tyr’il is founded. IC −1104: Vaurain finds Al’raxis. IC −1067: Lyr’ani burns and Dra’anan begins.",
     },
-    { age: 3 },
-    { age: 4, text: "Thrii Dri’il rules. Dra’anan prepares for war.", current: true },
-    { age: 5 },
-    { age: 6 },
-    { age: 7 },
-    { age: 8 },
+    {
+      age: 3,
+      text: "Exiles fill the dead soil and carve cities into the mountains. Among them rises Thrii Dri’il, and under it the land grows into a power. Some say it was a sadrath warlord who died in the Barrens and would not stay dead. Some say it came out of Carath Anon. No one who knows has said.",
+    },
+    {
+      age: 4,
+      current: true,
+      text: "Thrii Dri’il rules, and Dra’anan prepares for war. Then the Age ends in the Interregnum (IC 1436), and Dra’anan is at its center. The country explodes. When the dust settles, only a stretch of mountains in the north remains. Dra’anan is gone, or so it seems.",
+    },
+    { age: 5, text: "Dra’anan is erased from every map. Only its northern mountains remain." },
+    { age: 6, text: "Only the northern mountains remain." },
+    { age: 7, text: "The Syndicate is rumored to have found something tied to the Great Lich, and to have turned it into a deadly technology." },
+    { age: 8, text: "Something rises at the same time as Sythlia. Rumor says the Syndicate brought it back to life." },
   ],
 
   source: "Adapted from the Atlas of Erinnal.",

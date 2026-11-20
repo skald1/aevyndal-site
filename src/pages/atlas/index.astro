@@ -2,9 +2,11 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { fallbackCountry } from "../../data/fallbacks";
 import { getCountries } from "../../lib/sanity";
+import { draanan } from "../../data/atlas/draanan";
 
 const published = await getCountries();
 const countries = published.length ? published : [fallbackCountry];
+const entries = [draanan];
 ---
 
 <BaseLayout title="Atlas — Ævyndal" description="Open the atlas of Ævyndal.">
@@ -14,6 +16,7 @@ const countries = published.length ? published : [fallbackCountry];
       <h1>Begin somewhere.</h1>
       <p class="lede">Countries and regions will gather here as the archive opens.</p>
       <div class="atlas-list">
+        {entries.map((e) => <a href={`/atlas/${e.slug}`}><span>{e.epithet}</span><strong>{e.name}</strong></a>)}
         {countries.map((country) => <a href={`/atlas/${country.slug.current}`}><span>{country.epithet}</span><strong>{country.name}</strong></a>)}
       </div>
     </div>

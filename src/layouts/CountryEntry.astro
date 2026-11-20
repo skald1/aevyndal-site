@@ -1,6 +1,6 @@
 ---
 import type { CountryEntry } from "../data/atlas/types";
-import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
+import SiteHeader from "../components/SiteHeader.astro";
 
 interface Props { entry: CountryEntry }
 const { entry } = Astro.props;
@@ -61,10 +61,6 @@ const title = `${entry.name} | Atlas of Erinnal`;
   .mast{position:relative;z-index:2;background:var(--soot);color:var(--bone);padding:1rem var(--gutter) 7rem;clip-path:var(--edge)}
   .mast-char{position:relative;height:0}
   .mast-char::before{content:"";position:absolute;left:0;right:0;bottom:-.45rem;height:7rem;background:var(--char);clip-path:var(--edge);opacity:.8;z-index:1}
-  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem}
-  .top img{width:150px;height:auto;display:block}
-  .top a{font-size:.95rem;text-decoration:none;opacity:.8}
-  .top a:hover{opacity:1;text-decoration:underline;text-underline-offset:.25em}
   .mast-inner{max-width:72rem;margin:clamp(3rem,9vw,6rem) auto 0}
   .where{margin:0;font-family:var(--display);font-style:italic;font-size:1.15rem;color:#b4ad9f}
   .mast h1{margin:.2rem 0 0;font-family:var(--display);font-weight:600;font-size:clamp(3.6rem,13vw,9rem);line-height:.9;letter-spacing:-.01em}
@@ -101,17 +97,18 @@ const title = `${entry.name} | Atlas of Erinnal`;
   .places{display:grid;gap:1.8rem}
   .places p{margin-top:.25rem;max-width:58ch}
 
-  details{margin-top:1.1rem;max-width:62ch}
-  summary{display:inline-flex;align-items:center;gap:.6rem;cursor:pointer;list-style:none;font-family:var(--display);font-size:1.25rem;font-style:italic;color:var(--blood);padding:.4rem 0}
-  summary::-webkit-details-marker{display:none}
-  summary::after{content:"";width:.55rem;height:.55rem;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-3px);transition:transform .2s ease}
-  details[open] summary::after{transform:rotate(-135deg) translate(-2px,-1px)}
-  details[open] summary .more{display:none}
-  details:not([open]) summary .less{display:none}
-  details .prose{margin-top:1rem}
+  .story{margin-top:1.1rem;max-width:62ch}
+  .story summary{display:inline-flex;align-items:center;gap:.6rem;cursor:pointer;list-style:none;font-family:var(--display);font-size:1.25rem;font-style:italic;color:var(--blood);padding:.4rem 0}
+  .story summary::-webkit-details-marker{display:none}
+  .story summary::after{content:"";width:.55rem;height:.55rem;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-3px);transition:transform .2s ease}
+  .story[open] summary::after{transform:rotate(-135deg) translate(-2px,-1px)}
+  .story[open] summary .more{display:none}
+  .story:not([open]) summary .less{display:none}
+  .story .prose{margin-top:1rem}
 
-  .ledger{order:-1;align-self:start;border-top:3px solid var(--ink);padding-top:1rem}
-  .ledger h2{font-size:1.7rem}
+  .ledger{order:-1;align-self:start}
+  .facts{border-top:3px solid var(--ink);padding-top:1rem}
+  .facts h2{font-size:1.7rem}
   .ledger dl{margin:.6rem 0 0;display:grid;gap:0}
   .ledger dl div{padding:.6rem 0;border-bottom:1px solid color-mix(in srgb,var(--ash) 40%,transparent)}
   .ledger dt{font-family:var(--display);font-style:italic;font-size:1rem;color:var(--ash-ink)}
@@ -134,7 +131,7 @@ const title = `${entry.name} | Atlas of Erinnal`;
   @media (min-width:960px){
     .grid{grid-template-columns:minmax(0,1fr) 19rem;gap:5rem}
     .ledger{order:0;align-self:stretch}
-    .toc{display:block;position:sticky;top:1.5rem;margin-top:2rem}
+    .toc{display:block;position:sticky;top:0;z-index:2;background:var(--paper);padding:1.5rem 0 1.4rem;margin-bottom:.5rem}
     .toc h2{font-size:1.25rem}
     .toc ul{list-style:none;margin:.4rem 0 0;padding:0;display:grid;gap:.25rem}
     .toc a{text-decoration:none;color:var(--ash-ink);font-size:.95rem}
@@ -149,10 +146,7 @@ const title = `${entry.name} | Atlas of Erinnal`;
 </head>
 <body style={`--edge:${edge}`}>
   <header class="mast">
-    <nav class="top" aria-label="Site">
-      <a href="/" aria-label="Ævyndal home"><img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="Ævyndal" /></a>
-      <a href="/atlas">Atlas of Erinnal</a>
-    </nav>
+    <SiteHeader current="atlas" />
     <div class="mast-inner">
       <p class="where">The {ordinal(entry.age)} Age, {ageNames[entry.age]}</p>
       <h1>{entry.name}</h1>
@@ -217,7 +211,7 @@ const title = `${entry.name} | Atlas of Erinnal`;
           <section id="history" aria-labelledby="h-history">
             <h2 id="h-history">{entry.history.title}</h2>
             <div class="prose">{entry.history.teaser.map((p) => <p>{p}</p>)}</div>
-            <details>
+            <details class="story">
               <summary><span class="more">Read the whole story</span><span class="less">Close the story</span></summary>
               <div class="prose">{entry.history.rest.map((p) => <p>{p}</p>)}</div>
             </details>
@@ -226,14 +220,16 @@ const title = `${entry.name} | Atlas of Erinnal`;
       </div>
 
       <aside class="ledger" aria-labelledby="h-ledger">
-        <h2 id="h-ledger">The Ledger</h2>
-        <dl>
-          {entry.facts.map((f) => (<div><dt>{f.label}</dt><dd>{f.value}</dd></div>))}
-        </dl>
         <nav class="toc" aria-labelledby="h-toc">
           <h2 id="h-toc">On this page</h2>
           <ul>{sections.map(([id, label]) => <li><a href={`#${id}`} data-toc={id}>{label}</a></li>)}</ul>
         </nav>
+        <div class="facts">
+          <h2 id="h-ledger">The Ledger</h2>
+          <dl>
+            {entry.facts.map((f) => (<div><dt>{f.label}</dt><dd>{f.value}</dd></div>))}
+          </dl>
+        </div>
       </aside>
     </div>
 

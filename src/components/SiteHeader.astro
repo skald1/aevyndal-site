@@ -1,0 +1,46 @@
+---
+// Site-wide header. One list of destinations for every page.
+// `current` marks the section the visitor is in.
+import wordmark from "../assets/Aevyndal-Wordmark-v1-WhiteBlood.png";
+
+interface Props { current?: "ages" | "atlas" | "unspoken" }
+const { current } = Astro.props;
+
+const links = [
+  { key: "ages", label: "The Ages", href: "/#ages" },
+  { key: "atlas", label: "Atlas of Erinnal", href: "/atlas" },
+  { key: "unspoken", label: "The Unspoken", href: "/unspoken" },
+  { key: "studio", label: "Grimwell Studio", href: "https://grimwell.studio" },
+];
+---
+
+<header class="sh">
+  <a class="sh-home" href="/" aria-label="Ævyndal home"><img src={wordmark.src} width={wordmark.width} height={wordmark.height} alt="Ævyndal" /></a>
+  <nav class="sh-wide" aria-label="Primary">
+    {links.map((l) => <a href={l.href} aria-current={l.key === current ? "page" : undefined}>{l.label}</a>)}
+  </nav>
+  <details class="sh-narrow">
+    <summary>Menu</summary>
+    <nav aria-label="Primary">
+      {links.map((l) => <a href={l.href} aria-current={l.key === current ? "page" : undefined}>{l.label}</a>)}
+    </nav>
+  </details>
+</header>
+
+<style>
+  .sh{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;font-family:"Crimson Text",Georgia,serif;color:#d4cfc4}
+  .sh-home img{width:150px;height:auto;display:block}
+  .sh a{color:inherit;text-decoration:none}
+  .sh-wide{display:none;gap:2rem;font-size:1.1rem}
+  .sh-wide a{opacity:.78;padding:.25rem 0;border-bottom:1px solid transparent}
+  .sh-wide a:hover{opacity:1;border-bottom-color:currentColor}
+  .sh-wide a[aria-current="page"]{opacity:1;border-bottom-color:#7a2020;border-bottom-width:2px}
+  .sh-narrow{position:relative}
+  .sh-narrow summary{list-style:none;cursor:pointer;font-size:1.1rem;padding:.4rem .2rem}
+  .sh-narrow summary::-webkit-details-marker{display:none}
+  .sh-narrow nav{position:absolute;right:0;top:calc(100% + .4rem);min-width:13rem;display:grid;background:#1a1a18;border:1px solid #3b3833;padding:.4rem 0}
+  .sh-narrow nav a{padding:.65rem 1rem;font-size:1.1rem}
+  .sh-narrow nav a[aria-current="page"]{color:#efe9dd;border-left:2px solid #7a2020}
+  .sh :focus-visible{outline:2px solid #d4cfc4;outline-offset:3px}
+  @media (min-width:820px){.sh-wide{display:flex}.sh-narrow{display:none}}
+</style>
