@@ -236,6 +236,7 @@ const hymn = [
   #consummation.in .stretch{letter-spacing:.9em}
   /* Final */
   #final{background:#070509}
+  .fdate{display:block;margin:-1.6rem 0 1.6rem;color:var(--muted);font-size:12px;letter-spacing:.2em}
   .rave{margin-top:1rem;max-width:64rem;font-family:var(--headline);font-size:clamp(19px,1.7vw,27px);line-height:1.35}
   .rave .l{margin:0 0 1.7rem;font-size:calc(var(--sz) * 1em);margin-left:var(--x);rotate:var(--r);
     opacity:0;filter:blur(6px);transition:opacity .9s var(--ease),filter .9s var(--ease);
@@ -463,6 +464,7 @@ const hymn = [
   <section class="ch" id="final" style={`--d:${d("final")}`} aria-labelledby="t65">
     <div class="stain" aria-hidden="true"></div>
     <p class="chap micro r" id="t65">Final Entry · The Impossible End</p>
+    <span class="fdate micro r">938 IC</span>
     <div class="rave">
       {rave.map(([t, cls, r, x, sz], i) => (
         <p class={`l ${cls}`} style={`--r:${r}deg;--x:${x}vw;--sz:${sz};transition-delay:${raveDelay(i)}s`} set:html={t} />
